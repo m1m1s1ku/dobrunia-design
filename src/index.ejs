@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <meta name="description" content="Décoration et accessoires d'intérieur | Les créations de Dobromila Golowacz">
+
+    <title>Dobrunia Design</title>
+
+    <base href="/">
+    
+    <meta name="theme-color" content="#869c27">
+
+    <meta property="og:title" content="Dobrunia Design" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.dobruniadesign.com" />
+    <meta property="og:image" content="https://www.dobruniadesign.com<%= htmlWebpackPlugin.options.pathname %>/assets/icons/logo.svg" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="<%= htmlWebpackPlugin.options.pathname %>/assets/site.webmanifest">
+    <link rel="mask-icon" href="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.pathname %>/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+      :root {
+        --elara-darkgray: #2f2f2f;
+        --elara-lightgray:#f2f2f2;
+        --elara-link: #2c3d00;
+        --elara-nav-background: #808e5e;
+        --elara-primary: #b2ce3c;;
+        --elara-secondary: #6c7851;
+        --elara-cta: #e8e8d4;
+        --elara-color: rgba(134, 156, 39, .8);
+        --elara-input-container: rgb(98, 110, 52);
+        --elara-input-focus: rgba(98, 110, 52, 0.7);
+        --elara-loader-background: rgba(255, 255, 255, 0.8);
+        --elara-light-background: rgba(255, 255, 255, 0.9);
+        --elara-highlight: #8BC34A;
+        --elara-complementary: #ffc008;
+
+        --elara-background-color: #fff;
+        --elara-footer-color: #f5f5f5;
+        --elara-font-color: #2f2f2f;
+        --elara-font-hover: rgb(0, 0, 0, 0.3);
+        --elara-loader-background: rgba(255, 255, 255, 0.8);
+        --elara-light-background: rgba(255, 255, 255, 0.9);
+
+        --elara-font-primary: 'Hind', sans-serif;
+        --elara-font-secondary: 'Lora', sans-serif; 
+        --elara-font-display: 'Questrial', serif;
+        --paper-font-common-base: {
+            font-family: var(--elara-font-primary);
+        };
+      }
+
+      a {
+        text-decoration: none;
+        color: var(--elara-primary);
+        cursor: pointer;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--elara-background-color);
+        font-family: var(--elara-font-primary);
+        font-size: 16px;
+      }
+
+      .handler {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 999;
+        opacity: .7;
+        background-color: var(--elara-nav-background);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        visibility: visible;
+        transition: opacity 1s;
+        user-select: none;
+        text-align: center;
+      }
+
+      .handler.hidden {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      .handler svg {
+        width: 200px;
+        height: 200px;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        position: relative;
+        margin: 0 auto;
+      }
+      .spinner:before, .spinner:after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 1px dotted #fff;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        animation: bounce 2s linear infinite;
+      }
+      .spinner:after {
+        animation-delay: -1s;
+      }
+
+      @keyframes bounce {
+        0% {
+          transform: scale(0);
+        }
+        20% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.5);
+        }
+        60% {
+          transform: scale(2);
+          opacity: 0.5;
+        }
+        80% {
+          transform: scale(2.5);
+          opacity: 0.25;
+        }
+        100% {
+          transform: scale(3);
+          opacity: 0;
+        }
+      }
+
+      .error-tree {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      paper-button.continue {
+          background-color: var(--elara-secondary);
+          color: white;
+      }
+      paper-button.reload {
+          background-color: var(--elara-primary);
+          color: white;
+      }
+    </style>
+    <noscript>JavaScript is needed to use this website.</noscript>
+    <script src="<%= htmlWebpackPlugin.options.pathname %>/boot.js"></script>
+    <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/webcomponents-loader.js"></script>
+    <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/web-animations-next-lite.min.js"></script>
+    <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/custom-elements-es5-adapter.js"></script>
+
+  </head>
+  <body>
+    <elara-app></elara-app>
+  </body>
+  <script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('<%= htmlWebpackPlugin.options.pathname %>/service-worker.js');
+      });
+    }
+  </script>
+  <style>
+    @font-face {
+      font-family: 'Hind';
+      font-display: fallback;
+      font-style: normal;
+      font-weight: 400;
+      src: local('Hind Regular'), local('Hind-Regular'),
+          url('<%= htmlWebpackPlugin.options.pathname %>/assets/fonts/hind.woff2') format('woff2'),
+          url('<%= htmlWebpackPlugin.options.pathname %>/assets/fonts/hind.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'Lora';
+      font-display: fallback;
+      font-style: normal;
+      font-weight: 400;
+      src: local('Lora Regular'), local('Lora-Regular'),
+          url('<%= htmlWebpackPlugin.options.pathname %>/assets/fonts/lora.woff2') format('woff2'),
+          url('<%= htmlWebpackPlugin.options.pathname %>/assets/fonts/lora.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'Questrial';
+      font-display: fallback;
+      font-style: normal;
+      font-weight: 400;
+      src: local('Questrial'), local('Questrial-Regular'), url('<%= htmlWebpackPlugin.options.pathname %>/assets/fonts/questrial.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+  </style>
+</html>
