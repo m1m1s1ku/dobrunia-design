@@ -35,6 +35,20 @@ export interface Project {
     userOrder: number;
 };
 
+export function projectCard(project: Project){
+    return html`
+    <article class="project card" @click=${() => navigate('project'.concat('/'+ project.slug))}>
+        ${project.images ? html`
+            <iron-image style="width: 320px; height: 240px;" sizing="contain" preload src="${project.images[0].path}"></iron-image>
+        ` : ''}
+        <div class="text">
+            <h3 class="title">${project.title}</h3>
+            <span>${project.category.name}</span>
+        </div>
+    </article>
+    `;
+}
+
 class Home extends Page {
     public static readonly is: string = 'ui-home';
 
@@ -75,17 +89,3 @@ class Home extends Page {
     }
 }
 customElements.define(Home.is, Home);
-
-export function projectCard(project: Project){
-    return html`
-    <article class="project card" @click=${() => navigate('project'.concat('/'+ project.slug))}>
-        ${project.images ? html`
-            <iron-image style="width: 320px; height: 240px;" sizing="contain" preload src="${project.images[0].path}"></iron-image>
-        ` : ''}
-        <div class="text">
-            <h3 class="title">${project.title}</h3>
-            <span>${project.category.name}</span>
-        </div>
-    </article>
-    `;
-}
