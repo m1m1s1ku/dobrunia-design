@@ -1,4 +1,4 @@
-import { html, css, CSSResult, TemplateResult } from 'lit-element';
+import { html, css, CSSResult, TemplateResult, property } from 'lit-element';
 
 import Root from './core/strategies/Root';
 
@@ -10,14 +10,39 @@ import './pages/index';
 import './atoms/not-found';
 import './atoms/menu';
 import './atoms/nav';
+import { repeat } from 'lit-html/directives/repeat';
 
 // Polyfills
 import('./polyfill');
 // lazy import for polymer components
 import('./polymer');
 
+interface Link {
+	idx: number;
+	name: string;
+	route: string;
+}
+
+interface SocialLink {
+	id: string;
+	name: string;
+	url: string;
+}
+
+interface APICategories {
+	id: string;
+	name: string;
+	slug: string;
+}
+
 export class ElaraApp extends Root {
 	public static readonly is: string = 'elara-app';
+
+	@property({type: Array, reflect: false})
+	private categories: ReadonlyArray<Link> = [];
+
+	@property({type: Array, reflect: false})
+	private links: ReadonlyArray<SocialLink> = [];
 
 	public get loadables(){
 		return [];
@@ -40,13 +65,41 @@ export class ElaraApp extends Root {
 		}
 	}
 
-	public firstUpdated(){		
+	public async firstUpdated(){		
 		const hashEvent = new HashChangeEvent('hashchange', {
 			newURL: location.origin + location.pathname + location.hash,
 			oldURL: null
 		});
 
 		this._onHashChange(hashEvent);
+
+		const linksR = await fetch('https://k8s02.local/api/links');
+		const linksResponse = await linksR.json();
+		this.links = linksResponse.data;
+		
+		const categoriesR = await fetch('https://k8s02.local/api/projects/categories');
+		const response = await categoriesR.json();
+		const remoteLinks: APICategories[] = response.data;
+		const adapted = remoteLinks.map((cat: APICategories) => {
+			return {
+				idx: parseInt(cat.id, 10),
+				name: cat.name,
+				route: 'category/' + cat.slug
+			};
+		});
+
+		const staticLinks = [
+			{idx: 0, route: 'about', name: 'à propos'},
+			{idx: 1, route: 'home', name: 'projets'},
+			{idx: 2, route: 'blog', name: 'blog'},
+			{idx: 3, route: 'contact', name: 'contact'}
+		];
+		
+		for(const link of adapted){
+			staticLinks.splice(2, 0, link);
+		}
+		
+		this.categories = staticLinks;
 	}
 
 	public static get styles(): CSSResult[] {
@@ -86,7 +139,8 @@ export class ElaraApp extends Root {
 			color: var(--elara-font-color);
 			display: flex;
 			padding: 1em;
-			flex-direction: column;
+			flex-direction: row;
+			justify-content: space-between;
 		}
 
 		footer a {
@@ -95,28 +149,23 @@ export class ElaraApp extends Root {
 			text-decoration: none;
 		}
 
+		footer a.social-link {
+			margin: 0 .2em;
+		}
+
 		footer a:hover {
 			color: var(--elara-font-hover);
 		}
 		`];
-	  } 
-
-	public get links(){
-		return [
-			{idx: 0, route: 'about', name: 'à propos'},
-			{idx: 1, route: 'home', name: 'projets'},
-			{idx: 2, route: 'blog', name: 'blog'},
-			{idx: 3, route: 'contact', name: 'contact'}
-		];
 	}
 	
 	public render() {
 		return html`
-			<ui-nav .items=${this.links} .route=${this.route}></ui-nav>
+			<ui-nav .items=${this.categories} .route=${this.route}></ui-nav>
 
 			<main id="main" class="content"></main>
 
-			<ui-menu id="menu" .items=${this.links} .route=${this.route}></ui-menu>
+			<ui-menu id="menu" .items=${this.categories} .route=${this.route}></ui-menu>
 			${this._footer}
 		`;
 	}
@@ -148,8 +197,12 @@ export class ElaraApp extends Root {
 	private get _footer(): TemplateResult {
 		return html`
 		<footer role="contentinfo">
-			<div class="legal-info"></div>
-            <div class="social-links"></div>
+			<div class="legal-info">
+			&copy; Dobrunia Design - ${new Date().getFullYear()} - Connect
+			</div>
+			<div class="social-links">
+			${repeat(this.links, link => html`<a class="social-link" href="${link.url}" rel="noopener" target="_blank">${link.name}</a>`)}
+			</div>
         </footer>
 		`;
 	}

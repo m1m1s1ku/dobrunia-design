@@ -1,8 +1,10 @@
 import { html, TemplateResult } from 'lit-html';
-import { css, property } from 'lit-element';
+import { property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { repeat } from 'lit-html/directives/repeat';
+import { navigate } from '../core/routing/routing';
+import { CSS } from '../core/ui/ui';
 
 interface Category {
     id: string;
@@ -20,7 +22,7 @@ interface Image {
     userOrder: number;
 };
 
-interface Project {
+export interface Project {
     bigOrder: number;
     category: Category;
     categoryId: string;
@@ -52,25 +54,7 @@ class Home extends Page {
     public static get styles(){
         return [
             ... super.styles,
-            css`
-            .cards {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-                grid-gap: 1em;
-                
-                padding: 1em 2em;
-            }
-
-            .card {
-                text-align: center;
-            }
-            .card .text .title {
-                margin: .5em;
-            }
-            .card .text span {
-                margin: 1em;
-            }
-            `
+            CSS.cards
         ];
     }
 
@@ -84,20 +68,24 @@ class Home extends Page {
         return html`
         <div class="animated cards">
         ${repeat(this.projects, (project) => {
-            return html`
-            <article class="project card">
-                ${project.images ? html`
-                    <iron-image style="width: 320px; height: 240px;" sizing="contain" preload src="${project.images[0].path}"></iron-image>
-                ` : ''}
-                <div class="text">
-                    <h3 class="title">${project.title}</h3>
-                    <span>${project.category.name}</span>
-                </div>
-            </article>
-            `;
+            return projectCard(project);
         })}
         </div>
         `;
     }
 }
 customElements.define(Home.is, Home);
+
+export function projectCard(project: Project){
+    return html`
+    <article class="project card" @click=${() => navigate('project'.concat('/'+ project.slug))}>
+        ${project.images ? html`
+            <iron-image style="width: 320px; height: 240px;" sizing="contain" preload src="${project.images[0].path}"></iron-image>
+        ` : ''}
+        <div class="text">
+            <h3 class="title">${project.title}</h3>
+            <span>${project.category.name}</span>
+        </div>
+    </article>
+    `;
+}

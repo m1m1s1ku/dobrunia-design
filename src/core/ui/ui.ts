@@ -37,6 +37,29 @@ export const CSS = {
         DARK: '(prefers-color-scheme: dark)',
         LIGHT: '(prefers-color-scheme: light)'
     },
+    cards: css`
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+        grid-gap: 1em;
+        
+        padding: 1em 2em;
+    }
+
+    .card {
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .card .text .title {
+        font-size: 1.3em;
+        margin: .5em;
+    }
+
+    .card .text span {
+        margin: 1em;
+    }
+    `,
     grid: css`.grid { display: flex; flex-wrap: wrap; } .grid > div { flex: 1 0 5em; }`,
     typography: {
         buttons: css`button:focus, button:hover {outline: 1px solid var(--elara-primary); background-color: var(--elara-secondary)}; `,

@@ -26,6 +26,7 @@ class Nav extends PureElement {
                 z-index: 3;
             }
             .title {
+                cursor: pointer;
                 outline: none;
                 padding: 2em 0 0 3em;
             }
@@ -34,6 +35,7 @@ class Nav extends PureElement {
             }
 
             .links ul {
+                outline: none;
                 font-size: 0.9em;
                 font-family: 'Kotori Rose', serif;
                 text-transform: lowercase;
@@ -45,7 +47,8 @@ class Nav extends PureElement {
             }
 
             li a {
-                margin: 0 0.5em
+                margin: 0 0.5em;
+                outline: none;
             }`
         ];
     }

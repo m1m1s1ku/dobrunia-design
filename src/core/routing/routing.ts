@@ -32,7 +32,7 @@ export function navigate(route: string): boolean {
  */
 export function hashChange(event: HashChangeEvent): string | null {
     const routeWithPrefix = event.newURL.replace(location.origin + location.pathname, '');
-    const route = routeWithPrefix.split('#!').filter(Boolean).shift();
+    let route = routeWithPrefix.split('#!').filter(Boolean).shift();
 
     const defaultRoute = Constants.defaults.route;
 
@@ -41,10 +41,21 @@ export function hashChange(event: HashChangeEvent): string | null {
         return null;
     }
 
+    let subRoute = false;
+
+    if(route.indexOf('/') !== -1){
+        subRoute = true;
+        route = route.split('/')[0];
+    }
+
     // If loaded component has routing, let him decide
     const current = customElements.get('ui-'+route) as CustomElementPageClass;
     if(current && current.hasRouting === true){
         return route;
+    } else if(current && subRoute && current.hasRouting === false) {
+        console.warn('Navigating with args to a component who doesn\'t have routing logic');
+    } else if(!current) {
+        console.error('Component not found');
     }
 
     // if index asked, go to default or if nothing asked, go to default
