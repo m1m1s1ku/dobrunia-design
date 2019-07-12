@@ -5,7 +5,8 @@ window.polymerSkipLoadingFontRoboto = true;
 const neededElements = [
   'paper-icon-button', 
   'paper-button',
-  'iron-icon'
+  'iron-icon',
+  'iron-image'
 ];
 
 function dismiss(){
@@ -79,6 +80,10 @@ function _onDomLoaded(){
     
     window.requestAnimationFrame(() => {
       const spinner = document.querySelector('#spinner');
+      const debug = false;
+      
+      if(debug) return;
+
       if(spinner){
         spinner.parentElement.removeChild(spinner);
       }

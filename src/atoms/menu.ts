@@ -58,7 +58,7 @@ export class MenuElement extends PureElement {
 
 		@media (max-width: 600px){
 			.menu-content .item {
-				font-size: 10vw;
+				font-size: 8vw;
 			}
 		}
 

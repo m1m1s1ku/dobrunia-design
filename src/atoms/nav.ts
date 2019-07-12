@@ -17,6 +17,17 @@ class Nav extends PureElement {
     @property({type: String, reflect: true})
     public route = null;
 
+    @property({type: Boolean, reflect: true})
+    public mobile = Utils.isMobile();
+
+    private _resizeListener: (e: Event) => void;
+
+    public constructor(){
+        super();
+
+        this._resizeListener = this._onResize.bind(this);
+    }
+
     public static get styles(): CSSResult[] {
         return [
             CSS.typography.heading,
@@ -32,6 +43,12 @@ class Nav extends PureElement {
             }
             .main {
                 background: var(--elara-nav-background);
+            }
+
+            .mobile-handle {
+                position: absolute;
+                top: 2em;
+                right: 3em;
             }
 
             .links ul {
@@ -53,6 +70,20 @@ class Nav extends PureElement {
         ];
     }
 
+    public connectedCallback(): void {
+        super.connectedCallback();
+        window.addEventListener('resize', this._resizeListener);
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        window.removeEventListener('resize', this._resizeListener);
+    }
+
+    private _onResize(_: Event){
+        this.mobile = Utils.isMobile();
+    }
+
 	public render(): void | TemplateResult {
         return html`
         <nav class="main" role="navigation">
@@ -60,8 +91,8 @@ class Nav extends PureElement {
                 <div aria-hidden="true" tabindex="0" class="title" @click=${() => navigate('home')} @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate('home') : null} role="link">${Constants.logo()}</div>
                 <div class="links">
                     <ul>
-                        ${Utils.isMobile() ? 
-                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu" icon="menu" aria-label="Menu" @click=${() => ElaraElement().menu(false)}></paper-icon-button></li>` :
+                        ${this.mobile ?
+                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu" @click=${() => ElaraElement().menu(false)}></paper-icon-button></li>` :
                             html`${repeat(this.items, this._item.bind(this))}
                         `}
                     </ul>
