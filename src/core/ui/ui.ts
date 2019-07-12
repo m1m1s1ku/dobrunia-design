@@ -75,7 +75,7 @@ export function ElaraElement(): Elara.Root {
 
 export const Utils = {
     isMobile: (): boolean => {
-        return window.innerWidth < 600;
+        return window.innerWidth <= 570;
     },
     mode: (): Elara.Modes => {
         return localStorage.getItem(UI.modes.localStorageKey) as Elara.Modes;

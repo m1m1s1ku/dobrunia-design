@@ -19,7 +19,7 @@ class About extends Page {
 
     public get head(){
         return {
-            title: null,
+            title: 'À propos',
             description: null,
             type: null,
             image: null,
