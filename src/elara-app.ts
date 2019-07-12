@@ -98,40 +98,15 @@ export class ElaraApp extends Root {
 		footer a:hover {
 			color: var(--elara-font-hover);
 		}
-
-		footer svg {
-			width: 20px;
-			height: 20px;
-		}
-		.disclaimer {
-			display: flex;
-			font-family: var(--elara-font-display);
-			justify-content: flex-end;
-		}
-		.skip-link {
-			position: absolute;
-			top: -40px;
-			left: 0;
-			color: var(--elara-font-color);
-			background: var(--elara-background-color);
-			color: white;
-			padding: 8px;
-			z-index: 100;
-			text-decoration: none;
-		}
-		  
-		.skip-link:focus {
-			top: 0;
-		}
 		`];
 	  } 
 
 	public get links(){
 		return [
-			{idx: 0, route: 'home', name: 'Accueil'},
-			{idx: 1, route: 'projects', name: 'Projects'},
-			{idx: 2, route: 'blog', name: 'Blog'},
-			{idx: 3, route: 'contact', name: 'Contact'}
+			{idx: 0, route: 'about', name: 'à propos'},
+			{idx: 1, route: 'home', name: 'projets'},
+			{idx: 2, route: 'blog', name: 'blog'},
+			{idx: 3, route: 'contact', name: 'contact'}
 		];
 	}
 	
@@ -139,9 +114,8 @@ export class ElaraApp extends Root {
 		return html`
 			<ui-nav .items=${this.links} .route=${this.route}></ui-nav>
 
-			<main id="main" class="content">
+			<main id="main" class="content"></main>
 
-			</main>
 			<ui-menu id="menu" .items=${this.links} .route=${this.route}></ui-menu>
 			${this._footer}
 		`;

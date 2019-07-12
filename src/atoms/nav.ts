@@ -19,7 +19,6 @@ class Nav extends PureElement {
 
     public static get styles(): CSSResult[] {
         return [
-            CSS.grid,
             CSS.typography.heading,
             CSS.typography.links,
             css`
@@ -27,32 +26,22 @@ class Nav extends PureElement {
                 z-index: 3;
             }
             .title {
-                padding: .5em;
+                outline: none;
+                padding: 2em 0 0 3em;
             }
             .main {
                 background: var(--elara-nav-background);
             }
 
-            .links { position: relative; display: flex; align-items: center;}
-
             .links ul {
-                display: flex;
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                width: 100%;
-                position: absolute;
-                justify-content: flex-end;
-                align-items: center;
+                font-size: 0.9em;
+                font-family: 'Kotori Rose', serif;
+                text-transform: lowercase;
             }
 
             .links ul li {
                 display: inline-block;
                 list-style: none;
-            }
-
-            li a, .menu {
-                color: white;
             }
 
             li a {
@@ -64,8 +53,8 @@ class Nav extends PureElement {
 	public render(): void | TemplateResult {
         return html`
         <nav class="main" role="navigation">
-            <div class="grid">
-                <div aria-hidden="true" tabindex="0" class="title" @click=${() => navigate('home')} @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate('home') : null} role="link">${Constants.logo(100)}</div>
+            <div class="header">
+                <div aria-hidden="true" tabindex="0" class="title" @click=${() => navigate('home')} @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate('home') : null} role="link">${Constants.logo()}</div>
                 <div class="links">
                     <ul>
                         ${Utils.isMobile() ? 
@@ -79,7 +68,11 @@ class Nav extends PureElement {
         `;
     }
 
-    private _item(item: { route: string; name: string; idx: number }){
+    private _item(item: { route: string; name: string; idx: number; hidden: boolean }){
+        if(item.hidden === true){
+            return html``;
+        }
+
         return html`
             <li><a class="item" tabindex="${item && this.route === item.route ? '-1' : '0'}" @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate(item.route) : null} @click=${() => navigate(item.route)}>${item.name}</a></li>
         `;
