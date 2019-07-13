@@ -40,7 +40,6 @@ class Category extends Page {
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             const slug = requestedHash[1];
-
             await projectLoad(this, "#cards .card:last-child", slug);
         }
     }
@@ -48,9 +47,7 @@ class Category extends Page {
     public render(): void | TemplateResult {
         return html`
         <div id="cards" class="category cards" role="main">
-        ${repeat(this.projects, (project) => {
-            return projectCard(project);
-        })}
+        ${repeat(this.projects, (project) =>  projectCard(project))}
         </div>
         `;
     }
