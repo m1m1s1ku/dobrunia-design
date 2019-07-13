@@ -57,6 +57,7 @@ class Project extends Page {
 
             const response = await projectR.json();
             this.project = {... response.data, content: unsafeHTML(`${response.data.content}`)};
+            document.title = this.project.title + ' | ' + Constants.title;
         }
     }
 

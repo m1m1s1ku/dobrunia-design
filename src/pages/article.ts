@@ -39,6 +39,7 @@ class Single extends Page {
             const article = articleRes.data;
     
             this.article = {...article, content: unsafeHTML(article.content)};
+            document.title = article.title + ' | ' + Constants.title;
         }
     }
 
