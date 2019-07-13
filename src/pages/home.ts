@@ -1,11 +1,12 @@
 import { html, TemplateResult } from 'lit-html';
-import { property } from 'lit-element';
+import { property, LitElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { CSS } from '../core/ui/ui';
 import Constants from '../core/constants/constants';
+import { pulseWith } from '../core/animations';
 
 interface Category {
     id: string;
@@ -50,6 +51,37 @@ export function projectCard(project: Project){
     `;
 }
 
+export interface ElementWithProjects extends LitElement {
+    projects: ReadonlyArray<Project>;
+} 
+
+export async function projectLoad(host: ElementWithProjects, lastCardSelector: string){
+    const chunk = (arr: unknown[], size: number) => {
+        const R = [];
+        for (let i=0, len=arr.length; i<len; i+=size){
+            R.push(arr.slice(i,i+size));
+        }
+        return R;
+    };
+
+    const request = await fetch(Constants.route('projects'));
+    const parsed = await request.json();
+
+    const chunks = chunk(parsed.data, 1);
+
+    let initial = 300;
+    for(const chunk of chunks){
+        setTimeout(async () => {
+            host.projects = [...host.projects, ...chunk];
+            await host.updateComplete;
+            
+            const animation = pulseWith(300);
+            host.shadowRoot.querySelector(lastCardSelector).animate(animation.effect, animation.options);
+        }, initial);
+        initial += 300;
+    }
+}
+
 class Home extends Page {
     public static readonly is: string = 'ui-home';
 
@@ -70,21 +102,7 @@ class Home extends Page {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this._loadProjects();
-    }
-
-    private _loadProjects(){
-        this.loading = new Promise(async (resolve, reject) => {
-            try {
-                const request = await fetch(Constants.route('projects'));
-                const parsed = await request.json();
-                this.projects = parsed.data;
-                resolve();
-            } catch {
-                reject();
-            }
-        });
-
+        projectLoad(this, '#cards .card:last-child');
     }
 
     public static get styles(){
@@ -96,7 +114,7 @@ class Home extends Page {
 
     public render(): void | TemplateResult {
         return html`
-        <div class="animated cards">
+        <div id="cards" class="animated cards">
         ${repeat(this.projects, (project) => {
             return projectCard(project);
         })}
