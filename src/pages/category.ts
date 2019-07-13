@@ -11,9 +11,6 @@ class Category extends Page implements ElementWithProjects {
 
     public static readonly hasRouting: boolean = true;
 
-    @property({type: Boolean, reflect: true})
-    public loaded: boolean = false;
-
     @property({type: Object, reflect: false})
     public projects: ReadonlyArray<Project> = [];
 

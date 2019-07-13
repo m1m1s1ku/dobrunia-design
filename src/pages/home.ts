@@ -101,8 +101,6 @@ class Home extends Page implements ElementWithProjects {
 
     @property({type: Array, reflect: false})
     public projects: ReadonlyArray<Project> = [];
-    @property({type: Boolean, reflect: true})
-    public loaded: boolean = false;;
 
     public get head(){
         return {

@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement, property } from 'lit-element';
 
 import Elara from '../elara';
 import { CSS } from '../ui/ui';
@@ -16,6 +16,9 @@ import { CSS } from '../ui/ui';
  */
 export default class Page extends LitElement implements Elara.Page {
     public static hasRouting: boolean = false;
+
+    @property({type: Boolean, reflect: true})
+    public loaded: boolean = false;
 
     public get head(){
         return {
