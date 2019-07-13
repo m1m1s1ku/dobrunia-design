@@ -27,7 +27,7 @@ export default class Root extends Page {
 	@property({reflect: true, type: String})
 	public route: string;
 	
-	public loaded: HTMLElement;
+	public loadedElement: HTMLElement;
 
 	private _onHashChangeListener: () => void;
 
@@ -60,7 +60,7 @@ export default class Root extends Page {
 		this.route = route;
 
 		this._content.innerHTML = '';
-		this.loaded = await this.load(route);
+		this.loadedElement = await this.load(route);
 	}
 		
 	public async load(route: string){
