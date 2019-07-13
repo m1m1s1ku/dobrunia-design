@@ -6,7 +6,8 @@ const neededElements = [
   'paper-icon-button', 
   'paper-button',
   'iron-icon',
-  'iron-image'
+  'iron-image',
+  'paper-input'
 ];
 
 function dismiss(){

@@ -13,6 +13,8 @@ class Blog extends Page {
 
     @property({type: Array, reflect: false})
     public articles: ReadonlyArray<Article> = [];
+    @property({type: Array, reflect: false})
+    private ghost: ReadonlyArray<Article> = [];
 
     public get head(){
         return {
@@ -64,6 +66,12 @@ class Blog extends Page {
             iron-image {
                 margin: .5em;
             }
+
+            .title-search {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+            }
             `
         ];
     }
@@ -83,13 +91,29 @@ class Blog extends Page {
             parsed.push({...article, content: unsafeHTML(article.content.slice(0, 200))});
         }
 
+        this.ghost = parsed;
         this.articles = parsed;
-
     }
+
+    public search(value: string){
+        this.articles = this.ghost.filter(item => {
+            if(item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1){
+                return true;
+            }
+            
+            return false;
+        });
+    }
+
     public render(): void | TemplateResult {
         return html`
         <div class="blog" role="main">
-            <h1>Blog</h1>
+            <div class="title-search">
+                <h1>Blog</h1>
+                <paper-input type="search" label="Recherche ..." @value-changed=${(event: CustomEvent) => {
+                    this.search(event.detail.value);
+                }}></paper-input>
+            </div>
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('article/'+article.slug)}>
                 ${article.images.length > 0 ? html`
