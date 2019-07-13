@@ -9,7 +9,7 @@ class Contact extends Page {
 
     public get head(){
         return {
-            title: null,
+            title: 'Contact',
             description: null,
             type: null,
             image: null,
