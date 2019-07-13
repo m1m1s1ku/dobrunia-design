@@ -43,7 +43,7 @@ export function hashChange(event: HashChangeEvent): string | null {
 
     let subRoute = false;
 
-    if(route.indexOf('/') !== -1){
+    if(route && route.indexOf('/') !== -1){
         subRoute = true;
         route = route.split('/')[0];
     }
