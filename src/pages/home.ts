@@ -55,15 +55,15 @@ export interface ElementWithProjects extends LitElement {
     projects: ReadonlyArray<Project>;
 } 
 
-export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string){
-    const chunk = (arr: unknown[], size: number) => {
-        const R = [];
-        for (let i=0, len=arr.length; i<len; i+=size){
-            R.push(arr.slice(i,i+size));
-        }
-        return R;
-    };
+export const chunk = (arr: unknown[], size: number) => {
+    const R = [];
+    for (let i=0, len=arr.length; i<len; i+=size){
+        R.push(arr.slice(i,i+size));
+    }
+    return R;
+};
 
+export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string){
     const request = await fetch(Constants.route('projects'));
     const parsed = await request.json();
 
@@ -80,7 +80,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
 
     const chunks = chunk(filtered, 1);
 
-    let initial = 300;
+    let initial = 100;
     for(const chunk of chunks){
         setTimeout(async () => {
             host.projects = [...host.projects, ...chunk];
@@ -89,7 +89,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             const animation = pulseWith(300);
             host.shadowRoot.querySelector(lastCardSelector).animate(animation.effect, animation.options);
         }, initial);
-        initial += 300;
+        initial += 200;
     }
 }
 
