@@ -4,12 +4,15 @@ import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
-import { Project, projectCard, projectLoad } from './home';
+import { Project, projectCard, projectLoad, ElementWithProjects } from './home';
 
-class Category extends Page {
+class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';
 
     public static readonly hasRouting: boolean = true;
+
+    @property({type: Boolean, reflect: true})
+    public loaded: boolean = false;
 
     @property({type: Object, reflect: false})
     public projects: ReadonlyArray<Project> = [];
@@ -45,6 +48,8 @@ class Category extends Page {
 
     public render(): void | TemplateResult {
         return html`
+        ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
+
         <div id="cards" class="category cards" role="main">
         ${repeat(this.projects, (project) =>  projectCard(project))}
         </div>

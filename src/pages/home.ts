@@ -53,6 +53,7 @@ export function projectCard(project: Project){
 
 export interface ElementWithProjects extends LitElement {
     projects: ReadonlyArray<Project>;
+    loaded: boolean;
 } 
 
 export const chunk = (arr: unknown[], size: number) => {
@@ -91,15 +92,17 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
         }, initial);
         initial += 200;
     }
+
+    host.loaded = true;
 }
 
-class Home extends Page {
+class Home extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-home';
 
-    @property({type: Array})
+    @property({type: Array, reflect: false})
     public projects: ReadonlyArray<Project> = [];
-
-    public loading: Promise<unknown>;
+    @property({type: Boolean, reflect: true})
+    public loaded: boolean = false;;
 
     public get head(){
         return {
@@ -125,6 +128,7 @@ class Home extends Page {
 
     public render(): void | TemplateResult {
         return html`
+        ${!this.loaded ? html`<div class="loading"><paper-spinner active></paper-spinner></div>` : html``}
         <div id="cards" class="animated cards">
         ${repeat(this.projects, (project) => {
             return projectCard(project);
