@@ -1,11 +1,12 @@
 import { html, TemplateResult } from 'lit-html';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { repeat } from 'lit-html/directives/repeat';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+
 import { Article } from './blog';
-import { repeat } from 'lit-html/directives/repeat';
 
 class Single extends Page {
     public static readonly is: string = 'ui-article';

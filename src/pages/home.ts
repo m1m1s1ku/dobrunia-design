@@ -1,8 +1,8 @@
 import { html, TemplateResult } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
 import { property, LitElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { CSS } from '../core/ui/ui';
 import Constants from '../core/constants/constants';

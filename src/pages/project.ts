@@ -1,13 +1,12 @@
 import { html, TemplateResult } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
+import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
-import {unsafeHTML} from 'lit-html/directives/unsafe-html';
+import Page from '../core/strategies/Page';
+import Constants from '../core/constants/constants';
 
 import { Project as ProjectInfo } from './home';
-
-import Page from '../core/strategies/Page';
-import { repeat } from 'lit-html/directives/repeat';
-import Constants from '../core/constants/constants';
 
 class Project extends Page {
     public static readonly is: string = 'ui-project';

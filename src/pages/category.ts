@@ -1,10 +1,10 @@
 import { html, TemplateResult } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import { Project, projectCard, projectLoad } from './home';
-import { repeat } from 'lit-html/directives/repeat';
 import { CSS } from '../core/ui/ui';
+import { Project, projectCard, projectLoad } from './home';
 
 class Category extends Page {
     public static readonly is: string = 'ui-category';

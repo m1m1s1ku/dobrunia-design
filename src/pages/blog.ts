@@ -1,12 +1,13 @@
 import { html, TemplateResult } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
-import { Category, Image } from './home';
-import { repeat } from 'lit-html/directives/repeat';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { navigate } from '../core/routing/routing';
+
+import { Category, Image } from './home';
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';

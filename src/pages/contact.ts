@@ -1,8 +1,8 @@
 import { html, TemplateResult } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
 import { css } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import { repeat } from 'lit-html/directives/repeat';
 
 class Contact extends Page {
     public static readonly is: string = 'ui-contact';

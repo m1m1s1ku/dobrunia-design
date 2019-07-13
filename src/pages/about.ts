@@ -1,8 +1,8 @@
 import { html, TemplateResult } from 'lit-html';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import Constants from '../core/constants/constants';
 
 interface APIPage {
