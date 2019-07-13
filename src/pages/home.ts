@@ -8,13 +8,13 @@ import { CSS } from '../core/ui/ui';
 import Constants from '../core/constants/constants';
 import { pulseWith } from '../core/animations';
 
-interface Category {
+export interface Category {
     id: string;
     name: string;
     slug: string;
 };
 
-interface Image {
+export interface Image {
     filename: string;
     id: string;
     isRaw: number;

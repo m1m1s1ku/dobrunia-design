@@ -39,8 +39,7 @@ class Category extends Page {
     public async firstUpdated(){
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            const slug = requestedHash[1];
-            await projectLoad(this, "#cards .card:last-child", slug);
+            await projectLoad(this, '#cards .card:last-child', requestedHash[1]);
         }
     }
 

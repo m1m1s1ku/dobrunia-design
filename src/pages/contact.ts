@@ -59,6 +59,7 @@ class Contact extends Page {
                     <h2>Faisons quelque chose d'incroyable ensemble !</h2>
                     <h3>Adresse</h3>
                     <p>9 Rue Miron, 06000 Nice</p>
+                    <p>info@dobruniadesign.com</p>
                     <p>06 50 48 74 41</p>
                 </div>
 
