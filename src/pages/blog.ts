@@ -96,13 +96,7 @@ class Blog extends Page {
     }
 
     public search(value: string){
-        this.articles = this.ghost.filter(item => {
-            if(item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1){
-                return true;
-            }
-            
-            return false;
-        });
+        this.articles = this.ghost.filter(item => item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1);
     }
 
     public render(): void | TemplateResult {
@@ -110,7 +104,7 @@ class Blog extends Page {
         <div class="blog" role="main">
             <div class="title-search">
                 <h1>Blog</h1>
-                <paper-input type="search" label="Recherche ..." @value-changed=${(event: CustomEvent) => {
+                <paper-input autofocus type="search" label="Recherche ..." @value-changed=${(event: CustomEvent) => {
                     this.search(event.detail.value);
                 }}></paper-input>
             </div>
