@@ -2,10 +2,9 @@ import { html, TemplateResult } from 'lit-html';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import { Project, projectCard } from './home';
+import { Project, projectCard, projectLoad } from './home';
 import { repeat } from 'lit-html/directives/repeat';
 import { CSS } from '../core/ui/ui';
-import Constants from '../core/constants/constants';
 
 class Category extends Page {
     public static readonly is: string = 'ui-category';
@@ -13,7 +12,7 @@ class Category extends Page {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
-    public category: ReadonlyArray<Project> = [];
+    public projects: ReadonlyArray<Project> = [];
 
     public get head(){
         return {
@@ -42,24 +41,14 @@ class Category extends Page {
         if(requestedHash.length > 1){
             const slug = requestedHash[1];
 
-            const request = await fetch(Constants.route('projects'));
-            const parsed = await request.json();
-            const filtered = parsed.data.filter(project => {
-                if(project.category.slug === slug){
-                    return true;
-                }
-    
-                return false;
-            });
-    
-            this.category = filtered;
+            await projectLoad(this, "#cards .card:last-child", slug);
         }
     }
 
     public render(): void | TemplateResult {
         return html`
-        <div class="category cards" role="main">
-        ${repeat(this.category, (project) => {
+        <div id="cards" class="category cards" role="main">
+        ${repeat(this.projects, (project) => {
             return projectCard(project);
         })}
         </div>

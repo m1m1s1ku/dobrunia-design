@@ -55,7 +55,7 @@ export interface ElementWithProjects extends LitElement {
     projects: ReadonlyArray<Project>;
 } 
 
-export async function projectLoad(host: ElementWithProjects, lastCardSelector: string){
+export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string){
     const chunk = (arr: unknown[], size: number) => {
         const R = [];
         for (let i=0, len=arr.length; i<len; i+=size){
@@ -67,7 +67,18 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     const request = await fetch(Constants.route('projects'));
     const parsed = await request.json();
 
-    const chunks = chunk(parsed.data, 1);
+    let filtered = parsed.data;
+    if(filterSlug){
+        filtered = parsed.data.filter(project => {
+            if(project.category.slug === filterSlug){
+                return true;
+            }
+    
+            return false;
+        });
+    }
+
+    const chunks = chunk(filtered, 1);
 
     let initial = 300;
     for(const chunk of chunks){
