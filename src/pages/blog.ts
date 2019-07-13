@@ -6,6 +6,7 @@ import Constants from '../core/constants/constants';
 import { Category, Image } from './home';
 import { repeat } from 'lit-html/directives/repeat';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { navigate } from '../core/routing/routing';
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';
@@ -90,7 +91,7 @@ class Blog extends Page {
         <div class="blog" role="main">
             <h1>Blog</h1>
             ${repeat(this.articles, article => html`
-            <article>
+            <article @click=${() => navigate('article/'+article.slug)}>
                 ${article.images.length > 0 ? html`
                     <iron-image sizing="contain" style="width: 100px; height: 100px;" src="${article.images[0].path}"></iron-image>
                 ` : html``}
