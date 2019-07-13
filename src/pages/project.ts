@@ -7,6 +7,7 @@ import { Project as ProjectInfo } from './home';
 
 import Page from '../core/strategies/Page';
 import { repeat } from 'lit-html/directives/repeat';
+import Constants from '../core/constants/constants';
 
 class Project extends Page {
     public static readonly is: string = 'ui-project';
@@ -51,7 +52,7 @@ class Project extends Page {
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             const projectSlug = requestedHash[1];
-            const projectR = await fetch('https://k8s02.local/api/projects/'.concat(projectSlug), {
+            const projectR = await fetch(Constants.route('projects/').concat(projectSlug), {
                 method: 'POST'
             });
 

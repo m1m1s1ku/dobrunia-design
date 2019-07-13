@@ -11,6 +11,7 @@ import './atoms/not-found';
 import './atoms/menu';
 import './atoms/nav';
 import { repeat } from 'lit-html/directives/repeat';
+import Constants from './core/constants/constants';
 
 // Polyfills
 import('./polyfill');
@@ -73,11 +74,11 @@ export class ElaraApp extends Root {
 
 		this._onHashChange(hashEvent);
 
-		const linksR = await fetch('https://k8s02.local/api/links');
+		const linksR = await fetch(Constants.route('links'));
 		const linksResponse = await linksR.json();
 		this.links = linksResponse.data;
 		
-		const categoriesR = await fetch('https://k8s02.local/api/projects/categories');
+		const categoriesR = await fetch(Constants.route('projects/categories'));
 		const response = await categoriesR.json();
 		const remoteLinks: APICategories[] = response.data;
 		const adapted = remoteLinks.map((cat: APICategories) => {
@@ -133,6 +134,7 @@ export class ElaraApp extends Root {
 		}
 
 		footer {
+			user-select: none;
 			font-family: var(--elara-font-primary);
 			font-size: 0.8em;
 			background: var(--elara-background-color);
@@ -142,7 +144,7 @@ export class ElaraApp extends Root {
 			flex-direction: row;
 			justify-content: space-between;
 		}
-
+		
 		footer a {
 			cursor: pointer;
 			color: var(--elara-primary);
@@ -198,7 +200,7 @@ export class ElaraApp extends Root {
 		return html`
 		<footer role="contentinfo">
 			<div class="legal-info">
-			&copy; Dobrunia Design - ${new Date().getFullYear()} - Connect
+			&copy; Dobrunia Design - ${new Date().getFullYear()}
 			</div>
 			<div class="social-links">
 			${repeat(this.links, link => html`<a class="social-link" href="${link.url}" rel="noopener" target="_blank">${link.name}</a>`)}

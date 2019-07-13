@@ -5,6 +5,7 @@ import Page from '../core/strategies/Page';
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { CSS } from '../core/ui/ui';
+import Constants from '../core/constants/constants';
 
 interface Category {
     id: string;
@@ -55,6 +56,8 @@ class Home extends Page {
     @property({type: Array})
     public projects: ReadonlyArray<Project> = [];
 
+    public loading: Promise<unknown>;
+
     public get head(){
         return {
             title: 'Projets',
@@ -65,17 +68,30 @@ class Home extends Page {
         };
     }
 
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this._loadProjects();
+    }
+
+    private _loadProjects(){
+        this.loading = new Promise(async (resolve, reject) => {
+            try {
+                const request = await fetch(Constants.route('projects'));
+                const parsed = await request.json();
+                this.projects = parsed.data;
+                resolve();
+            } catch {
+                reject();
+            }
+        });
+
+    }
+
     public static get styles(){
         return [
             ... super.styles,
             CSS.cards
         ];
-    }
-
-    public async firstUpdated(){
-        const request = await fetch('https://k8s02.local/api/projects');
-        const parsed = await request.json();
-        this.projects = parsed.data;
     }
 
     public render(): void | TemplateResult {

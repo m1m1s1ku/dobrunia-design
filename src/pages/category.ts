@@ -5,9 +5,12 @@ import Page from '../core/strategies/Page';
 import { Project, projectCard } from './home';
 import { repeat } from 'lit-html/directives/repeat';
 import { CSS } from '../core/ui/ui';
+import Constants from '../core/constants/constants';
 
 class Category extends Page {
     public static readonly is: string = 'ui-category';
+
+    public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
     public category: ReadonlyArray<Project> = [];
@@ -39,7 +42,7 @@ class Category extends Page {
         if(requestedHash.length > 1){
             const slug = requestedHash[1];
 
-            const request = await fetch('https://k8s02.local/api/projects');
+            const request = await fetch(Constants.route('projects'));
             const parsed = await request.json();
             const filtered = parsed.data.filter(project => {
                 if(project.category.slug === slug){

@@ -3,6 +3,7 @@ import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import Constants from '../core/constants/constants';
 
 interface APIPage {
     id: string;
@@ -40,7 +41,7 @@ class About extends Page {
     }
 
     public async firstUpdated(){
-        const pageR = await fetch('https://k8s02.local/api/pages/about');
+        const pageR = await fetch(Constants.route('pages/about'));
         const pageData = await pageR.json();
         const response = pageData.data;
         this.pageInfo = {

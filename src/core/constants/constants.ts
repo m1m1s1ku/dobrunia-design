@@ -5,6 +5,10 @@ import { html } from 'lit-html';
  * App constants
  */
 const Constants = {
+    api: 'http://localhost:8086/api/',
+    route: (path: string) => {
+        return Constants.api+path;
+    },
     modes: {
         default: 'day' as Elara.Modes
     },
