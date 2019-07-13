@@ -26,7 +26,6 @@ export class MenuElement extends PureElement {
 			height: 45px;
 			width: 45px;
 			color: var(--elara-font-color);
-			counter-reset: menuitem;
 			z-index: 0;
         }
         
@@ -60,16 +59,6 @@ export class MenuElement extends PureElement {
 			.menu-content .item {
 				font-size: 8vw;
 			}
-		}
-
-		.menu-content .item::before {
-			counter-increment: menuitem;
-			content: counters(menuitem, "");
-			position: absolute;
-			font-size: 0.85rem;
-			top: 25%;
-			left: -1.25rem;
-			color: var(--elara-primary);
 		}
 
 		.menu-content .item::after {
