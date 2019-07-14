@@ -17,7 +17,7 @@ export function onSkipLink(e: KeyboardEvent | Event, host: Elara.Root): void {
     const target = e.target as HTMLLinkElement;
     target.blur();
 
-    if(!host.loaded){
+    if(!host.loadedElement){
         return;
     }
 
