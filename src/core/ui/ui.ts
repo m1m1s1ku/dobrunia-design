@@ -207,7 +207,7 @@ export function onImageContainerClicked(e: KeyboardEvent) {
     if(firstContainer.className.indexOf('opened') === -1){
         showImage(firstContainer, firstImage);
     } else {
-        hideImage(firstContainer, firstImage);
+        hideImage(firstContainer, firstImage, true);
     }
 }
 
