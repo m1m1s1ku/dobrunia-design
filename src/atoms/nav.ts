@@ -59,6 +59,10 @@ class Nav extends PureElement {
                 right: 3em;
             }
 
+            .item.active {
+                color: var(--elara-font-hover);
+            }
+
             .links ul {
                 outline: none;
                 font-size: 0.9em;
@@ -117,7 +121,7 @@ class Nav extends PureElement {
         }
 
         return html`
-            <li><a class="item" tabindex="${item && this.route === item.route ? '-1' : '0'}" @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate(item.route) : null} @click=${() => navigate(item.route)}>${item.name}</a></li>
+            <li><a class="item ${item && this.route === item.route ? 'active' : ''}" tabindex="${item && this.route === item.route ? '-1' : '0'}" @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate(item.route) : null} @click=${() => navigate(item.route)}>${item.name}</a></li>
         `;
     }
 }
