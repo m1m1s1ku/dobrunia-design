@@ -8,6 +8,7 @@ import { MenuElement } from '../../atoms/menu';
 import { hashChange } from '../routing/routing';
 import { load } from '../bootstrap/bootstrap';
 import { Utils } from '../ui/ui';
+import Constants from '../../constants';
 
 /**
  * Root strategy
@@ -56,7 +57,7 @@ export default class Root extends Page {
 	}
 
 	protected async _onHashChange(event: HashChangeEvent){
-		const route = hashChange(event);
+		const route = hashChange(event, Constants.defaults.route);
 		this.route = route;
 
 		this._content.innerHTML = '';

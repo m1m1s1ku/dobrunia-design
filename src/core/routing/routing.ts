@@ -1,5 +1,3 @@
-import Constants from '../../constants';
-
 /**
  * Redirect to another website
  *
@@ -30,7 +28,7 @@ export function navigate(route: string): boolean {
  * @export
  * @param {HashChangeEvent} event newURL|oldURL event
  */
-export function hashChange(event: HashChangeEvent): string | null {
+export function hashChange(event: HashChangeEvent, defaultRoute: string): string | null {
     const routeWithPrefix = event.newURL.replace(location.origin + location.pathname, '');
 
     let routingParams = routeWithPrefix.split('#!').filter(Boolean);
@@ -40,8 +38,6 @@ export function hashChange(event: HashChangeEvent): string | null {
     } else {
         route = routingParams.pop();
     }
-
-    const defaultRoute = Constants.defaults.route;
 
      // if same has current, no.
     if(event.oldURL === event.newURL){
