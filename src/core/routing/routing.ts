@@ -32,7 +32,14 @@ export function navigate(route: string): boolean {
  */
 export function hashChange(event: HashChangeEvent): string | null {
     const routeWithPrefix = event.newURL.replace(location.origin + location.pathname, '');
-    let route = routeWithPrefix.split('#!').filter(Boolean).shift();
+    
+    let routingParams = routeWithPrefix.split('#!').filter(Boolean);
+    let route = null;
+    if(routingParams.length === 0){
+        route = routingParams.shift();
+    } else {
+        route = routingParams.pop();
+    }
 
     const defaultRoute = Constants.defaults.route;
 
