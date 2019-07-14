@@ -81,7 +81,7 @@ const polyfills = [
   }
 ];
 
-const subDirectory = ENV === 'production' ? 'elara-doc' : '';
+const subDirectory = ENV === 'production' ? '' : '';
 
 const commonConfig = merge([
   {
@@ -89,7 +89,7 @@ const commonConfig = merge([
     output: {
       path: OUTPUT_PATH,
       filename: '[name].[chunkhash:8].js',
-      publicPath: ENV === 'production' ? `/${subDirectory}/` : '/'
+      publicPath: ENV === 'production' ? '/' : '/'
     },
     resolve: {
       extensions: [ '.ts', '.js', '.css' ]
@@ -159,7 +159,7 @@ const productionConfig = merge([
       new CleanWebpackPlugin(),
       new CopyWebpackPlugin([...polyfills, ...assets]),
       new HtmlWebpackPlugin({
-        pathname: `/${subDirectory}`,
+        pathname: `${subDirectory ? '/'+subDirectory : ''}`,
         template: INDEX_TEMPLATE,
         minify: {
           collapseWhitespace: true,
