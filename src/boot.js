@@ -50,6 +50,8 @@ function _onDomLoaded(){
   let willRemove = false;
   let handler = null;
 
+  document.body.classList.add('scrolling-disabled');
+
   if(location.hash.indexOf('redirect') !== -1){
     handler = document.querySelector('#handler');
     if(handler){
@@ -93,6 +95,8 @@ function _onDomLoaded(){
         handler.classList.add('hidden');
         handler.parentElement.removeChild(handler);
       }
+
+      document.body.classList.remove('scrolling-disabled');
     });
   });
 }

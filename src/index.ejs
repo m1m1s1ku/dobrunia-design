@@ -37,7 +37,7 @@
         --elara-color: rgba(134, 156, 39, .8);
         --elara-input-container: rgb(98, 110, 52);
         --elara-input-focus: rgba(98, 110, 52, 0.7);
-        --elara-loader-background: rgba(255, 255, 255, 0.8);
+        --elara-loader-background: rgba(255, 255, 255, .8);
         --elara-light-background: rgba(255, 255, 255, 0.9);
         --elara-highlight: #b47e71;
         --elara-complementary: #5E595D;
@@ -71,6 +71,11 @@
         font-size: 16px;
       }
 
+      body.scrolling-disabled {
+        height: 100%;
+        overflow: hidden;
+      }
+
       .handler {
         position: fixed;
         top: 0;
@@ -81,7 +86,7 @@
         height: 100vh;
         z-index: 999;
         opacity: .7;
-        background-color: var(--elara-nav-background);
+        background-color: var(--elara-loader-background);
         display: flex;
         flex-direction: column;
         align-items: center;

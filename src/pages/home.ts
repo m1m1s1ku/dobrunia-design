@@ -87,8 +87,8 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             host.projects = [...host.projects, ...chunk];
             await host.updateComplete;
             
-            const animation = pulseWith(300);
-            host.shadowRoot.querySelector(lastCardSelector).animate(animation.effect, animation.options);
+            const animationConfig = pulseWith(300);
+            host.shadowRoot.querySelector(lastCardSelector).animate(animationConfig.effect, animationConfig.options);
         }, initial);
         initial += 200;
     }
