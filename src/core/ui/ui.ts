@@ -128,39 +128,55 @@ export function ElaraElement(): Elara.Root {
     return document.querySelector('elara-app');
 };
 
-let currentListener = null;
-let originalSizing = null;
-let originalWidth = null;
-let originalHeight = null;
+
+let state = {
+    listener: null,
+    sizing: null,
+    width: null,
+    height: null,
+};
 
 const showImage = (container: HTMLElement, image: IronImageElement) => {
     document.body.className = 'scrolling-disabled';
-    originalSizing = image.sizing;
-    originalHeight = image.style.height;
-    originalWidth = image.style.width;
+    state.sizing = image.sizing;
+    state.width = image.style.width;
+    state.height = image.style.height;
 
     image.style.width = '80%';
     image.style.height = '80%';
 
     container.classList.add('opened');
     container.focus();
-    window.removeEventListener('keydown', currentListener);
+    window.removeEventListener('keydown', state.listener);
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    currentListener = galleryListener(container, image);
-    window.addEventListener('keydown', currentListener);
+    state.listener = galleryListener(container, image);
+    window.addEventListener('keydown', state.listener);
 };
 
 const hideImage = (container: HTMLElement, image: IronImageElement, withListeners?: boolean) => {
     document.body.className = '';
-    
-    image.sizing = originalSizing;
-    image.style.width = originalHeight;
-    image.style.height = originalWidth;
+
+    image.sizing = state.sizing;
+    image.style.width = state.width;
+    image.style.height = state.height;
 
     container.classList.remove('opened');
-    if(withListeners && currentListener){
-        window.removeEventListener('keydown', currentListener);
+    if(withListeners && state.listener){
+        window.removeEventListener('keydown', state.listener);
     }
+};
+
+const clean = () => {
+    if(state.listener){
+        window.removeEventListener('keydown', state.listener);
+    }
+
+    state = {
+        listener: null,
+        sizing: null,
+        width: null,
+        height: null,
+    };
 };
 
 function galleryListener(firstContainer: HTMLElement, firstImage: IronImageElement) {    
@@ -177,8 +193,8 @@ function galleryListener(firstContainer: HTMLElement, firstImage: IronImageEleme
                     hideImage(firstContainer, firstImage);
                     showImage(prev, prevImage);
                 } else {
-                    hideImage(firstContainer, firstImage, true);
-                    currentListener = null;
+                    hideImage(firstContainer, firstImage);
+                    clean();
                 }
                 break;
             }
@@ -191,16 +207,16 @@ function galleryListener(firstContainer: HTMLElement, firstImage: IronImageEleme
                     hideImage(firstContainer, firstImage);
                     showImage(next, nextImage);
                 } else {
-                    hideImage(firstContainer, firstImage, true);
-                    currentListener = null;
+                    hideImage(firstContainer, firstImage);
+                    clean();
                 }
                 break;
             }
             // escape
             case 27:
             default: {
-                hideImage(firstContainer, firstImage, true);
-                currentListener = null;
+                hideImage(firstContainer, firstImage);
+                clean();
             }
         }
     };
@@ -211,15 +227,15 @@ export function onImageContainerClicked(e: KeyboardEvent) {
     const firstImage = firstContainer.querySelector('iron-image');
     
     if(firstContainer.classList.contains('opened')){
-        hideImage(firstContainer, firstImage, true);
-        currentListener = null;
+        hideImage(firstContainer, firstImage);
+        clean();
     } else {
         const keyboardListener = galleryListener(firstContainer, firstImage);
-        if(currentListener){
+        if(state.listener){
             throw new Error('Already binded listener');
         }
         
-        currentListener = keyboardListener;
+        state.listener = keyboardListener;
         showImage(firstContainer, firstImage);
     }
 }
