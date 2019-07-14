@@ -6,6 +6,9 @@ namespace Elara {
     // Elara-app public-api
     export interface Root extends Elara.Element {
         default: string;
+        head: {
+            title: string;
+        };
         loaded: boolean;
         loadedElement: HTMLElement;
         loadables: ReadonlyArray<string>;

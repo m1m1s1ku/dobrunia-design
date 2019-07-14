@@ -64,7 +64,7 @@ export default class Root extends Page {
 	}
 		
 	public async load(route: string){
-		return await load(route, this._content, this._menu, this._menuFade);
+		return await load(route, this._content, this._menu, this._menuFade, this.head.title);
 	}
 		
 	public askModeChange(mode: Elara.Modes): boolean {

@@ -32,6 +32,16 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	public default: string = Constants.defaults.route;
 
+	public get head(){
+		return {
+            title: Constants.title,
+            description: null,
+            type: null,
+            image: null,
+            slug: null
+        };
+	}
+
 	public get loadables(){
 		return [];
 	}

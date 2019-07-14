@@ -1,5 +1,4 @@
 import Elara from '../elara';
-import Constants from '../../constants';
 
 import { MenuElement } from '../../atoms/menu';
 
@@ -47,8 +46,7 @@ export function promise(loadables: string[], host: ShadowRoot) {
  * @param {MenuElement} menu App menu
  * @param {Animation | null} menuFade App menu animation
  */
-export async function load (route: string, content: HTMLElement, menu: MenuElement, menuFade: Animation | null): Promise<HTMLElement> {
-    const defaultTitle = Constants.title;
+export async function load (route: string, content: HTMLElement, menu: MenuElement, menuFade: Animation | null, defaultTitle: string): Promise<HTMLElement> {
     const titleTemplate = '%s | ' + defaultTitle;
 
     const Component = customElements.get('ui-' + route);
