@@ -5,9 +5,8 @@ namespace Elara {
     export interface Element extends HTMLElement {}
     // Elara-app public-api
     export interface Root extends Elara.Element {
-        loaded: HTMLElement;
+        loadedElement: HTMLElement;
         loadables: ReadonlyArray<string>;
-        links: ReadonlyArray<{name: string; route: string}>;
         menu(isHide: boolean): Promise<void>;
         show(route: string): Promise<void>;
         askModeChange(mode: Elara.Modes): boolean;

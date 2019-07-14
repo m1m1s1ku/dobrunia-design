@@ -12,6 +12,7 @@ import './atoms/menu';
 import './atoms/nav';
 import { repeat } from 'lit-html/directives/repeat';
 import Constants from './core/constants/constants';
+import Elara from './core/elara';
 
 // Polyfills
 import('./polyfill');
@@ -36,7 +37,7 @@ interface APICategories {
 	slug: string;
 }
 
-export class ElaraApp extends Root {
+export class ElaraApp extends Root implements Elara.Root {
 	public static readonly is: string = 'elara-app';
 
 	@property({type: Array, reflect: false})
