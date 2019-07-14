@@ -103,11 +103,12 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
 }
 
 export function iObserverForCard(ratio: number){
-    return new IntersectionObserver((entries, _observer) => {
+    return new IntersectionObserver((entries, observer) => {
         for(const entry of entries){
             if(entry.intersectionRatio > ratio){
                 entry.target.classList.remove('reveal');
                 entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
             }
         }
     }, {

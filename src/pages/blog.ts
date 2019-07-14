@@ -19,6 +19,23 @@ class Blog extends Page {
     @property({type: Array, reflect: false})
     private ghost: ReadonlyArray<Article> = [];
 
+    private _ratio: number = .6;
+
+    private _observer: IntersectionObserver = new IntersectionObserver((entries, observer) => {
+        for(const entry of entries){
+            if(entry.intersectionRatio > this._ratio){
+                entry.target.classList.remove('reveal');
+                entry.target.classList.add('revealed');
+                console.warn('revealed', entry.target);
+                observer.unobserve(entry.target);
+            }
+        }
+    }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: this._ratio
+    });
+
     public get head(){
         return {
             title: 'Blog',
@@ -55,6 +72,15 @@ class Blog extends Page {
                 display: block;
                 text-align: right;
                 text-decoration: none;
+            }
+
+            article.reveal {
+                opacity: 0;
+            }
+
+            article.revealed {
+                opacity: 1;
+                transition: opacity .3s;
             }
 
             svg {
@@ -108,15 +134,17 @@ class Blog extends Page {
             setTimeout(async () => {
                 await append();
 
+                const article = this.shadowRoot.querySelector('.blog article:last-child');
                 if(cancelAnimations){
+                    article.classList.add('reveal');
+                    this._observer.observe(article);
                     return;
                 }
 
-                const article = this.shadowRoot.querySelector('.blog article:last-child');
-
                 if(!Utils.isInViewport(article)){
                     cancelAnimations = true;
-                    
+                    article.classList.add('reveal');
+                    this._observer.observe(article);
                     return;
                 }
 
