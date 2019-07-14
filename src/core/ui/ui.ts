@@ -168,6 +168,7 @@ const showImage = (container: HTMLElement, image: IronImageElement) => {
     
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     state.listeners.keyboard = galleryListener(state.container, image);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     state.listeners.touch = touchListener(state.container, image);
 
     state.container.addEventListener('touchstart', state.listeners.touch);
@@ -206,43 +207,6 @@ const clean = () => {
         height: null,
         touchstartX: 0,
         touchendX: 0
-    };
-};
-
-function galleryListener(firstContainer: HTMLElement, firstImage: IronImageElement) {    
-    return (e: KeyboardEvent) => {
-        const prev = firstContainer.previousElementSibling as HTMLElement;
-        const next = firstContainer.nextElementSibling as HTMLElement;
-
-        const hasPrev = prev && prev.classList.contains('image-container');
-        const hasNext = next && next.classList.contains('image-container');
-
-        const willDismiss = e.keyCode === 37 && !hasPrev || e.keyCode === 32 && !hasNext || e.keyCode === 39 && !hasNext || e.keyCode === 27;
-
-        if(willDismiss){
-            hideImage(firstContainer, firstImage);
-            clean();
-            return;
-        }
-    
-        switch(e.keyCode){
-            // left
-            case 37: {
-                const prevImage = prev.querySelector('iron-image');
-                hideImage(firstContainer, firstImage);
-                showImage(prev, prevImage);
-                break;
-            }
-            // right
-            case 39:
-            // enter
-            case 32: {
-                const nextImage = next.querySelector('iron-image');
-                hideImage(firstContainer, firstImage);
-                showImage(next, nextImage);
-                break;
-            }
-        }
     };
 };
 
@@ -289,7 +253,44 @@ const touchListener = (container: HTMLElement, image: IronImageElement) => {
             return;
         }
     };
-}
+};
+
+function galleryListener(firstContainer: HTMLElement, firstImage: IronImageElement) {    
+    return (e: KeyboardEvent) => {
+        const prev = firstContainer.previousElementSibling as HTMLElement;
+        const next = firstContainer.nextElementSibling as HTMLElement;
+
+        const hasPrev = prev && prev.classList.contains('image-container');
+        const hasNext = next && next.classList.contains('image-container');
+
+        const willDismiss = e.keyCode === 37 && !hasPrev || e.keyCode === 32 && !hasNext || e.keyCode === 39 && !hasNext || e.keyCode === 27;
+
+        if(willDismiss){
+            hideImage(firstContainer, firstImage);
+            clean();
+            return;
+        }
+    
+        switch(e.keyCode){
+            // left
+            case 37: {
+                const prevImage = prev.querySelector('iron-image');
+                hideImage(firstContainer, firstImage);
+                showImage(prev, prevImage);
+                break;
+            }
+            // right
+            case 39:
+            // enter
+            case 32: {
+                const nextImage = next.querySelector('iron-image');
+                hideImage(firstContainer, firstImage);
+                showImage(next, nextImage);
+                break;
+            }
+        }
+    };
+};
 
 export function onImageContainerClicked(e: KeyboardEvent) {
     const firstContainer = e.currentTarget as HTMLDivElement;
