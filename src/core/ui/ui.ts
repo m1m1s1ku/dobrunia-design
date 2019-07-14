@@ -254,10 +254,10 @@ const touchListener = (container: HTMLElement) => {
     };
 };
 
-function galleryListener(firstContainer: HTMLElement) {    
+function galleryListener(container: HTMLElement) {    
     return (e: KeyboardEvent) => {
-        const prev = firstContainer.previousElementSibling as HTMLElement;
-        const next = firstContainer.nextElementSibling as HTMLElement;
+        const prev = container.previousElementSibling as HTMLElement;
+        const next = container.nextElementSibling as HTMLElement;
 
         const hasPrev = prev && prev.classList.contains('image-container');
         const hasNext = next && next.classList.contains('image-container');
@@ -265,7 +265,7 @@ function galleryListener(firstContainer: HTMLElement) {
         const willDismiss = e.keyCode === 37 && !hasPrev || e.keyCode === 32 && !hasNext || e.keyCode === 39 && !hasNext || e.keyCode === 27;
 
         if(willDismiss){
-            hide(firstContainer);
+            hide(container);
             clean();
             return;
         }
@@ -273,7 +273,7 @@ function galleryListener(firstContainer: HTMLElement) {
         switch(e.keyCode){
             // left
             case 37: {
-                hide(firstContainer);
+                hide(container);
                 show(prev);
                 break;
             }
@@ -281,7 +281,7 @@ function galleryListener(firstContainer: HTMLElement) {
             case 39:
             // enter
             case 32: {
-                hide(firstContainer);
+                hide(container);
                 show(next);
                 break;
             }
@@ -290,13 +290,13 @@ function galleryListener(firstContainer: HTMLElement) {
 };
 
 export function onImageContainerClicked(e: KeyboardEvent) {
-    const firstContainer = e.currentTarget as HTMLDivElement;
+    const container = e.currentTarget as HTMLDivElement;
     
-    if(firstContainer.classList.contains('opened')){
-        hide(firstContainer);
+    if(container.classList.contains('opened')){
+        hide(container);
         clean();
     } else {
-        show(firstContainer);
+        show(container);
     }
 }
 
