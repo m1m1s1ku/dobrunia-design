@@ -121,7 +121,7 @@ export function iObserverForCard(ratio: number){
 class Home extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-home';
 
-    private _observer = iObserverForCard(.2);
+    private _observer = iObserverForCard(.4);
 
     @property({type: Array, reflect: false})
     public projects: ReadonlyArray<Project> = [];
