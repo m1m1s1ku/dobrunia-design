@@ -5,7 +5,7 @@ import PureElement from '../core/strategies/Element';
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { CSS, ElaraElement, Utils } from '../core/ui/ui';
-import Constants from '../core/constants/constants';
+import Constants from '../constants';
 import { isEnter } from '../core/accessibility/accessibility';
 
 class Nav extends PureElement {

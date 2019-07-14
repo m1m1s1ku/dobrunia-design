@@ -11,7 +11,7 @@ import './atoms/not-found';
 import './atoms/menu';
 import './atoms/nav';
 import { repeat } from 'lit-html/directives/repeat';
-import Constants from './core/constants/constants';
+import Constants from './constants';
 import Elara from './core/elara';
 
 import { Link, SocialLink, APICategories } from './bridge';

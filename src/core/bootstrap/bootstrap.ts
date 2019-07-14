@@ -1,5 +1,5 @@
 import Elara from '../elara';
-import Constants from '../constants/constants';
+import Constants from '../../constants';
 
 import { MenuElement } from '../../atoms/menu';
 

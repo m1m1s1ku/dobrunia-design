@@ -5,7 +5,7 @@ import { property, LitElement } from 'lit-element';
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
 import { CSS, Utils, chunk } from '../core/ui/ui';
-import Constants from '../core/constants/constants';
+import Constants from '../constants';
 import { pulseWith } from '../core/animations';
 import { Project } from '../bridge';
 

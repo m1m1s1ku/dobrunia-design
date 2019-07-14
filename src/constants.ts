@@ -1,4 +1,4 @@
-import Elara from '../elara';
+import Elara from './core/elara';
 import { html } from 'lit-html';
 
 /**

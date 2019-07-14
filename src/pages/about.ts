@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import Constants from '../core/constants/constants';
+import Constants from '../constants';
 import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 

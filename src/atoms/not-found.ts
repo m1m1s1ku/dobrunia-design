@@ -5,7 +5,7 @@ import PureElement from '../core/strategies/Element';
 
 import './tree';
 
-import Constants from '../core/constants/constants';
+import Constants from '../constants';
 import { navigate } from '../core/routing/routing';
 
 class NotFound extends PureElement {

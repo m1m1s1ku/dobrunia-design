@@ -5,7 +5,7 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
 import { projectCard, projectLoad, ElementWithProjects, iObserverForCard } from './home';
-import Constants from '../core/constants/constants';
+import Constants from '../constants';
 
 import { Project } from '../bridge';
 
