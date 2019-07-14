@@ -66,6 +66,7 @@ class Nav extends PureElement {
             li a {
                 margin: 0 0.5em;
                 outline: none;
+                user-select: none;
             }`
         ];
     }
