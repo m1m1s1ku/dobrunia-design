@@ -9,6 +9,7 @@ import { navigate } from '../core/routing/routing';
 
 import { Category, Image, chunk } from './home';
 import { pulseWith } from '../core/animations';
+import { Utils } from '../core/ui/ui';
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';
@@ -113,7 +114,7 @@ class Blog extends Page {
 
                 const article = this.shadowRoot.querySelector('.blog article:last-child');
 
-                if(!this._isInViewport(article)){
+                if(!Utils.isInViewport(article)){
                     cancelAnimations = true;
                     
                     return;
@@ -126,17 +127,6 @@ class Blog extends Page {
 
         this.ghost = parsed;
     }
-
-    private _isInViewport(elem: Element) {
-        const bounding = elem.getBoundingClientRect();
-
-        return (
-            bounding.top >= 0 &&
-            bounding.left >= 0 &&
-            bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    };
 
     public search(value: string){
         this.articles = this.ghost.filter(item => item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1);

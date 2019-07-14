@@ -4,7 +4,7 @@ import { property, LitElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
-import { CSS } from '../core/ui/ui';
+import { CSS, Utils } from '../core/ui/ui';
 import Constants from '../core/constants/constants';
 import { pulseWith } from '../core/animations';
 
@@ -63,7 +63,7 @@ export const chunk = (arr: unknown[], size: number) => {
     return R;
 };
 
-export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string){
+export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string, observer?: IntersectionObserver){
     const request = await fetch(Constants.route('projects'));
     const parsed = await request.json();
 
@@ -86,16 +86,41 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             host.projects = [...host.projects, ...chunk];
             await host.updateComplete;
             
-            const animationConfig = pulseWith(300);
-            host.shadowRoot.querySelector(lastCardSelector).animate(animationConfig.effect, animationConfig.options);
+            const card = host.shadowRoot.querySelector(lastCardSelector);
+            if(Utils.isInViewport(card)){
+                card.classList.add('revealed');
+                const animationConfig = pulseWith(300);
+                card.animate(animationConfig.effect, animationConfig.options);
+            } else {
+                card.classList.add('reveal');
+                observer.observe(card);
+            }
+
         }, initial += 100);
     }
 
     host.loaded = true;
 }
 
+export function iObserverForCard(ratio: number){
+    return new IntersectionObserver((entries, _observer) => {
+        for(const entry of entries){
+            if(entry.intersectionRatio > ratio){
+                entry.target.classList.remove('reveal');
+                entry.target.classList.add('revealed');
+            }
+        }
+    }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: ratio
+    });
+}
+
 class Home extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-home';
+
+    private _observer = iObserverForCard(.2);
 
     @property({type: Array, reflect: false})
     public projects: ReadonlyArray<Project> = [];
@@ -112,7 +137,7 @@ class Home extends Page implements ElementWithProjects {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        projectLoad(this, '#cards .card:last-child');
+        projectLoad(this, '#cards .card:last-child', null, this._observer);
     }
 
     public static get styles(){

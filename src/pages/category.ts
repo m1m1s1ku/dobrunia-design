@@ -4,7 +4,7 @@ import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
-import { Project, projectCard, projectLoad, ElementWithProjects } from './home';
+import { Project, projectCard, projectLoad, ElementWithProjects, iObserverForCard } from './home';
 import Constants from '../core/constants/constants';
 
 class Category extends Page implements ElementWithProjects {
@@ -14,6 +14,8 @@ class Category extends Page implements ElementWithProjects {
 
     @property({type: Object, reflect: false})
     public projects: ReadonlyArray<Project> = [];
+    
+    private _observer = iObserverForCard(.2);
 
     public get head(){
         return {
@@ -40,7 +42,7 @@ class Category extends Page implements ElementWithProjects {
     public async firstUpdated(){
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            await projectLoad(this, '#cards .card:last-child', requestedHash[1]);
+            await projectLoad(this, '#cards .card:last-child', requestedHash[1], this._observer);
             if(this.projects.length === 0){
                 setTimeout(() => {
                     document.title = this.projects[0].category.name + ' | ' + Constants.title;

@@ -51,6 +51,15 @@ export const CSS = {
         text-align: center;
     }
 
+    .card.reveal {
+        opacity: 0;
+    }
+
+    .card.revealed {
+        opacity: 1;
+        transition: opacity .3s;
+    }
+
     .card .text .title {
         font-size: 1.3em;
         margin: .5em;
@@ -76,6 +85,16 @@ export function ElaraElement(): Elara.Root {
 export const Utils = {
     isMobile: (): boolean => {
         return window.innerWidth <= 570;
+    },
+    isInViewport(elem: Element) {
+        const bounding = elem.getBoundingClientRect();
+
+        return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
     },
     mode: (): Elara.Modes => {
         return localStorage.getItem(UI.modes.localStorageKey) as Elara.Modes;
