@@ -104,14 +104,13 @@ class Blog extends Page {
                 this.articles = [...this.articles, ...chunk];
                 await this.updateComplete;
             };
-            
-            if(cancelAnimations){
-                await append();
-                continue;
-            }
 
             setTimeout(async () => {
-                if(!cancelAnimations){
+                if(cancelAnimations){
+                    console.warn('cancelled');
+                    await append();
+                    return;
+                } else {
                     console.warn('running animation for', ... chunk);
                 }
 
