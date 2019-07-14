@@ -50,12 +50,12 @@ function registerWorkbox(){
     );
 }
 if (workbox) {
-    console.log(`Elara ::: Workbox is loaded 🎉`);
+    console.log('Elara ::: Workbox is loaded 🎉');
     if(location.host.indexOf('localhost') !== -1) {
         console.warn('Elara ::: disabling worker caching, we are in dev');
     } else {
         registerWorkbox();
     }
 } else {
-    console.log(`Elara ::: Workbox didn't load 😬`);
+    console.log('Elara ::: Workbox didn\'t load 😬');
 }
