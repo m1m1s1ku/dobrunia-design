@@ -123,6 +123,7 @@ class Blog extends Page {
     private async _load(){
         const articlesR = await fetch(Constants.route('articles'));
         const articlesRes = await articlesR.json();
+        this.loaded = true;
 
         const parsed = [];
 
@@ -161,7 +162,7 @@ class Blog extends Page {
                 if(Utils.animationsReduced()){
                     return;
                 }
-                
+
                 const animationConfig = pulseWith(300);
                 article.animate(animationConfig.effect, animationConfig.options);
             }, !cancelAnimations ? initial += 100 : initial);
@@ -183,6 +184,7 @@ class Blog extends Page {
                     this.search(event.detail.value);
                 }}></paper-input>
             </div>
+            ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('article/'+article.slug)}>
                 ${article.images.length > 0 ? html`
