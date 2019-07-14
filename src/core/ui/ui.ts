@@ -130,7 +130,7 @@ export function ElaraElement(): Elara.Root {
 
 let currentListener = null;
 
-const show = (container: HTMLElement, image: IronImageElement) => {
+const showImage = (container: HTMLElement, image: IronImageElement) => {
     document.body.className = 'scrolling-disabled';
     image.sizing = 'contain';
     image.style.width = '80%';
@@ -138,11 +138,12 @@ const show = (container: HTMLElement, image: IronImageElement) => {
     container.classList.add('opened');
     container.focus();
     window.removeEventListener('keydown', currentListener);
-    currentListener = listener(container, image);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    currentListener = galleryListener(container, image);
     window.addEventListener('keydown', currentListener);
 };
 
-const hide = (container: HTMLElement, image: IronImageElement, withListeners?: boolean) => {
+const hideImage = (container: HTMLElement, image: IronImageElement, withListeners?: boolean) => {
     document.body.className = '';
     image.sizing = 'cover';
     image.style.width = '300px';
@@ -153,7 +154,7 @@ const hide = (container: HTMLElement, image: IronImageElement, withListeners?: b
     }
 };
 
-function listener(firstContainer: HTMLElement, firstImage: IronImageElement) {    
+function galleryListener(firstContainer: HTMLElement, firstImage: IronImageElement) {    
     return (e: KeyboardEvent) => {
         const prev = firstContainer.previousElementSibling as HTMLElement;
         const next = firstContainer.nextElementSibling as HTMLElement;
@@ -164,10 +165,10 @@ function listener(firstContainer: HTMLElement, firstImage: IronImageElement) {
                 if(prev && prev.classList.contains('image-container')){
                     const prevImage = prev.querySelector('iron-image');
 
-                    hide(firstContainer, firstImage);
-                    show(prev, prevImage);
+                    hideImage(firstContainer, firstImage);
+                    showImage(prev, prevImage);
                 } else {
-                    hide(firstContainer, firstImage, true);
+                    hideImage(firstContainer, firstImage, true);
                     currentListener = null;
                 }
                 break;
@@ -177,11 +178,11 @@ function listener(firstContainer: HTMLElement, firstImage: IronImageElement) {
             // enter
             case 32: {
                 if(next && next.classList.contains('image-container')){
-                    const nextImage = next.querySelector('iron-image')
-                    hide(firstContainer, firstImage);
-                    show(next, nextImage);
+                    const nextImage = next.querySelector('iron-image');
+                    hideImage(firstContainer, firstImage);
+                    showImage(next, nextImage);
                 } else {
-                    hide(firstContainer, firstImage, true);
+                    hideImage(firstContainer, firstImage, true);
                     currentListener = null;
                 }
                 break;
@@ -189,7 +190,7 @@ function listener(firstContainer: HTMLElement, firstImage: IronImageElement) {
             // escape
             case 27:
             default: {
-                hide(firstContainer, firstImage, true);
+                hideImage(firstContainer, firstImage, true);
                 currentListener = null;
             }
         }
@@ -200,13 +201,13 @@ export function onImageContainerClicked(e: KeyboardEvent) {
     const firstContainer = e.currentTarget as HTMLDivElement;
     const firstImage = firstContainer.querySelector('iron-image');
 
-    const keyboardListener = listener(firstContainer, firstImage);
+    const keyboardListener = galleryListener(firstContainer, firstImage);
     currentListener = keyboardListener;
 
     if(firstContainer.className.indexOf('opened') === -1){
-        show(firstContainer, firstImage);
+        showImage(firstContainer, firstImage);
     } else {
-        hide(firstContainer, firstImage);
+        hideImage(firstContainer, firstImage);
     }
 }
 
