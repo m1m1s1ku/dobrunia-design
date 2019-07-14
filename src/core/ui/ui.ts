@@ -292,7 +292,7 @@ function galleryListener(container: HTMLElement) {
 };
 
 export function onImageContainerClicked(e: KeyboardEvent) {
-    const container = e.currentTarget as HTMLDivElement;
+    const container = e.currentTarget as HTMLElement;
     
     if(container.classList.contains('opened')){
         hide(container);
