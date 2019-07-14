@@ -131,7 +131,7 @@ export function ElaraElement(): Elara.Root {
     return document.querySelector('elara-app');
 };
 
-interface IGalleryState {
+interface GalleryState {
     container: HTMLElement;
     listeners: {
         keyboard: (e: KeyboardEvent) => void;
@@ -144,7 +144,7 @@ interface IGalleryState {
     touchendX: number;
 };
 
-let state: IGalleryState = {
+let state: GalleryState = {
     container: null,
     listeners: {
         keyboard: null,
