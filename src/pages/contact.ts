@@ -59,9 +59,9 @@ class Contact extends Page {
                 <div class="first">
                     <h2>Faisons quelque chose d'incroyable ensemble !</h2>
                     <h3>Adresse</h3>
-                    <p>9 Rue Miron, 06000 Nice</p>
-                    <p>info@dobruniadesign.com</p>
-                    <p>06 50 48 74 41</p>
+                    <p><a target="_blank" rel="noopener" href="https://www.google.fr/maps/dir//Dobrunia+design/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x12cddbba95967955:0x9af320f68ee988ce?sa=X&ved=2ahUKEwjwwqmtov7dAhVFJBoKHcAJB60Q9RcwEnoECAcQEw">9 Rue Miron, 06000 Nice</a></p>
+                    <p><a href="mailto:info@dobruniadesign.com">info@dobruniadesign.com</a></p>
+                    <p><a href="tel:+33650487441">+33 6 50 48 74 41</a></p>
                 </div>
 
                 <div class="second">
