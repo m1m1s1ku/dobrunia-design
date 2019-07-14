@@ -26,7 +26,6 @@ class Blog extends Page {
             if(entry.intersectionRatio > this._ratio){
                 entry.target.classList.remove('reveal');
                 entry.target.classList.add('revealed');
-                console.warn('revealed', entry.target);
                 observer.unobserve(entry.target);
             }
         }

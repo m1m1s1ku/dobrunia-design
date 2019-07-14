@@ -62,9 +62,9 @@ export function hashChange(event: HashChangeEvent): string | null {
     if(current && current.hasRouting === true){
         return route;
     } else if(current && subRoute && current.hasRouting === false) {
-        console.warn('Navigating with args to a component who doesn\'t have routing logic');
+        console.warn('Elara::', 'Navigating with args to a component who doesn\'t have routing logic');
     } else if(!current && !isDefault) {
-        console.error('Component not found');
+        console.error('Elara error ::', 'Component not found');
     }
 
     // if index asked, go to default or if nothing asked, go to default
