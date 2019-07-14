@@ -60,7 +60,7 @@ class Nav extends PureElement {
             }
 
             .item.active {
-                color: var(--elara-font-hover);
+                color: var(--elara-secondary);
             }
 
             .links ul {
