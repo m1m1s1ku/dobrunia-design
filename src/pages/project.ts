@@ -7,6 +7,7 @@ import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 
 import { Project as ProjectInfo } from './home';
+import { onImageContainerClicked } from '../core/ui/ui';
 
 class Project extends Page {
     public static readonly is: string = 'ui-project';
@@ -69,7 +70,11 @@ class Project extends Page {
             <p>${this.project.description}</p>
             ${this.project.content}
             ${repeat(this.project.images, image => {
-                return html`<iron-image sizing="cover" preload src="${image.path}"></iron-image>`;
+                return html`
+                <div class="image-container" @click=${onImageContainerClicked}>
+                    <iron-image sizing="cover" preload src="${image.path}"></iron-image>
+                </div>
+                `;
             })}
         ` : html`
         `}

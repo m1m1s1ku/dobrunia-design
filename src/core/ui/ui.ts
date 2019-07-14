@@ -1,5 +1,6 @@
 import { css } from 'lit-element';
 import Elara from '../elara';
+import { IronImageElement } from '@polymer/iron-image';
 
 export const UI = {
     modes: {
@@ -38,6 +39,29 @@ export const CSS = {
         LIGHT: '(prefers-color-scheme: light)',
         ANIMATIONS: '(prefers-reduced-motion: reduce)'
     },
+    images: css`
+    .image-container.opened {
+        transition: .3s;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255,255,255, .8);
+        overflow: hidden;
+        z-index: 999;
+    }
+
+    .image-container.opened iron-image {
+        width: 100%;
+        height: 100%;
+    }
+    `,
     cards: css`
     .cards {
         display: grid;
@@ -103,6 +127,88 @@ export const CSS = {
 export function ElaraElement(): Elara.Root {
     return document.querySelector('elara-app');
 };
+
+let currentListener = null;
+
+const show = (container: HTMLElement, image: IronImageElement) => {
+    document.body.className = 'scrolling-disabled';
+    image.sizing = 'contain';
+    image.style.width = '80%';
+    image.style.height = '80%';
+    container.classList.add('opened');
+    container.focus();
+    window.removeEventListener('keydown', currentListener);
+    currentListener = listener(container, image);
+    window.addEventListener('keydown', currentListener);
+};
+
+const hide = (container: HTMLElement, image: IronImageElement, withListeners?: boolean) => {
+    document.body.className = '';
+    image.sizing = 'cover';
+    image.style.width = '300px';
+    image.style.height = '300px';
+    container.classList.remove('opened');
+    if(withListeners && currentListener){
+        window.removeEventListener('keydown', currentListener);
+    }
+};
+
+function listener(firstContainer: HTMLElement, firstImage: IronImageElement) {    
+    return (e: KeyboardEvent) => {
+        const prev = firstContainer.previousElementSibling as HTMLElement;
+        const next = firstContainer.nextElementSibling as HTMLElement;
+    
+        switch(e.keyCode){
+            // left
+            case 37: {
+                if(prev && prev.classList.contains('image-container')){
+                    const prevImage = prev.querySelector('iron-image');
+
+                    hide(firstContainer, firstImage);
+                    show(prev, prevImage);
+                } else {
+                    hide(firstContainer, firstImage, true);
+                    currentListener = null;
+                }
+                break;
+            }
+            // right
+            case 39:
+            // enter
+            case 32: {
+                if(next && next.classList.contains('image-container')){
+                    const nextImage = next.querySelector('iron-image')
+                    hide(firstContainer, firstImage);
+                    show(next, nextImage);
+                } else {
+                    hide(firstContainer, firstImage, true);
+                    currentListener = null;
+                }
+                break;
+            }
+            // escape
+            case 27:
+            default: {
+                hide(firstContainer, firstImage, true);
+                currentListener = null;
+            }
+        }
+    };
+};
+
+export function onImageContainerClicked(e: KeyboardEvent) {
+    const firstContainer = e.currentTarget as HTMLDivElement;
+    const firstImage = firstContainer.querySelector('iron-image');
+
+    const keyboardListener = listener(firstContainer, firstImage);
+    currentListener = keyboardListener;
+
+    if(firstContainer.className.indexOf('opened') === -1){
+        show(firstContainer, firstImage);
+    } else {
+        hide(firstContainer, firstImage);
+    }
+}
 
 export const Utils = {
     isMobile: (): boolean => {

@@ -3,6 +3,7 @@ import { repeat } from 'lit-html/directives/repeat';
 import { css } from 'lit-element';
 
 import Page from '../core/strategies/Page';
+import { onImageContainerClicked } from '../core/ui/ui';
 
 class Contact extends Page {
     public static readonly is: string = 'ui-contact';
@@ -78,7 +79,9 @@ class Contact extends Page {
                 </div>
             </div>
             <div class="side">
-                <iron-image sizing="cover" style="width: 33vw; height: 100%" src="https://res.cloudinary.com/ghostfly/image/upload/c_fill,w_1000/bmjlubngyypftackz4eq.jpg"></iron-image>
+                <div class="image-container" @click=${onImageContainerClicked}>
+                    <iron-image sizing="cover" style="width: 33vw; height: 100%" src="https://res.cloudinary.com/ghostfly/image/upload/c_fill,w_1000/bmjlubngyypftackz4eq.jpg"></iron-image>
+                </div>
             </div>
         </div>
         `;

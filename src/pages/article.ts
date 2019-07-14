@@ -7,7 +7,7 @@ import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 
 import { Article } from './blog';
-import { Utils } from '../core/ui/ui';
+import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 
 class Single extends Page {
@@ -80,7 +80,9 @@ class Single extends Page {
             </div>
             <div class="images">
                 ${repeat(this.article.images, image => html`
+                <div class="image-container" @click=${onImageContainerClicked}>
                     <iron-image style="width: 33vw; height: 400px;" sizing="contain" src="${image.path}"></iron-image>
+                </div>
                 `)}
             </div>
             ` : html``}

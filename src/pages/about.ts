@@ -4,7 +4,7 @@ import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
-import { Utils } from '../core/ui/ui';
+import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 
 interface APIPage {
@@ -70,7 +70,9 @@ class About extends Page {
         ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
         ${page ? html`
             <h1>${page.name}</h1>
-            <iron-image style="width:300px; height: 300px" sizing="cover" preload src="${page.image}"></iron-image>
+            <div class="image-container" @click=${onImageContainerClicked}>
+                <iron-image style="width:300px; height: 300px" sizing="cover" preload src="${page.image}"></iron-image>
+            </div>
             ${page.content}
         ` : html``}
         </div>

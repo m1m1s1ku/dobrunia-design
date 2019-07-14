@@ -9,7 +9,7 @@ import { navigate } from '../core/routing/routing';
 
 import { Category, Image, chunk } from './home';
 import { pulseWith } from '../core/animations';
-import { Utils } from '../core/ui/ui';
+import { Utils, onImageContainerClicked } from '../core/ui/ui';
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';
@@ -188,7 +188,9 @@ class Blog extends Page {
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('article/'+article.slug)}>
                 ${article.images.length > 0 ? html`
+                <div class="image-container" @click=${onImageContainerClicked}>
                     <iron-image sizing="contain" style="width: 100px; height: 100px;" src="${article.images[0].path}"></iron-image>
+                </div>
                 ` : html``}
                 <h3>${article.title}</h3>
                 <a class="item-link">
