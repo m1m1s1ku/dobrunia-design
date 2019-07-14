@@ -5,6 +5,7 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
 import { Project, projectCard, projectLoad, ElementWithProjects } from './home';
+import Constants from '../core/constants/constants';
 
 class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';
@@ -40,6 +41,13 @@ class Category extends Page implements ElementWithProjects {
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             await projectLoad(this, '#cards .card:last-child', requestedHash[1]);
+            if(this.projects.length === 0){
+                setTimeout(() => {
+                    document.title = this.projects[0].category.name + ' | ' + Constants.title;
+                }, 100);
+            } else {
+                document.title = this.projects[0].category.name + ' | ' + Constants.title;
+            }
         }
     }
 
