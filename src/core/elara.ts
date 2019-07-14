@@ -5,6 +5,7 @@ namespace Elara {
     export interface Element extends HTMLElement {}
     // Elara-app public-api
     export interface Root extends Elara.Element {
+        default: string;
         loaded: boolean;
         loadedElement: HTMLElement;
         loadables: ReadonlyArray<string>;
@@ -20,6 +21,8 @@ namespace Elara {
 
     // Page with helmet
     export interface Page extends Elara.Element {
+        default: string;
+        
         head: {
             title: string;
             description: string;

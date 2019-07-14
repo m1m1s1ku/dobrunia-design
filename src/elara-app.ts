@@ -30,6 +30,8 @@ export class ElaraApp extends Root implements Elara.Root {
 	@property({type: Array, reflect: false})
 	private links: ReadonlyArray<SocialLink> = [];
 
+	public default: string = Constants.defaults.route;
+
 	public get loadables(){
 		return [];
 	}

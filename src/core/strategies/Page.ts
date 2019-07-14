@@ -19,7 +19,8 @@ export default class Page extends LitElement implements Elara.Page {
 
     @property({type: Boolean, reflect: true})
     public loaded: boolean = false;
-
+    public default: string = null;
+    
     public get head(){
         return {
             title: null,
