@@ -180,40 +180,34 @@ function galleryListener(firstContainer: HTMLElement, firstImage: IronImageEleme
     return (e: KeyboardEvent) => {
         const prev = firstContainer.previousElementSibling as HTMLElement;
         const next = firstContainer.nextElementSibling as HTMLElement;
+
+        const hasPrev = prev && prev.classList.contains('image-container');
+        const hasNext = next && next.classList.contains('image-container');
+
+        const willDismiss = e.keyCode === 37 && !hasPrev || e.keyCode === 32 && !hasNext || e.keyCode === 39 && !hasNext || e.keyCode === 27;
+
+        if(willDismiss){
+            hideImage(firstContainer, firstImage);
+            clean();
+            return;
+        }
     
         switch(e.keyCode){
             // left
             case 37: {
-                if(prev && prev.classList.contains('image-container')){
-                    const prevImage = prev.querySelector('iron-image');
-
-                    hideImage(firstContainer, firstImage);
-                    showImage(prev, prevImage);
-                } else {
-                    hideImage(firstContainer, firstImage);
-                    clean();
-                }
+                const prevImage = prev.querySelector('iron-image');
+                hideImage(firstContainer, firstImage);
+                showImage(prev, prevImage);
                 break;
             }
             // right
             case 39:
             // enter
             case 32: {
-                if(next && next.classList.contains('image-container')){
-                    const nextImage = next.querySelector('iron-image');
-                    hideImage(firstContainer, firstImage);
-                    showImage(next, nextImage);
-                } else {
-                    hideImage(firstContainer, firstImage);
-                    clean();
-                }
-                break;
-            }
-            // escape
-            case 27:
-            default: {
+                const nextImage = next.querySelector('iron-image');
                 hideImage(firstContainer, firstImage);
-                clean();
+                showImage(next, nextImage);
+                break;
             }
         }
     };
