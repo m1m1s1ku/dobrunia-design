@@ -93,7 +93,6 @@ class Blog extends Page {
             parsed.push({...article, content: unsafeHTML(article.content.slice(0, 200))});
         }
 
-
         const chunks = chunk(parsed, 1);
 
         let cancelAnimations = false;
@@ -115,7 +114,6 @@ class Blog extends Page {
                 const article = this.shadowRoot.querySelector('.blog article:last-child');
 
                 if(!this._isInViewport(article)){
-                    console.warn('Hidden element, canceling next animations ', ... chunk);
                     cancelAnimations = true;
                     
                     return;
@@ -124,6 +122,7 @@ class Blog extends Page {
                 const animationConfig = pulseWith(300);
                 article.animate(animationConfig.effect, animationConfig.options);
             }, initial);
+
             initial += 200;
         }
 
