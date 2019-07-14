@@ -83,6 +83,16 @@ class Blog extends Page {
                 transition: opacity .3s;
             }
 
+            @media (prefers-reduced-motion: reduce){
+                article.reveal {
+                    opacity: 1;
+                }
+        
+                article.revealed {
+                    transition: none;
+                }
+            }
+
             svg {
                 height: 30px;
                 width: 30px;

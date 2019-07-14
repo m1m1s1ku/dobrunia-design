@@ -35,7 +35,8 @@ export const Processing = {
 export const CSS = {
     queries: {
         DARK: '(prefers-color-scheme: dark)',
-        LIGHT: '(prefers-color-scheme: light)'
+        LIGHT: '(prefers-color-scheme: light)',
+        ANIMATIONS: '(prefers-reduced-motion: reduce)'
     },
     cards: css`
     .cards {
@@ -64,6 +65,16 @@ export const CSS = {
     .card.revealed {
         opacity: 1;
         transition: opacity .3s;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .card.reveal {
+            opacity: 1;
+        }
+
+        .card.revealed {
+            transition: none;
+        }
     }
 
     .card iron-image {
