@@ -30,7 +30,6 @@ export interface Project {
     categoryId: string;
     content: string; // unsafe html
     description: string;
-    image: string;
     images: ReadonlyArray<Image>;
     slug: string;
     title: string;
