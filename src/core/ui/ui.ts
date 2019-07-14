@@ -131,8 +131,20 @@ export function ElaraElement(): Elara.Root {
     return document.querySelector('elara-app');
 };
 
+interface IGalleryState {
+    container: HTMLElement;
+    listeners: {
+        keyboard: (e: KeyboardEvent) => void;
+        touch: (e: TouchEvent) => void;
+    };
+    sizing: string;
+    width: string;
+    height: string;
+    touchstartX: number;
+    touchendX: number;
+};
 
-let state = {
+let state: IGalleryState = {
     container: null,
     listeners: {
         keyboard: null,
