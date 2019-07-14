@@ -134,13 +134,23 @@ export function ElaraElement(): Elara.Root {
 
 
 let state = {
-    listener: null,
+    container: null,
+    listeners: {
+        keyboard: null,
+        touch: null
+    },
     sizing: null,
     width: null,
     height: null,
+    touchstartX: 0,
+    touchendX: 0
 };
 
 const showImage = (container: HTMLElement, image: IronImageElement) => {
+    state.container = container;
+    state.touchstartX = 0;
+    state.touchendX = 0;
+
     document.body.className = 'scrolling-disabled';
     state.sizing = image.sizing;
     state.width = image.style.width;
@@ -149,12 +159,20 @@ const showImage = (container: HTMLElement, image: IronImageElement) => {
     image.style.width = '80%';
     image.style.height = '80%';
 
-    container.classList.add('opened');
-    container.focus();
-    window.removeEventListener('keydown', state.listener);
+    state.container.classList.add('opened');
+    state.container.focus();
+
+    state.container.removeEventListener('touchstart', state.listeners.touch);
+    state.container.removeEventListener('touchend', state.listeners.touch);
+    window.removeEventListener('keydown', state.listeners.keyboard);
+    
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    state.listener = galleryListener(container, image);
-    window.addEventListener('keydown', state.listener);
+    state.listeners.keyboard = galleryListener(state.container, image);
+    state.listeners.touch = touchListener(state.container, image);
+
+    state.container.addEventListener('touchstart', state.listeners.touch);
+    state.container.addEventListener('touchend', state.listeners.touch);
+    window.addEventListener('keydown', state.listeners.keyboard);
 };
 
 const hideImage = (container: HTMLElement, image: IronImageElement) => {
@@ -164,19 +182,30 @@ const hideImage = (container: HTMLElement, image: IronImageElement) => {
     image.style.width = state.width;
     image.style.height = state.height;
 
+    container.removeEventListener('touchstart', state.listeners.touch);
+    container.removeEventListener('touchend', state.listeners.touch);
+
     container.classList.remove('opened');
 };
 
 const clean = () => {
-    if(state.listener){
-        window.removeEventListener('keydown', state.listener);
-    }
+    if(state.listeners.keyboard){ window.removeEventListener('keydown', state.listeners.keyboard); }
+    if(state.listeners.touch){ 
+        state.container.removeEventListener('touchstart', state.listeners.touch);
+        state.container.removeEventListener('touchend', state.listeners.touch);
+     }
 
     state = {
-        listener: null,
+        container: null,
+        listeners: {
+            keyboard: null,
+            touch: null
+        },
         sizing: null,
         width: null,
         height: null,
+        touchstartX: 0,
+        touchendX: 0
     };
 };
 
@@ -217,6 +246,51 @@ function galleryListener(firstContainer: HTMLElement, firstImage: IronImageEleme
     };
 };
 
+const touchListener = (container: HTMLElement, image: IronImageElement) => {
+    return (e: TouchEvent) => {
+        if(e.type === 'touchstart'){
+            state.touchstartX = e.changedTouches[0].screenX;
+            return;
+        } else {
+            state.touchendX = e.changedTouches[0].screenX;
+        }
+
+        const prev = container.previousElementSibling as HTMLElement;
+        const next = container.nextElementSibling as HTMLElement;
+
+        const hasPrev = prev && prev.classList.contains('image-container');
+        const hasNext = next && next.classList.contains('image-container');
+
+        if (state.touchendX < state.touchstartX){
+            if(!hasNext){
+                hideImage(container, image);
+                clean();
+                return;
+            }
+
+            const nextImage = next.querySelector('iron-image');
+            hideImage(container, image);
+            showImage(next, nextImage);
+
+            return;
+        }
+
+        if (state.touchendX > state.touchstartX){
+            if(!hasPrev){
+                hideImage(container, image);
+                clean();
+                return;
+            }
+
+            const prevImage = prev.querySelector('iron-image');
+            hideImage(container, image);
+            showImage(prev, prevImage);
+
+            return;
+        }
+    };
+}
+
 export function onImageContainerClicked(e: KeyboardEvent) {
     const firstContainer = e.currentTarget as HTMLDivElement;
     const firstImage = firstContainer.querySelector('iron-image');
@@ -225,12 +299,6 @@ export function onImageContainerClicked(e: KeyboardEvent) {
         hideImage(firstContainer, firstImage);
         clean();
     } else {
-        const keyboardListener = galleryListener(firstContainer, firstImage);
-        if(state.listener){
-            throw new Error('Already binded listener');
-        }
-        
-        state.listener = keyboardListener;
         showImage(firstContainer, firstImage);
     }
 }
