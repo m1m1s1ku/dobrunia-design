@@ -122,7 +122,7 @@ class Blog extends Page {
 
                 const animationConfig = pulseWith(300);
                 article.animate(animationConfig.effect, animationConfig.options);
-            }, initial += 100);
+            }, !cancelAnimations ? initial += 100 : initial);
         }
 
         this.ghost = parsed;
