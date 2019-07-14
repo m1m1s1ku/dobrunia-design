@@ -89,7 +89,7 @@ class Blog extends Page {
                 }
         
                 article.revealed {
-                    transition: none;
+                    transition: 0s;
                 }
             }
 

@@ -73,7 +73,7 @@ export const CSS = {
         }
 
         .card.revealed {
-            transition: none;
+            transition: 0s;
         }
     }
 
