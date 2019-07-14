@@ -211,7 +211,7 @@ const clean = () => {
     };
 };
 
-const touchListener = (container: HTMLElement) => {
+export function touchEvents(onRight: () => void, onLeft: () => void){
     return (e: TouchEvent) => {
         if(e.type === 'touchstart'){
             state.touchstartX = e.changedTouches[0].screenX;
@@ -220,38 +220,40 @@ const touchListener = (container: HTMLElement) => {
             state.touchendX = e.changedTouches[0].screenX;
         }
 
-        const prev = container.previousElementSibling as HTMLElement;
-        const next = container.nextElementSibling as HTMLElement;
-
-        const hasPrev = prev && prev.classList.contains('image-container');
-        const hasNext = next && next.classList.contains('image-container');
-
         if (state.touchendX < state.touchstartX){
-            if(!hasNext){
-                hide(container);
-                clean();
-                return;
-            }
-
-            hide(container);
-            show(next);
-
-            return;
+            onRight();
         }
-
         if (state.touchendX > state.touchstartX){
-            if(!hasPrev){
-                hide(container);
-                clean();
-                return;
-            }
-
-            hide(container);
-            show(prev);
-
-            return;
+            onLeft();
         }
     };
+}
+
+const touchListener = (container: HTMLElement) => {
+    return touchEvents(() => {
+        const next = container.nextElementSibling as HTMLElement;
+        const hasNext = next && next.classList.contains('image-container');
+
+        if(!hasNext){
+            hide(container);
+            clean();
+            return;
+        }
+
+        hide(container);
+        show(next);
+    }, () => {
+        const prev = container.previousElementSibling as HTMLElement;
+        const hasPrev = prev && prev.classList.contains('image-container');
+        if(!hasPrev){
+            hide(container);
+            clean();
+            return;
+        }
+
+        hide(container);
+        show(prev);
+    });
 };
 
 function galleryListener(container: HTMLElement) {    
