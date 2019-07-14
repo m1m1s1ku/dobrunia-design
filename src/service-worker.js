@@ -12,8 +12,22 @@ function registerWorkbox(){
     );
 
     workbox.routing.registerRoute(
-       '/elara-doc/',
+       '/',
         new workbox.strategies.CacheFirst()
+    );
+
+    workbox.routing.registerRoute(
+        /^https:\/\/api.dobruniadesign.com/,
+        new workbox.strategies.CacheFirst({
+            cacheName: 'dobrunia-api-cache'
+        })
+    );
+
+    workbox.routing.registerRoute(
+        /^https:\/\/res.cloudinary.com\/.*\/image\/upload\//,
+        new workbox.strategies.CacheFirst({
+            cacheName: 'cloudinary-cache'
+        })
     );
 
     workbox.routing.registerRoute(
