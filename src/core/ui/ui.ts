@@ -46,6 +46,12 @@ export const CSS = {
         padding: 1em 2em;
     }
 
+    @media (max-width: 475px){
+        .cards {
+            grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); 
+        }
+    }
+
     .card {
         cursor: pointer;
         text-align: center;
@@ -58,6 +64,11 @@ export const CSS = {
     .card.revealed {
         opacity: 1;
         transition: opacity .3s;
+    }
+
+    .card iron-image {
+        width: 100%;
+        height: 240px;
     }
 
     .card .text .title {

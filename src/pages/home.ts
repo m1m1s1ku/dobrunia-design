@@ -40,7 +40,7 @@ export function projectCard(project: Project){
     return html`
     <article class="project card" @click=${() => navigate('project'.concat('/'+ project.slug))}>
         ${project.images ? html`
-            <iron-image style="width: 320px; height: 240px;" sizing="contain" preload src="${project.images[0].path}"></iron-image>
+            <iron-image sizing="contain" preload src="${project.images[0].path}"></iron-image>
         ` : ''}
         <div class="text">
             <h3 class="title">${project.title}</h3>
