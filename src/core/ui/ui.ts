@@ -40,6 +40,10 @@ export const CSS = {
         ANIMATIONS: '(prefers-reduced-motion: reduce)'
     },
     images: css`
+    .image-container {
+        cursor: pointer;
+    }
+    
     .image-container.opened {
         transition: .3s;
         position: fixed;
