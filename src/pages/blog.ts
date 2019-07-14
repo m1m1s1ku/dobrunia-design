@@ -106,15 +106,11 @@ class Blog extends Page {
             };
 
             setTimeout(async () => {
-                if(cancelAnimations){
-                    console.warn('cancelled');
-                    await append();
-                    return;
-                } else {
-                    console.warn('running animation for', ... chunk);
-                }
-
                 await append();
+
+                if(cancelAnimations){
+                    return;
+                }
 
                 const article = this.shadowRoot.querySelector('.blog article:last-child');
 
