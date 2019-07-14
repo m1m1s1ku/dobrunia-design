@@ -153,7 +153,7 @@ const showImage = (container: HTMLElement, image: IronImageElement) => {
     window.addEventListener('keydown', state.listener);
 };
 
-const hideImage = (container: HTMLElement, image: IronImageElement, withListeners?: boolean) => {
+const hideImage = (container: HTMLElement, image: IronImageElement) => {
     document.body.className = '';
 
     image.sizing = state.sizing;
@@ -161,9 +161,6 @@ const hideImage = (container: HTMLElement, image: IronImageElement, withListener
     image.style.height = state.height;
 
     container.classList.remove('opened');
-    if(withListeners && state.listener){
-        window.removeEventListener('keydown', state.listener);
-    }
 };
 
 const clean = () => {
