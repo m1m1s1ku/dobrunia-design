@@ -10,7 +10,7 @@ interface APIPage {
     name: string;
     image: string;
     slug: string;
-    content: string | TemplateResult;
+    content: string;
 };
 
 class About extends Page {
@@ -45,6 +45,7 @@ class About extends Page {
         const pageData = await pageR.json();
         const response = pageData.data;
         this.pageInfo = {
+            id: response.id,
             name: response.name,
             image: response.image,
             slug: response.slug,

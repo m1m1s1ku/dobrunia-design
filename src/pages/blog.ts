@@ -7,7 +7,8 @@ import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 import { navigate } from '../core/routing/routing';
 
-import { Category, Image } from './home';
+import { Category, Image, chunk } from './home';
+import { pulseWith } from '../core/animations';
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';
@@ -92,8 +93,22 @@ class Blog extends Page {
             parsed.push({...article, content: unsafeHTML(article.content.slice(0, 200))});
         }
 
+
+        const chunks = chunk(parsed, 1);
+
+        let initial = 100;
+        for(const chunk of chunks){
+            setTimeout(async () => {
+                this.articles = [...this.articles, ...chunk];
+                await this.updateComplete;
+                
+                const animationConfig = pulseWith(300);
+                this.shadowRoot.querySelector('.blog article:last-child').animate(animationConfig.effect, animationConfig.options);
+            }, initial);
+            initial += 200;
+        }
+
         this.ghost = parsed;
-        this.articles = parsed;
     }
 
     public search(value: string){
