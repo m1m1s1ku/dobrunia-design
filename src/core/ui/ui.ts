@@ -129,12 +129,19 @@ export function ElaraElement(): Elara.Root {
 };
 
 let currentListener = null;
+let originalSizing = null;
+let originalWidth = null;
+let originalHeight = null;
 
 const showImage = (container: HTMLElement, image: IronImageElement) => {
     document.body.className = 'scrolling-disabled';
-    image.sizing = 'contain';
+    originalSizing = image.sizing;
+    originalHeight = image.style.height;
+    originalWidth = image.style.width;
+
     image.style.width = '80%';
     image.style.height = '80%';
+
     container.classList.add('opened');
     container.focus();
     window.removeEventListener('keydown', currentListener);
@@ -145,9 +152,11 @@ const showImage = (container: HTMLElement, image: IronImageElement) => {
 
 const hideImage = (container: HTMLElement, image: IronImageElement, withListeners?: boolean) => {
     document.body.className = '';
-    image.sizing = 'cover';
-    image.style.width = '300px';
-    image.style.height = '300px';
+    
+    image.sizing = originalSizing;
+    image.style.width = originalHeight;
+    image.style.height = originalWidth;
+
     container.classList.remove('opened');
     if(withListeners && currentListener){
         window.removeEventListener('keydown', currentListener);
