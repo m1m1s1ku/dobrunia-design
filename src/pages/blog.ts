@@ -96,20 +96,55 @@ class Blog extends Page {
 
         const chunks = chunk(parsed, 1);
 
+        let cancelAnimations = false;
+
         let initial = 100;
         for(const chunk of chunks){
-            setTimeout(async () => {
+            const append = async () => {
                 this.articles = [...this.articles, ...chunk];
                 await this.updateComplete;
-                
+            };
+            
+            if(cancelAnimations){
+                await append();
+                continue;
+            }
+
+            setTimeout(async () => {
+                if(!cancelAnimations){
+                    console.warn('running animation for', ... chunk);
+                }
+
+                await append();
+
+                const article = this.shadowRoot.querySelector('.blog article:last-child');
+
+                if(!this._isInViewport(article)){
+                    console.warn('Hidden element, canceling next animations ', ... chunk);
+                    cancelAnimations = true;
+                    
+                    return;
+                }
+
                 const animationConfig = pulseWith(300);
-                this.shadowRoot.querySelector('.blog article:last-child').animate(animationConfig.effect, animationConfig.options);
+                article.animate(animationConfig.effect, animationConfig.options);
             }, initial);
             initial += 200;
         }
 
         this.ghost = parsed;
     }
+
+    private _isInViewport(elem: Element) {
+        const bounding = elem.getBoundingClientRect();
+
+        return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
 
     public search(value: string){
         this.articles = this.ghost.filter(item => item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1);
