@@ -7,7 +7,8 @@ import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 
 import { Project as ProjectInfo } from '../bridge';
-import { onImageContainerClicked } from '../core/ui/ui';
+import { onImageContainerClicked, Utils } from '../core/ui/ui';
+import { fadeWith } from '../core/animations';
 
 class Project extends Page {
     public static readonly is: string = 'ui-project';
@@ -58,13 +59,21 @@ class Project extends Page {
 
             const response = await projectR.json();
             this.project = {... response.data, content: unsafeHTML(`${response.data.content}`)};
+            this.loaded = true;
             document.title = this.project.title + ' | ' + Constants.title;
+            if(Utils.animationsReduced()){
+                return;
+            }
+            const fade = fadeWith(300, true);
+            this.page.animate(fade.effect, fade.options);
         }
     }
 
     public render(): void | TemplateResult {
         return html`
-        <div class="project" role="main">
+        <div id="project" class="project" role="main">
+        ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
+
         ${this.project ? html`
             <h1 class="title">${this.project.title}</h1>
             <p>${this.project.description}</p>
@@ -80,6 +89,10 @@ class Project extends Page {
         `}
         </div>
         `;
+    }
+
+    private get page(){
+        return this.shadowRoot.querySelector('#project');
     }
 }
 customElements.define(Project.is, Project);
