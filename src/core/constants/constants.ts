@@ -5,7 +5,7 @@ import { html } from 'lit-html';
  * App constants
  */
 const Constants = {
-    api: 'http://localhost:8086/api/',
+    api: 'https://api.dobruniadesign.com/api/',
     route: (path: string) => {
         return Constants.api+path;
     },

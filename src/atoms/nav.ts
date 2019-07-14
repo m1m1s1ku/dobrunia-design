@@ -36,11 +36,19 @@ class Nav extends PureElement {
             :host {
                 z-index: 3;
             }
+
             .title {
                 cursor: pointer;
                 outline: none;
                 padding: 2em 0 0 3em;
             }
+
+            @media (max-width: 450px){
+                .title {
+                    padding: 1em 0 0 0em;
+                }
+            }
+            
             .main {
                 background: var(--elara-nav-background);
             }
