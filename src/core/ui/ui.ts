@@ -200,14 +200,18 @@ function galleryListener(firstContainer: HTMLElement, firstImage: IronImageEleme
 export function onImageContainerClicked(e: KeyboardEvent) {
     const firstContainer = e.currentTarget as HTMLDivElement;
     const firstImage = firstContainer.querySelector('iron-image');
-
-    const keyboardListener = galleryListener(firstContainer, firstImage);
-    currentListener = keyboardListener;
-
-    if(firstContainer.className.indexOf('opened') === -1){
-        showImage(firstContainer, firstImage);
-    } else {
+    
+    if(firstContainer.classList.contains('opened')){
         hideImage(firstContainer, firstImage, true);
+        currentListener = null;
+    } else {
+        const keyboardListener = galleryListener(firstContainer, firstImage);
+        if(currentListener){
+            throw new Error('Already binded listener');
+        }
+        
+        currentListener = keyboardListener;
+        showImage(firstContainer, firstImage);
     }
 }
 
