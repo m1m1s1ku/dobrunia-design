@@ -89,6 +89,9 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             const card = host.shadowRoot.querySelector(lastCardSelector);
             if(Utils.isInViewport(card)){
                 card.classList.add('revealed');
+                if(Utils.animationsReduced()){
+                    return;
+                }
                 const animationConfig = pulseWith(300);
                 card.animate(animationConfig.effect, animationConfig.options);
             } else {

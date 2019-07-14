@@ -158,6 +158,10 @@ class Blog extends Page {
                     return;
                 }
 
+                if(Utils.animationsReduced()){
+                    return;
+                }
+                
                 const animationConfig = pulseWith(300);
                 article.animate(animationConfig.effect, animationConfig.options);
             }, !cancelAnimations ? initial += 100 : initial);

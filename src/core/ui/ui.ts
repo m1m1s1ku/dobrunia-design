@@ -177,5 +177,14 @@ export const Utils = {
         }
 
         return window.matchMedia(CSS.queries.DARK).matches;
+    },
+    animationsReduced(): boolean {
+        if(!window.matchMedia){
+            console.warn('Elara:: MatchMedia not supported.');
+
+            return false;
+        }
+
+        return window.matchMedia(CSS.queries.ANIMATIONS).matches;
     }
 };
