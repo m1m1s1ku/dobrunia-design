@@ -4,8 +4,10 @@ import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
-import { Project, projectCard, projectLoad, ElementWithProjects, iObserverForCard } from './home';
+import { projectCard, projectLoad, ElementWithProjects, iObserverForCard } from './home';
 import Constants from '../core/constants/constants';
+
+import { Project } from '../bridge';
 
 class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';

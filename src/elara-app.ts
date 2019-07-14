@@ -14,28 +14,12 @@ import { repeat } from 'lit-html/directives/repeat';
 import Constants from './core/constants/constants';
 import Elara from './core/elara';
 
+import { Link, SocialLink, APICategories } from './bridge';
+
 // Polyfills
 import('./polyfill');
 // lazy import for polymer components
 import('./polymer');
-
-interface Link {
-	idx: number;
-	name: string;
-	route: string;
-}
-
-interface SocialLink {
-	id: string;
-	name: string;
-	url: string;
-}
-
-interface APICategories {
-	id: string;
-	name: string;
-	slug: string;
-}
 
 export class ElaraApp extends Root implements Elara.Root {
 	public static readonly is: string = 'elara-app';

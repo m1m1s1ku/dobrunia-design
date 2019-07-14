@@ -315,3 +315,11 @@ export const Utils = {
         return window.matchMedia(CSS.queries.ANIMATIONS).matches;
     }
 };
+
+export const chunk = (arr: unknown[], size: number) => {
+    const R = [];
+    for (let i=0, len=arr.length; i<len; i+=size){
+        R.push(arr.slice(i,i+size));
+    }
+    return R;
+};

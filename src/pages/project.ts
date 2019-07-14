@@ -6,7 +6,7 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 
-import { Project as ProjectInfo } from './home';
+import { Project as ProjectInfo } from '../bridge';
 import { onImageContainerClicked } from '../core/ui/ui';
 
 class Project extends Page {

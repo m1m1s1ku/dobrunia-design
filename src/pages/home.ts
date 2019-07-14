@@ -4,37 +4,10 @@ import { property, LitElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
-import { CSS, Utils } from '../core/ui/ui';
+import { CSS, Utils, chunk } from '../core/ui/ui';
 import Constants from '../core/constants/constants';
 import { pulseWith } from '../core/animations';
-
-export interface Category {
-    id: string;
-    name: string;
-    slug: string;
-};
-
-export interface Image {
-    filename: string;
-    id: string;
-    isRaw: number;
-    path: string;
-    projectId: string;
-    size: string;
-    userOrder: number;
-};
-
-export interface Project {
-    bigOrder: number;
-    category: Category;
-    categoryId: string;
-    content: string; // unsafe html
-    description: string;
-    images: ReadonlyArray<Image>;
-    slug: string;
-    title: string;
-    userOrder: number;
-};
+import { Project } from '../bridge';
 
 export function projectCard(project: Project){
     return html`
@@ -53,15 +26,7 @@ export function projectCard(project: Project){
 export interface ElementWithProjects extends LitElement {
     projects: ReadonlyArray<Project>;
     loaded: boolean;
-} 
-
-export const chunk = (arr: unknown[], size: number) => {
-    const R = [];
-    for (let i=0, len=arr.length; i<len; i+=size){
-        R.push(arr.slice(i,i+size));
-    }
-    return R;
-};
+}
 
 export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string, observer?: IntersectionObserver){
     const request = await fetch(Constants.route('projects'));

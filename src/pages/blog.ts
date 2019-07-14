@@ -7,9 +7,10 @@ import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 import { navigate } from '../core/routing/routing';
 
-import { Category, Image, chunk } from './home';
 import { pulseWith } from '../core/animations';
-import { Utils, onImageContainerClicked } from '../core/ui/ui';
+import { Utils, onImageContainerClicked, chunk } from '../core/ui/ui';
+
+import { Article } from '../bridge';
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';
@@ -202,13 +203,3 @@ class Blog extends Page {
     }
 }
 customElements.define(Blog.is, Blog);
-
-export interface Article {
-    id: string;
-    title: string;
-    content: string;
-    slug: string;
-    categoryId: string;
-    category: Category;
-    images: ReadonlyArray<Image>;
-}

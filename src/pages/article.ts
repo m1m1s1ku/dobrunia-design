@@ -6,16 +6,16 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 
-import { Article } from './blog';
 import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
+import { Article } from '../bridge';
 
 class Single extends Page {
     public static readonly is: string = 'ui-article';
 
     public static readonly hasRouting: boolean = true;
 
-    @property({type:Object, reflect: false})
+    @property({type: Object, reflect: false})
     public article: Article;
 
     public get head(){
