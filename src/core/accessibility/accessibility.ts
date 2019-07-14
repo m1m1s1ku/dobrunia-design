@@ -21,7 +21,7 @@ export function onSkipLink(e: KeyboardEvent | Event, host: Elara.Root): void {
         return;
     }
 
-    const skipArea = host.loaded.shadowRoot.querySelector('.skip');
+    const skipArea = host.loadedElement.shadowRoot.querySelector('.skip');
     if(skipArea && skipArea instanceof HTMLElement){
         skipArea.scrollIntoView(); 
     }
