@@ -121,9 +121,7 @@ class Blog extends Page {
 
                 const animationConfig = pulseWith(300);
                 article.animate(animationConfig.effect, animationConfig.options);
-            }, initial);
-
-            initial += 200;
+            }, initial += 100);
         }
 
         this.ghost = parsed;

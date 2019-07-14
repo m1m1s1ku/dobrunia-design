@@ -44,7 +44,7 @@ class Category extends Page implements ElementWithProjects {
             if(this.projects.length === 0){
                 setTimeout(() => {
                     document.title = this.projects[0].category.name + ' | ' + Constants.title;
-                }, 100);
+                }, 200);
             } else {
                 document.title = this.projects[0].category.name + ' | ' + Constants.title;
             }
