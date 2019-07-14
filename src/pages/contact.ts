@@ -27,6 +27,7 @@ class Contact extends Page {
                 justify-content: space-between;
                 min-height: 60vh;
                 padding: 2em;
+                overflow: hidden;
             }
 
             .side {
