@@ -7,6 +7,8 @@ import Page from '../core/strategies/Page';
 import Constants from '../core/constants/constants';
 
 import { Article } from './blog';
+import { Utils } from '../core/ui/ui';
+import { fadeWith } from '../core/animations';
 
 class Single extends Page {
     public static readonly is: string = 'ui-article';
@@ -36,10 +38,16 @@ class Single extends Page {
         if(requestedHash.length > 1){
             const articleR = await fetch(Constants.route('articles/slug/'+requestedHash[1]), {method: 'POST'});
             const articleRes = await articleR.json();
+            this.loaded = true;
+
             const article = articleRes.data;
-    
             this.article = {...article, content: unsafeHTML(article.content)};
             document.title = article.title + ' | ' + Constants.title;
+            if(Utils.animationsReduced()){
+                return;
+            }
+            const fade = fadeWith(300, true);
+            this.page.animate(fade.effect, fade.options);
         }
     }
 
@@ -63,7 +71,8 @@ class Single extends Page {
 
     public render(): void | TemplateResult {
         return html`
-        <div class="blog single" role="main">
+        <div id="blog" class="blog single" role="main">
+            ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
             ${this.article ? html`
             <h1>${this.article.title}</h1>
             <div class="content">
@@ -77,6 +86,10 @@ class Single extends Page {
             ` : html``}
         </div>
         `;
+    }
+
+    private get page(){
+        return this.shadowRoot.querySelector('#blog');
     }
 }
 customElements.define(Single.is, Single);
