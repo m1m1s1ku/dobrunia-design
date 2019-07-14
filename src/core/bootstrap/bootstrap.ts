@@ -5,7 +5,7 @@ import { MenuElement } from '../../atoms/menu';
 
 import { NotFoundError } from '../errors/errors';
 import { fadeWith } from '../animations';
-import { ElaraElement } from '../ui/ui';
+import { ElaraElement, Utils } from '../ui/ui';
 
 /**
  * Bootstrap promise
@@ -75,6 +75,11 @@ export async function load (route: string, content: HTMLElement, menu: MenuEleme
         content.classList.remove('full-width');
     }
     content.appendChild(loaded);
+
+    if(!Utils.animationsReduced()){
+        const config = fadeWith(200, true);
+        content.animate(config.effect, config.options);
+    }
     
     if(loaded instanceof NotFound){
         throw new NotFoundError(route);
@@ -97,8 +102,7 @@ export async function load (route: string, content: HTMLElement, menu: MenuEleme
             return;
         }
 
-
-        const animation = fadeWith(300, true);			
+        const animation = fadeWith(1000, true);			
         const content = pageContent.animate(animation.effect, animation.options);
         await content.finished;
     });
