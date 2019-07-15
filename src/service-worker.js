@@ -18,7 +18,7 @@ function registerWorkbox(){
 
     workbox.routing.registerRoute(
         /^https:\/\/api.dobruniadesign.com/,
-        new workbox.strategies.NetworkFirst({
+        new workbox.strategies.StaleWhileRevalidate({
             cacheName: 'dobrunia-api-cache'
         })
     );
