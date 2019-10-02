@@ -6,7 +6,7 @@
  * @param {string} [target='_blank']
  * @returns {boolean}
  */
-export function redirect(url: string, target: string = '_blank'): boolean {
+export function redirect(url: string, target = '_blank'): boolean {
     return !!window.open(url, target);
 }
 
@@ -31,7 +31,7 @@ export function navigate(route: string): boolean {
 export function hashChange(event: HashChangeEvent, defaultRoute: string): string | null {
     const routeWithPrefix = event.newURL.replace(location.origin + location.pathname, '');
 
-    let routingParams = routeWithPrefix.split('#!').filter(Boolean);
+    const routingParams = routeWithPrefix.split('#!').filter(Boolean);
     let route = null;
     if(routingParams.length === 0){
         route = routingParams.shift();

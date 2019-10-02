@@ -4,7 +4,6 @@ import Elara from '../elara';
 
 import Page from './Page';
 
-import { MenuElement } from '../../atoms/menu';
 import { hashChange } from '../routing/routing';
 import { load } from '../bootstrap/bootstrap';
 import { Utils } from '../ui/ui';
@@ -22,8 +21,7 @@ import { Utils } from '../ui/ui';
  * @extends {Page}
  */
 export default class Root extends Page {
-	protected _menuFade: Animation;
-
+	public hasElaraRouting = true;
 	@property({reflect: true, type: String})
 	public route: string;
 	
@@ -36,13 +34,17 @@ export default class Root extends Page {
 
 		Utils.applyVariablesFor(Utils.dayOrNight());
 
-		this._onHashChangeListener = this._onHashChange.bind(this);
-		window.addEventListener('hashchange', this._onHashChangeListener, { passive: true });
+		if(this.hasElaraRouting === true){
+			this._onHashChangeListener = this._onHashChange.bind(this);
+			window.addEventListener('hashchange', this._onHashChangeListener, { passive: true });
+		}
 	}
 
 	public disconnectedCallback(){
 		super.disconnectedCallback();
-		window.removeEventListener('hashchange', this._onHashChangeListener);
+		if(this.hasElaraRouting === true){
+			window.removeEventListener('hashchange', this._onHashChangeListener);
+		}
 	}
 		
 	/**
@@ -57,14 +59,15 @@ export default class Root extends Page {
 
 	protected async _onHashChange(event: HashChangeEvent){
 		const route = hashChange(event, this.default);
-		this.route = route;
-
-		this._content.innerHTML = '';
-		this.loadedElement = await this.load(route);
+		if(this.route !== route){
+			this.route = route;
+			this._content.innerHTML = '';
+			this.loadedElement = await this.load(route);
+		}
 	}
 		
 	public async load(route: string){
-		return await load(route, this._content, this._menu, this._menuFade, this.head.title);
+		return await load(route, this._content);
 	}
 		
 	public askModeChange(mode: Elara.Modes): boolean {
@@ -73,9 +76,5 @@ export default class Root extends Page {
 		
 	protected get _content(): HTMLElement {
 		return this.shadowRoot.querySelector('main');
-	}
-
-	protected get _menu(): MenuElement {
-		return this.shadowRoot.querySelector('#menu');
 	}
 }

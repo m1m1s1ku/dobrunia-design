@@ -1,53 +1,15 @@
-import Elara from '../elara';
-
-import { MenuElement } from '../../atoms/menu';
-
 import { NotFoundError } from '../errors/errors';
 import { fadeWith } from '../animations';
-import { ElaraElement, Utils } from '../ui/ui';
-
-/**
- * Bootstrap promise
- * 
- * Used for global-loader
- * 
- * @param {string[]} loadables components name to wait
- * @param {ShadowRoot} host hosting shadowRoot
- */
-export function promise(loadables: string[], host: ShadowRoot) {
-    if(loadables.length === 0) return Promise.resolve();
-
-    const loadPromises = [];
-    
-    for(const element of loadables){
-        const load = new Promise((resolve) => {
-            const elem = host.querySelector(element) as Elara.LoadableElement;
-            const config = { attributes: true };
-            const observer = new MutationObserver((mutation) => {
-                if(!mutation.length){ return; }
-                if (mutation[0].type == 'attributes' && mutation[0].attributeName === 'loaded') {
-                    observer.disconnect();
-                    resolve();
-                }
-            });
-            observer.observe(elem, config);
-        });
-        loadPromises.push(load);
-    }
-    
-    return Promise.all(loadPromises);
-}
+import { Utils } from '../ui/ui';
 
 /**
  * Load a route with animations
  * 
  * @param {string} route route name without prefix
  * @param {HTMLElement} content HTMLElement to load
- * @param {MenuElement} menu App menu
- * @param {Animation | null} menuFade App menu animation
  */
-export async function load (route: string, content: HTMLElement, menu: MenuElement, menuFade: Animation | null, defaultTitle: string): Promise<HTMLElement> {
-    const titleTemplate = '%s | ' + defaultTitle;
+export async function load (route: string, content: HTMLElement): Promise<HTMLElement> {
+    const titleTemplate = '%s';
 
     const Component = customElements.get('ui-' + route);
     content.classList.remove('full-width');
@@ -61,10 +23,12 @@ export async function load (route: string, content: HTMLElement, menu: MenuEleme
 
     const loaded = Component ? new Component() : new NotFound(route);
 
-    if(loaded.head && loaded.head.title){
+    if(loaded.head && loaded.head.title && !loaded.customTitle){
         document.title = titleTemplate.replace('%s', loaded.head.title);
-    } else {
-        document.title = defaultTitle;
+    }
+
+    if(loaded.customTitle){
+        document.title = loaded.customTitle;
     }
 
     if(loaded.isFullWidth === true && !content.classList.contains('full-width')){
@@ -83,10 +47,6 @@ export async function load (route: string, content: HTMLElement, menu: MenuEleme
         throw new NotFoundError(route);
     }
     window.scrollTo(0,0);
-
-    if(menu.shown && menuFade === null){
-        await ElaraElement().menu(true);
-    }
 
     const handle = window.requestAnimationFrame(async() => {
         if(!loaded.shadowRoot){

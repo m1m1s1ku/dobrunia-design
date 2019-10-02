@@ -15,10 +15,10 @@ import { CSS } from '../ui/ui';
  * @implements {Elara.Page}
  */
 export default class Page extends LitElement implements Elara.Page {
-    public static hasRouting: boolean = false;
+    public static hasRouting = false;
 
     @property({type: Boolean, reflect: true})
-    public loaded: boolean = false;
+    public loaded = false;
     public default: string = null;
     
     public get head(){

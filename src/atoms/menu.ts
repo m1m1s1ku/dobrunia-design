@@ -100,7 +100,7 @@ export class MenuElement extends PureElement {
 		return html`
 		<div id="menu" class="menu-content ${this.shown === true ? 'shown' : ''}" role="navigation">
 			<!-- li is needed for aria -->
-			<li><paper-icon-button class="menu" role="button" icon="close" aria-label="Close menu" @click=${() => ElaraElement().menu(true)}></paper-icon-button></li>
+			<li><paper-icon-button class="menu" role="button" icon="close" aria-label="Close menu"></paper-icon-button></li>
             ${repeat(this.items, (link) => this._link(link))}
 		</div>
         `;

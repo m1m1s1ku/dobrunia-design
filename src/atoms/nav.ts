@@ -4,9 +4,8 @@ import { CSSResult, css, property } from 'lit-element';
 import PureElement from '../core/strategies/Element';
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
-import { CSS, ElaraElement, Utils } from '../core/ui/ui';
+import { CSS, Utils } from '../core/ui/ui';
 import Constants from '../constants';
-import { isEnter } from '../core/accessibility/accessibility';
 
 class Nav extends PureElement {
     public static readonly is: string = 'ui-nav';
@@ -101,11 +100,11 @@ class Nav extends PureElement {
         return html`
         <nav class="main" role="navigation">
             <div class="header">
-                <div aria-hidden="true" tabindex="0" class="title" @click=${() => navigate('home')} @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate('home') : null} role="link">${Constants.logo()}</div>
+                <div aria-hidden="true" tabindex="0" class="title" @click=${() => navigate('home')} role="link">${Constants.logo()}</div>
                 <div class="links">
                     <ul>
                         ${this.mobile ?
-                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu" @click=${() => ElaraElement().menu(false)}></paper-icon-button></li>` :
+                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu"></paper-icon-button></li>` :
                             html`${repeat(this.items, this._item.bind(this))}
                         `}
                     </ul>
@@ -121,7 +120,7 @@ class Nav extends PureElement {
         }
 
         return html`
-            <li><a class="item ${item && this.route === item.route ? 'active' : ''}" tabindex="${item && this.route === item.route ? '-1' : '0'}" @keydown=${(e: KeyboardEvent) => isEnter(e) ? navigate(item.route) : null} @click=${() => navigate(item.route)}>${item.name}</a></li>
+            <li><a class="item ${item && this.route === item.route ? 'active' : ''}" tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => navigate(item.route)}>${item.name}</a></li>
         `;
     }
 }

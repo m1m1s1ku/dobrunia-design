@@ -2,14 +2,7 @@
 // @ts-ignore
 window.polymerSkipLoadingFontRoboto = true;
 
-const neededElements = [
-  'paper-icon-button', 
-  'paper-button',
-  'iron-icon',
-  'iron-image',
-  'paper-input',
-  'paper-spinner'
-];
+const neededElements = [];
 
 function dismiss(){
   const handler = document.querySelector('#handler');

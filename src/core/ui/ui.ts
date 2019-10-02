@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css, TemplateResult } from 'lit-element';
 import Elara from '../elara';
 
 export const UI = {
@@ -7,14 +7,20 @@ export const UI = {
     }
 };
 
+export function decodeHTML(html: string){
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+}
+
 export const Processing = {
     /**
      * Convert a remote url to an image data-url
      * 
      * @param src remote url
      */
-    toDataURL(src: string): Promise<string> {
-        return new Promise((resolve) => {
+    toDataURL(src: string, quality = 1): Promise<string> {
+        return new Promise((resolve, reject) => {
             const image = new Image();
             image.crossOrigin = 'Anonymous';
             
@@ -24,13 +30,68 @@ export const Processing = {
                 canvas.height = image.naturalHeight;
                 canvas.width = image.naturalWidth;
                 context.drawImage(image, 0, 0);
-                resolve(canvas.toDataURL('image/jpeg'));
+                resolve(canvas.toDataURL('image/jpeg', quality));
             };
+
+            image.onerror = image.onabort = () => {
+                reject();
+            }; 
         
             image.src = src;
         });
+    },
+    async retrieveAsFile(url: string, proxy: string): Promise<File> {
+        try {
+            const blob = await Processing.retrieveAsBlob(url, proxy);
+            return new File([blob], url.replace(/[\#\?].*$/,'').substring(url.lastIndexOf('/')+1));
+        } catch {
+            return null;
+        }
+    },
+    async retrieveAsBlob(url: string, proxy: string): Promise<Blob> {
+        try {
+            return await fetch(proxy.concat(url)).then(r => r.blob());
+        } catch {
+            return null;
+        }
     }
 };
+
+/**
+ * Return a word without accents using normalize \o/
+ * @param str "Crème au chocolat"
+ * @return {string} "Creme au chocolat"
+ */
+export function normalize(str: string): string {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+export function slugify(str: string, separator: string){
+    str = str.trim();
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    const from = 'åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;';
+    const to = 'aaaaaaeeeeiiiioooouuuunc------';
+
+    for (let i = 0, l = from.length; i < l; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    return str
+        .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-') // collapse dashes
+        .replace(/^-+/, '') // trim - from start of text
+        .replace(/-+$/, '') // trim - from end of text
+        .replace(/-/g, separator);
+}
+
+export function ifDefined(property: unknown, template: TemplateResult, initial: TemplateResult){
+    if(!property) return initial;
+
+    return template;
+}
 
 export const CSS = {
     queries: {
@@ -156,6 +217,10 @@ let state: GalleryState = {
     touchstartX: 0,
     touchendX: 0
 };
+
+export interface IronImageCompatibleElement extends HTMLImageElement {
+    sizing: string;
+}
 
 const show = (container: HTMLElement) => {
     const image = container.querySelector('iron-image');
@@ -347,9 +412,8 @@ export const Utils = {
         const root = document.documentElement;
 
         if(mode === 'night'){
-            root.style.setProperty('--elara-background-color', '#373737');
-            root.style.setProperty('--elara-font-color', '#f0f0f0');
-            root.style.setProperty('--elara-font-hover', '#9e9e9e');
+            // root.style.setProperty('--elara-font-color', '#f2f2f2');
+            // root.style.setProperty('--elara-font-hover', '#333');
         } else {
             root.style.removeProperty('--elara-background-color');
             root.style.removeProperty('--elara-font-color');
