@@ -7,7 +7,7 @@ import { navigate } from '../core/routing/routing';
 import { CSS, Utils, chunk, decodeHTML } from '../core/ui/ui';
 import { pulseWith } from '../core/animations';
 import WPBridge from '../core/wordpress/bridge';
-import { WPSearchPost } from '../core/wordpress/interfaces';
+import { WPSearchPost, WPCategory } from '../core/wordpress/interfaces';
 
 export function projectCard(project: WPSearchPost){
     return html`
@@ -32,8 +32,13 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     const bridge = new WPBridge(null, null);
 
     let projects = await bridge.loader.projects(filterSlug, null).toPromise();
+    const loadedCategories = new Map<number, WPCategory>();
     for(const project of projects){
-        project.category = await bridge.loader.single(project.categories[0]).toPromise();
+        const wasGet = loadedCategories.get(project.categories[0]);
+        if(!wasGet){
+            loadedCategories.set(project.categories[0], await bridge.loader.single(project.categories[0]).toPromise());
+        }
+        project.category = loadedCategories.get(project.categories[0]);
         project.media = await bridge.loader.media(project.featured_media).toPromise();
     }
     

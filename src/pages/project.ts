@@ -45,6 +45,11 @@ class Project extends Page {
                 height: 240px;
                 margin: 1em;
             }
+            .post-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             `
         ];
     }
@@ -80,7 +85,7 @@ class Project extends Page {
 
         ${this.project ? html`
             <h1 class="title">${unsafeHTML(this.project.title.rendered)}</h1>
-            <p>${unsafeHTML(this.project.content.rendered)}</p>
+            <main class="post-content">${unsafeHTML(this.project.content.rendered)}</main>
         ` : html``}
         </div>
         `;
