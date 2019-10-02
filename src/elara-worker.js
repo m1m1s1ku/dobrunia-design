@@ -2,32 +2,18 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 
 function registerWorkbox(){
     workbox.routing.registerRoute(
+       '/',
+        new workbox.strategies.NetworkFirst()
+    );
+
+    workbox.routing.registerRoute(
         new RegExp(/.*\.js/),
-        new workbox.strategies.CacheFirst()
+        new workbox.strategies.NetworkFirst()
     );
 
     workbox.routing.registerRoute(
         new RegExp(/(main).*\.js/),
         new workbox.strategies.NetworkFirst()
-    );
-
-    workbox.routing.registerRoute(
-       '/',
-        new workbox.strategies.CacheFirst()
-    );
-
-    workbox.routing.registerRoute(
-        /^https:\/\/api.dobruniadesign.com/,
-        new workbox.strategies.StaleWhileRevalidate({
-            cacheName: 'dobrunia-api-cache'
-        })
-    );
-
-    workbox.routing.registerRoute(
-        /^https:\/\/res.cloudinary.com\/.*\/image\/upload\//,
-        new workbox.strategies.CacheFirst({
-            cacheName: 'cloudinary-cache'
-        })
     );
 
     workbox.routing.registerRoute(
@@ -57,11 +43,6 @@ function registerWorkbox(){
           cacheName: 'elara-svg-cache',
         })
     );
-
-    workbox.routing.registerRoute(
-        new RegExp(/.*\#!/),
-        new workbox.strategies.CacheFirst()
-    );
 }
 if (workbox) {
     console.log('Elara ::: Workbox is loaded 🎉');
@@ -69,6 +50,10 @@ if (workbox) {
         console.warn('Elara ::: disabling worker caching, we are in dev');
     } else {
         registerWorkbox();
+        self.onerror = function(message) {
+            console.warn(message);
+            debugger;
+        };
     }
 } else {
     console.log('Elara ::: Workbox didn\'t load 😬');

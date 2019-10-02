@@ -11,9 +11,9 @@ export class Tree extends PureElement {
     public static readonly is: string = 'ui-tree';
 
     @property({type: Number, reflect: true})
-    public height: number = 300;
+    public height = 300;
     @property({type: Number, reflect: true})
-    public width: number = 300;
+    public width = 300;
 
     public firstUpdated(): void {
         const ctx = this._canvas.getContext('2d');
@@ -39,16 +39,16 @@ export class Tree extends PureElement {
 
         let newLength: number;
         let newAngle: number;
-        let endX: number;
-        let endY: number;
 
         const maxBranch = 3;
         const maxAngle = 2 * Math.PI / 4;
         
         ctx.beginPath();
         ctx.moveTo(startX,startY);
-        endX = startX + length * Math.cos(angle);
-        endY = startY + length * Math.sin(angle);
+
+        const endX = startX + length * Math.cos(angle);
+        const endY = startY + length * Math.sin(angle);
+        
         ctx.lineCap = 'round';
         ctx.lineWidth = branchWidth;
         ctx.lineTo(endX,endY);

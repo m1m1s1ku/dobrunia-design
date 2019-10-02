@@ -51,19 +51,6 @@ export class ElaraApp extends Root implements Elara.Root {
 		await this.performUpdate();
 	}
 
-	/* 
-	private async _remoteBG(){
-		let backgroundURL = null;
-		try {
-			backgroundURL = await Processing.toDataURL('https://source.unsplash.com/collection/162213/1366x768', 1);
-		} catch (err){
-			const fallback = await import('./assets/assets/default.jpeg');
-			backgroundURL = await Processing.toDataURL(fallback.default);
-		}
-		document.documentElement.style.setProperty('--unsplash-bg', `url('${backgroundURL}')`);
-	}
-	*/
-
 	public static get styles(): CSSResult[] {
 		return [
 		css`

@@ -1,20 +1,15 @@
+<!-- {{SSRFunctions}} -->
 <!doctype html>
 <html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-    <meta name="description" content="Décoration et accessoires d'intérieur | Les créations de Dobromila Golowacz">
 
-    <title>Dobrunia Design</title>
+    <!-- {{SSRHead}} -->
 
     <base href="/">
     
     <meta name="theme-color" content="#869c27">
-
-    <meta property="og:title" content="Dobrunia Design" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.dobruniadesign.com" />
-    <meta property="og:image" content="https://www.dobruniadesign.com<%= htmlWebpackPlugin.options.pathname %>/assets/icons/logo.svg" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/favicon-32x32.png">
@@ -25,6 +20,22 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-config" content="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://base.dobruniadesign.com" crossorigin>
+    <link rel="preconnect" href="https://sentry.io" crossorigin>
+
+    <custom-style>
+        <style>
+          html {
+            --lumo-primary-color: hsla(88, 43%, 37%, 1);
+            --lumo-primary-color-50pct: hsla(88, 43%, 37%, .5);
+            --lumo-primary-color-10pct: hsla(88, 43%, 37%, .1);
+            --lumo-primary-text-color: var(--lumo-primary-color);
+            --lumo-primary-contrast-color: #FFF;
+            --lumo-font-size-m: 17px;
+          }
+        </style>
+      </custom-style>
+      
     <style>
       :root {
         --elara-darkgray: #2f2f2f;
@@ -42,7 +53,7 @@
         --elara-highlight: #b47e71;
         --elara-complementary: #5E595D;
 
-        --elara-background-color: #fff;
+        --elara-background-color: transparent;
         --elara-footer-color: #f5f5f5;
         --elara-font-color: #2f2f2f;
         --elara-font-hover: rgb(0, 0, 0, 0.3);
@@ -57,6 +68,10 @@
         };
       }
 
+      svg {
+        width: 30px;
+      }
+
       a {
         text-decoration: none;
         color: var(--elara-primary);
@@ -65,10 +80,29 @@
 
       body {
         padding: 0;
-        margin: 0 2em;
+        margin: 0;
+        background-image: var(--unsplash-bg);
         background-color: var(--elara-background-color);
         font-family: var(--elara-font-primary);
         font-size: 16px;
+        background-position: center;
+        background-repeat: repeat;
+        background-size: cover;
+        height: 100vh;
+        padding-bottom: 2em;
+      }
+
+      body::after {
+        content: ' ';
+        background-color: #525252;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        opacity: .5;
+        pointer-events: none;
+        z-index: -1;
       }
 
       body.scrolling-disabled {
@@ -169,12 +203,12 @@
           color: white;
       }
     </style>
+    <!-- {{SSRPayload}} -->
     <noscript>JavaScript is needed to use this website.</noscript>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/boot.js"></script>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/webcomponents-loader.js"></script>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/web-animations-next-lite.min.js"></script>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/custom-elements-es5-adapter.js"></script>
-
   </head>
   <body>
     <elara-app></elara-app>
@@ -184,7 +218,7 @@
     if ('serviceWorker' in navigator) {
       // Use the window load event to keep the page load performant
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('<%= htmlWebpackPlugin.options.pathname %>/service-worker.js');
+        navigator.serviceWorker.register('<%= htmlWebpackPlugin.options.pathname %>/elara-worker.js');
       });
     }
   </script>

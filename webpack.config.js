@@ -1,21 +1,11 @@
-'use strict';
-
-const { resolve, join } = require('path');
-const merge = require('webpack-merge');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const WebpackMerge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CreateFilePlugin = require('create-file-webpack')
+const RemoveServiceWorkerPlugin = require('webpack-remove-serviceworker-plugin/packages/webpack-remove-serviceworker-plugin');
 
-const {exec} = require('child_process');
-const {writeFileSync, readFileSync} = require('fs');
-
-exec("git rev-parse --short HEAD", (_err, stdout) => {
-  writeFileSync('src/config.json', JSON.stringify({
-    name: 'Dobrunia',
-    revision: 'dobrunia-' + stdout.replace('\n', '')
-  }, null, 2))
-});
+const { resolve, join } = require('path');
 
 const ENV = process.argv.find(arg => arg.includes('production'))
   ? 'production'
@@ -23,8 +13,10 @@ const ENV = process.argv.find(arg => arg.includes('production'))
 const OUTPUT_PATH = ENV === 'production' ? resolve('dist') : resolve('src');
 const INDEX_TEMPLATE = resolve('./src/index.ejs');
 
-const webcomponentsjs = './node_modules/@webcomponents/webcomponentsjs';
-const webanimationsjs = './node_modules/web-animations-js';
+const nodeModules = './node_modules/';
+
+const webcomponentsjs = join(nodeModules, '@webcomponents/webcomponentsjs');
+const webanimationsjs = join(nodeModules, 'web-animations-js');
 
 const assets = [
   {
@@ -55,27 +47,22 @@ const polyfills = [
     flatten: true
   },
   {
-    from: resolve(`./src/config.json`),
+    from: resolve('./src/favicon.ico'),
     to: OUTPUT_PATH,
     flatten: true
   },
   {
-    from: resolve(`./src/robots.txt`),
+    from: resolve('./src/boot.js'),
     to: OUTPUT_PATH,
     flatten: true
   },
   {
-    from: resolve(`./src/favicon.ico`),
+    from: resolve('./src/elara-worker.js'),
     to: OUTPUT_PATH,
     flatten: true
   },
   {
-    from: resolve(`./src/boot.js`),
-    to: OUTPUT_PATH,
-    flatten: true
-  },
-  {
-    from: resolve(`./src/service-worker.js`),
+    from: resolve('./src/robots.txt'),
     to: OUTPUT_PATH,
     flatten: true
   }
@@ -83,7 +70,7 @@ const polyfills = [
 
 const subDirectory = ENV === 'production' ? '' : '';
 
-const commonConfig = merge([
+const commonConfig = WebpackMerge([
   {
     entry: './src/elara-app.ts',
     output: {
@@ -101,11 +88,23 @@ const commonConfig = merge([
           use: ['css-loader'],
         },
         {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          use: [
+            'url-loader?limit=10000',
+            'img-loader'
+          ]
+        },
+        {
+          test: /\.svg$/,
+          loader: 'svg-inline-loader'
+        },
+        {
           enforce: 'pre',
           test: /\.tsx?$/,
           loader: 'eslint-loader',
           exclude: /node_modules/,
           options: {
+            fix: true,
             emitWarning: ENV === 'development',
             failOnWarning: ENV === 'development',
             failOnError: false
@@ -120,24 +119,28 @@ const commonConfig = merge([
           test: /\.ejs/,
           loader: 'ejs-loader',
           exclude: /node_modules/
+        },
+        {
+          test: /\.css|\.s(c|a)ss$/,
+          use: [{
+            loader: 'lit-scss-loader',
+            options: {
+              minify: true, // defaults to false
+            },
+          }, 'extract-loader', 'css-loader', 'sass-loader'],
         }
       ]
     }
   }
 ]);
 
-const developmentConfig = merge([
+const developmentConfig = WebpackMerge([
   {
     devtool: 'cheap-module-source-map',
     plugins: [
       new CopyWebpackPlugin(polyfills),
       new HtmlWebpackPlugin({
         template: INDEX_TEMPLATE
-      }),
-      new CreateFilePlugin({
-        path: './dist',
-        fileName: 'config.json',
-        content: readFileSync('./src/config.json')
       })
     ],
 
@@ -152,9 +155,9 @@ const developmentConfig = merge([
   }
 ]);
 
-const productionConfig = merge([
+const productionConfig = WebpackMerge([
   {
-    devtool: 'nosources-source-map',
+    devtool: 'eval',
     plugins: [
       new CleanWebpackPlugin(),
       new CopyWebpackPlugin([...polyfills, ...assets]),
@@ -168,21 +171,17 @@ const productionConfig = merge([
           minifyJS: true
         }
       }),
-      new CreateFilePlugin({
-        path: './dist',
-        fileName: 'config.json',
-        content: readFileSync('./src/config.json')
-      })
+      new RemoveServiceWorkerPlugin({ filename: 'service-worker.js' })
     ]
   }
 ]);
 
 module.exports = mode => {
   if (mode === 'production') {
-    return merge(commonConfig, productionConfig, { mode });
+    return WebpackMerge(commonConfig, productionConfig, { mode });
   }
 
-  return merge(commonConfig, developmentConfig, { mode });
+  return WebpackMerge(commonConfig, developmentConfig, { mode });
 };
 
 

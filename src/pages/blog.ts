@@ -20,7 +20,7 @@ class Blog extends Page {
     @property({type: Array, reflect: false})
     private ghost: ReadonlyArray<Article> = [];
 
-    private _ratio: number = .6;
+    private _ratio = .6;
 
     private _observer: IntersectionObserver = new IntersectionObserver((entries, observer) => {
         for(const entry of entries){
