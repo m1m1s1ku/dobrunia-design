@@ -426,7 +426,7 @@ export const Utils = {
         return Utils.mode() !== null;
     },
     isSunny: (): boolean => {
-        return Utils.mode() === 'day';
+        return true;
     },
     dayOrNight: (): Elara.Modes => {
         if(Utils.hasSwitched()){

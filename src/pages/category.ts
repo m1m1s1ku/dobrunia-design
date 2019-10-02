@@ -8,6 +8,7 @@ import { projectCard, projectLoad, ElementWithProjects, iObserverForCard } from 
 import Constants from '../constants';
 
 import { WPSearchPost } from '../core/wordpress/interfaces';
+import WPBridge from '../core/wordpress/bridge';
 
 class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';
@@ -42,19 +43,31 @@ class Category extends Page implements ElementWithProjects {
     }
 
     public async firstUpdated(){
+        window.addEventListener('hashchange', async () => {
+            this.projects = [];
+            this.loaded = false;
+            const requestedHash = location.hash.split('/');
+            await this._loadRequested(requestedHash[1]);
+            this.loaded = true;
+        });
+
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            // TODO : Do load of cat number
-            // project.category = await bridge.loader.single(project.categories[0]).toPromise();
+            this._loadRequested(requestedHash[1]);
+        }
+    }
 
-            await projectLoad(this, '#cards .card:last-child', null, this._observer);
-            if(this.projects.length === 0){
-                setTimeout(() => {
-                    document.title = this.projects[0].category.name + ' | ' + Constants.title;
-                }, 200);
-            } else {
+    private async _loadRequested(hash: string){
+        const bridge = new WPBridge(null, null);
+        const category = await bridge.loader.single(null, hash).toPromise();
+
+        await projectLoad(this, '#cards .card:last-child', category[0].id, this._observer);
+        if(this.projects.length === 0){
+            setTimeout(() => {
                 document.title = this.projects[0].category.name + ' | ' + Constants.title;
-            }
+            }, 200);
+        } else {
+            document.title = this.projects[0].category.name + ' | ' + Constants.title;
         }
     }
 

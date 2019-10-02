@@ -36,7 +36,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     for(const project of projects){
         const wasGet = loadedCategories.get(project.categories[0]);
         if(!wasGet){
-            loadedCategories.set(project.categories[0], await bridge.loader.single(project.categories[0]).toPromise());
+            loadedCategories.set(project.categories[0], await bridge.loader.single(project.categories[0], null).toPromise());
         }
         project.category = loadedCategories.get(project.categories[0]);
         project.media = await bridge.loader.media(project.featured_media).toPromise();
@@ -95,7 +95,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
 
     if(filterSlug){
         projects = projects.filter(project => {
-            if(project.categories.indexOf(filterSlug) !== -1){
+            if(project.category.id === filterSlug){
                 return true;
             }
     

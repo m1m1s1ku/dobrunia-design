@@ -18,7 +18,7 @@ export interface TagsStatus {
 
 export declare namespace WPBridgeAPI {
     export interface Loader {
-        single(id: number): Observable<WPCategory>;
+        single(id: number, slug: string): Observable<WPCategory>;
         projects(category: number, slug: string): Observable<WPSearchPost[]>;
         media(id: number): Observable<WPMedia>;
         category(id: number, perPage?: number, page?: number): Observable<WPSearchPost[]>;
@@ -87,8 +87,8 @@ export default class WPBridge {
                     cancelFetchOnError<WPMedia>()
                 );
             },
-            single: (id: number): Observable<WPCategory> => {
-                return fromFetch(Constants.proxy+Constants.api+Constants.categories+'/'+id, {signal: this._signal}).pipe(
+            single: (id: number, slug: string): Observable<WPCategory> => {
+                return fromFetch(Constants.proxy+Constants.api+Constants.categories+ (id ? '/'+id : '') + (slug ? '?slug='+slug : ''), {signal: this._signal}).pipe(
                     redirectOnUnauthorized(),
                     cancelFetchOnError<WPCategory>()
                 );
