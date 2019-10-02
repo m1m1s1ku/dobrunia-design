@@ -5,20 +5,18 @@ import { property, LitElement } from 'lit-element';
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
 import { CSS, Utils, chunk } from '../core/ui/ui';
-import Constants from '../constants';
 import { pulseWith } from '../core/animations';
-import { Project } from '../bridge';
-// import WPBridge from '../core/wordpress/bridge';
-// import { WPArticleStatus } from '../core/wordpress/interfaces';
+import WPBridge from '../core/wordpress/bridge';
+import { WPSearchPost } from '../core/wordpress/interfaces';
 
-export function projectCard(project: Project){
+export function projectCard(project: WPSearchPost){
     return html`
     <article class="project card" @click=${() => navigate('project'.concat('/'+ project.slug))}>
-        ${project.images ? html`
-            <iron-image sizing="contain" preload src="${project.images[0].path}"></iron-image>
+        ${project.media ? html`
+            <iron-image sizing="contain" preload src="${project.media.source_url}"></iron-image>
         ` : ''}
         <div class="text">
-            <h3 class="title">${project.title}</h3>
+            <h3 class="title">${project.title.rendered}</h3>
             <span>${project.category.name}</span>
         </div>
     </article>
@@ -26,40 +24,58 @@ export function projectCard(project: Project){
 }
 
 export interface ElementWithProjects extends LitElement {
-    projects: ReadonlyArray<Project>;
+    projects: ReadonlyArray<WPSearchPost>;
     loaded: boolean;
 }
 
-export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: string, observer?: IntersectionObserver){
-    const request = await fetch(Constants.route('projects'));
-    const parsed = await request.json();
+export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: number, observer?: IntersectionObserver){
+    const bridge = new WPBridge(null, null);
 
-    let filtered = parsed.data as Project[];
-
-    // debugger;
-    /* 
+    let projects = await bridge.loader.projects(filterSlug).toPromise();
+    for(const project of projects){
+        project.category = await bridge.loader.single(project.categories[0]).toPromise();
+        project.media = await bridge.loader.media(project.featured_media).toPromise();
+    }
+    
     // Import old to new using bridge
-    const bridge = new WPBridge('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYmFzZS5kb2JydW5pYWRlc2lnbi5jb20iLCJpYXQiOjE1NzAwNDExMzMsIm5iZiI6MTU3MDA0MTEzMywiZXhwIjoxNTcwNjQ1OTMzLCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.-fXn4sI9ZV3wCjvRQFu1jfN3Pu1LJKsSBMk8m6V3ZIg', null);
+    /*const bridge = new WPBridge('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYmFzZS5kb2JydW5pYWRlc2lnbi5jb20iLCJpYXQiOjE1NzAwNDExMzMsIm5iZiI6MTU3MDA0MTEzMywiZXhwIjoxNTcwNjQ1OTMzLCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.-fXn4sI9ZV3wCjvRQFu1jfN3Pu1LJKsSBMk8m6V3ZIg', null);
     for(const proj of filtered){
-        // get current project data
-
         const uploadedImages = [];
+        console.warn('has ', proj.images.length, ' to upload before post');
         for(const image of proj.images){
             const imageBlob = await Processing.retrieveAsBlob(image.path, Constants.proxy);
             const picName = slugify(image.filename, '-');
             const imageNumber = await bridge.maker.media(new File([imageBlob], 'name'), picName).toPromise();
             uploadedImages.push(imageNumber);
             console.warn('inserted picture for project');
-            debugger;
         }
 
         const first = uploadedImages.shift();
 
+        let content = proj.content;
+        for(const toAddFeatured of uploadedImages){
+            console.warn('has ', uploadedImages.length, ' to concat before post');
+            const media = await bridge.loader.media(toAddFeatured).toPromise();
+            console.warn(media.source_url);
+            content = content.concat(`
+            \n <img src="${media.source_url}" />
+            `);
+        }
+
+        const category = await bridge.maker.category({
+            description:'',
+            name: proj.category.name,
+            slug: proj.category.slug,
+            parent: null
+        }).toPromise();
+
+        console.warn('final content', content);
+
         const project = await bridge.maker.project({
             title: proj.title,
             status: WPArticleStatus.publish,
-            content: proj.content,
-            categories: [],
+            content,
+            categories: [category],
             // eslint-disable-next-line @typescript-eslint/camelcase
             featured_media: first,
             tags: [],
@@ -68,15 +84,13 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             password: '',
             slug: '',
         }).toPromise();
+
         console.warn('added project è_é', project);
-        // add medias
-        // add post content
-    }
-    */
+    }*/
 
     if(filterSlug){
-        filtered = parsed.data.filter(project => {
-            if(project.category.slug === filterSlug){
+        projects = projects.filter(project => {
+            if(project.categories.indexOf(filterSlug) !== -1){
                 return true;
             }
     
@@ -84,7 +98,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
         });
     }
 
-    const chunks = chunk(filtered, 1);
+    const chunks = chunk(projects, 1);
 
     let initial = 100;
     for(const chunk of chunks){
@@ -133,7 +147,7 @@ class Home extends Page implements ElementWithProjects {
     private _observer = iObserverForCard(.4);
 
     @property({type: Array, reflect: false})
-    public projects: ReadonlyArray<Project> = [];
+    public projects: ReadonlyArray<WPSearchPost> = [];
 
     public get head(){
         return {

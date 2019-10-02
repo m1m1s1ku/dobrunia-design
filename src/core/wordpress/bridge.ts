@@ -5,7 +5,7 @@ import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import Constants from '../../constants';
 import { slugify } from '../ui/ui';
 
-import { WPCategory, WPTag, WPPost, WPCreateCategory, WPSearchPost } from './interfaces';
+import { WPCategory, WPTag, WPPost, WPCreateCategory, WPSearchPost, WPMedia } from './interfaces';
 import { flatTree } from './helper';
 import { navigate } from '../routing/routing';
 
@@ -18,6 +18,9 @@ export interface TagsStatus {
 
 export declare namespace WPBridgeAPI {
     export interface Loader {
+        single(id: number): Observable<WPCategory>;
+        projects(category: number): Observable<WPSearchPost[]>;
+        media(id: number): Observable<WPMedia>;
         category(id: number, perPage?: number, page?: number): Observable<WPSearchPost[]>;
         categories(search?: string, perPage?: number, page?: number): Observable<ReadonlyArray<WPCategory>>;
         tags: () => {
@@ -73,6 +76,23 @@ export default class WPBridge {
         const maker = this.maker;
 
         return {
+            projects(category: number): Observable<WPSearchPost[]> {
+                return fromFetch(Constants.proxy+Constants.api+Constants.projects + (category ? '?categories='+category : ''), {signal: this._signal}).pipe(
+                    cancelFetchOnError<WPSearchPost[]>()
+                );
+            },
+            media(id: number): Observable<WPMedia> {
+                return fromFetch(Constants.proxy+Constants.api+Constants.media+'/'+id, {signal: this._signal}).pipe(
+                    redirectOnUnauthorized(),
+                    cancelFetchOnError<WPMedia>()
+                );
+            },
+            single: (id: number): Observable<WPCategory> => {
+                return fromFetch(Constants.proxy+Constants.api+Constants.categories+'/'+id, {signal: this._signal}).pipe(
+                    redirectOnUnauthorized(),
+                    cancelFetchOnError<WPCategory>()
+                );
+            },
             category: (id: number, perPage = 100, page = 1): Observable<WPSearchPost[]> => {
                 return fromFetch(Constants.proxy+Constants.api+Constants.posts+'?per_page='+perPage+(id ? '&categories='+id:'')+(page? '&page='+page : ''), {signal: this._signal}).pipe(
                     redirectOnUnauthorized(),

@@ -7,7 +7,7 @@ import { CSS } from '../core/ui/ui';
 import { projectCard, projectLoad, ElementWithProjects, iObserverForCard } from './home';
 import Constants from '../constants';
 
-import { Project } from '../bridge';
+import { WPSearchPost } from '../core/wordpress/interfaces';
 
 class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';
@@ -15,7 +15,7 @@ class Category extends Page implements ElementWithProjects {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
-    public projects: ReadonlyArray<Project> = [];
+    public projects: ReadonlyArray<WPSearchPost> = [];
     
     private _observer = iObserverForCard(.2);
 
@@ -44,7 +44,10 @@ class Category extends Page implements ElementWithProjects {
     public async firstUpdated(){
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            await projectLoad(this, '#cards .card:last-child', requestedHash[1], this._observer);
+            // TODO : Do load of cat number
+            // project.category = await bridge.loader.single(project.categories[0]).toPromise();
+
+            await projectLoad(this, '#cards .card:last-child', null, this._observer);
             if(this.projects.length === 0){
                 setTimeout(() => {
                     document.title = this.projects[0].category.name + ' | ' + Constants.title;

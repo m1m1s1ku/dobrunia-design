@@ -13,6 +13,11 @@ export enum WPArticleStatus {
     private = 'private'
 };
 
+export interface WPMedia {
+    // TODO : Make full typings
+    source_url: string;
+}
+
 export interface WPPost {
     id?: number;
     title: string;
@@ -29,6 +34,8 @@ export interface WPPost {
 };
 
 export interface WPSearchPost {
+    category: WPCategory;
+    media?: WPMedia; // Hack
     author: number;
     categories: number[];
     comment_status: string;
