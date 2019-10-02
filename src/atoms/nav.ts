@@ -51,7 +51,7 @@ export default class Nav extends PureElement {
 
             @media (max-width: 450px){
                 .title {
-                    padding: 1em 0 0 0em;
+                    padding: 1em 0 0 1em;
                 }
             }
             
