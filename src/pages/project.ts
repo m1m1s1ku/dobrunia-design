@@ -79,7 +79,7 @@ class Project extends Page {
         ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
 
         ${this.project ? html`
-            <h1 class="title">${this.project.title.rendered}</h1>
+            <h1 class="title">${unsafeHTML(this.project.title.rendered)}</h1>
             <p>${unsafeHTML(this.project.content.rendered)}</p>
         ` : html``}
         </div>
