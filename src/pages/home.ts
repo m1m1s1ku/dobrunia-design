@@ -149,6 +149,9 @@ class Home extends Page implements ElementWithProjects {
     @property({type: Array, reflect: false})
     public projects: ReadonlyArray<WPSearchPost> = [];
 
+    @property({type: Boolean, reflect: false})
+    public loaded = false;
+
     public get head(){
         return {
             title: 'Projets',
