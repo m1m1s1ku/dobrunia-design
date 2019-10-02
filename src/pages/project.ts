@@ -5,7 +5,7 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils } from '../core/ui/ui';
+import { Utils, decodeHTML } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import WPBridge from '../core/wordpress/bridge';
 import { WPSearchPost } from '../core/wordpress/interfaces';
@@ -64,7 +64,7 @@ class Project extends Page {
 
             this.project = {...first};
             this.loaded = true;
-            document.title = this.project.title + ' | ' + Constants.title;
+            document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;
             if(Utils.animationsReduced()){
                 return;
             }

@@ -5,9 +5,12 @@ import Root from './core/strategies/Root';
 import { navigate } from './core/routing/routing';
 
 import './pages/index';
+import './atoms/nav';
 import './atoms/not-found';
 
 import Elara from './core/elara';
+import Constants from './constants';
+import { Item } from './atoms/nav';
 
 // Polyfills
 import('./polyfill');
@@ -23,7 +26,9 @@ export class ElaraApp extends Root implements Elara.Root {
 	public config: {
         name: string;
         revision: string;
-    };
+	};
+	@property({type: Boolean, reflect: true, noAccessor: true})
+	public links: Item[];
 
 	public constructor(){
 		super();
@@ -47,7 +52,21 @@ export class ElaraApp extends Root implements Elara.Root {
 		});
 
 		await this._onHashChange(hashEvent);
-		// await this._remoteBG();
+		const menuLinksR = await fetch(Constants.api+Constants.menu);
+		const response = await menuLinksR.json();
+
+		const idx = 0;
+		for(const link of response){
+			this.links = [
+				{
+					route: link.url.replace('https://www.dobruniadesign.com', ''),
+					name: link.post_title,
+					idx,
+					hidden: false
+				}
+			];
+		}
+
 		await this.performUpdate();
 	}
 
@@ -103,6 +122,8 @@ export class ElaraApp extends Root implements Elara.Root {
 		return html`
 			${this.waiting ? html`
 			` : html``}
+
+			<ui-nav .items=${this.links}></ui-nav>
 			<main id="main" class="content"></main>
 		`;
 	}

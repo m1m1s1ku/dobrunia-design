@@ -8,6 +8,7 @@ const Constants = {
     domain: 'dobruniadesign.com',
     api: 'https://base.dobruniadesign.com/wp-json/',
     proxy: location.host === 'localhost:3000' ? '' : '',
+    menu: 'dobrunia/menu',
     login: 'jwt-auth/v1/token',
     media: 'wp/v2/media',
     posts: 'wp/v2/posts',

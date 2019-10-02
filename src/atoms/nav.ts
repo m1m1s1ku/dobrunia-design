@@ -7,11 +7,18 @@ import { navigate } from '../core/routing/routing';
 import { CSS, Utils } from '../core/ui/ui';
 import Constants from '../constants';
 
-class Nav extends PureElement {
+export interface Item {
+    route: string; 
+    name: string;
+    idx: number; 
+    hidden: boolean;
+}
+
+export default class Nav extends PureElement {
     public static readonly is: string = 'ui-nav';
 
     @property({type: Array, reflect: false})
-    public items = [];
+    public items: Item[] = [];
 
     @property({type: String, reflect: true})
     public route = null;
@@ -114,13 +121,13 @@ class Nav extends PureElement {
         `;
     }
 
-    private _item(item: { route: string; name: string; idx: number; hidden: boolean }){
+    private _item(item: Item){
         if(item.hidden === true){
             return html``;
         }
 
         return html`
-            <li><a class="item ${item && this.route === item.route ? 'active' : ''}" tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => navigate(item.route)}>${item.name}</a></li>
+            <li><a .class="item ${item && this.route === item.route ? 'active' : ''}" .tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => navigate(item.route)}>${item.name}</a></li>
         `;
     }
 }
