@@ -77,7 +77,7 @@ export default class WPBridge {
 
         return {
             projects(category: number, slug: string): Observable<WPSearchPost[]> {
-                return fromFetch(Constants.proxy+Constants.api+Constants.projects + (category ? '?categories='+category : '') + (slug ? category ? '&slug='+slug : '?slug='+slug : ''), {signal: this._signal}).pipe(
+                return fromFetch(Constants.proxy+Constants.api+Constants.projects + '?per_page=100' + (category ? '&categories='+category : '') + (slug ? '&slug='+slug : ''), {signal: this._signal}).pipe(
                     cancelFetchOnError<WPSearchPost[]>()
                 );
             },
