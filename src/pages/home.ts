@@ -8,6 +8,8 @@ import { CSS, Utils, chunk } from '../core/ui/ui';
 import Constants from '../constants';
 import { pulseWith } from '../core/animations';
 import { Project } from '../bridge';
+// import WPBridge from '../core/wordpress/bridge';
+// import { WPArticleStatus } from '../core/wordpress/interfaces';
 
 export function projectCard(project: Project){
     return html`
@@ -32,7 +34,46 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     const request = await fetch(Constants.route('projects'));
     const parsed = await request.json();
 
-    let filtered = parsed.data;
+    let filtered = parsed.data as Project[];
+
+    // debugger;
+    /* 
+    // Import old to new using bridge
+    const bridge = new WPBridge('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYmFzZS5kb2JydW5pYWRlc2lnbi5jb20iLCJpYXQiOjE1NzAwNDExMzMsIm5iZiI6MTU3MDA0MTEzMywiZXhwIjoxNTcwNjQ1OTMzLCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.-fXn4sI9ZV3wCjvRQFu1jfN3Pu1LJKsSBMk8m6V3ZIg', null);
+    for(const proj of filtered){
+        // get current project data
+
+        const uploadedImages = [];
+        for(const image of proj.images){
+            const imageBlob = await Processing.retrieveAsBlob(image.path, Constants.proxy);
+            const picName = slugify(image.filename, '-');
+            const imageNumber = await bridge.maker.media(new File([imageBlob], 'name'), picName).toPromise();
+            uploadedImages.push(imageNumber);
+            console.warn('inserted picture for project');
+            debugger;
+        }
+
+        const first = uploadedImages.shift();
+
+        const project = await bridge.maker.project({
+            title: proj.title,
+            status: WPArticleStatus.publish,
+            content: proj.content,
+            categories: [],
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            featured_media: first,
+            tags: [],
+            date: new Date().toISOString(),
+            excerpt: proj.slug,
+            password: '',
+            slug: '',
+        }).toPromise();
+        console.warn('added project è_é', project);
+        // add medias
+        // add post content
+    }
+    */
+
     if(filterSlug){
         filtered = parsed.data.filter(project => {
             if(project.category.slug === filterSlug){

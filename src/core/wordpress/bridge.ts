@@ -30,6 +30,7 @@ export declare namespace WPBridgeAPI {
     }
 
     export interface Maker {
+        project(article: WPPost): Observable<WPPost>;
         post(article: WPPost): Observable<WPPost>;
         media(file: File, article: string): Observable<number>;
         tag(tag: WPTag, database: unknown): Observable<number>;
@@ -163,6 +164,26 @@ export default class WPBridge {
 
     public get maker(): WPBridgeAPI.Maker {
         return {
+            project: (article: WPPost) => {
+                return fromFetch(Constants.proxy + Constants.api + Constants.projects, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(article),
+                    method: 'POST',
+                    signal: this._signal
+                }).pipe(
+                    redirectOnUnauthorized(),
+                    switchMap(response => {
+                        if(response.ok && response.status === 201){
+                            return response.json();
+                        } else {
+                            return EMPTY;
+                        }
+                    }
+                ));
+            },
             post: (article: WPPost) => {
                 return fromFetch(Constants.proxy + Constants.api + Constants.posts, {
                     headers: {
