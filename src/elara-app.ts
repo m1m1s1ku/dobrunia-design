@@ -57,9 +57,10 @@ export class ElaraApp extends Root implements Elara.Root {
 
 		const idx = 0;
 		for(const link of response){
+			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
 			this.links = [
 				{
-					route: link.url.replace('https://www.dobruniadesign.com', ''),
+					route: isHome ? 'home' : link.url.split(/[\\/]/).pop(),
 					name: link.post_title,
 					idx,
 					hidden: false
