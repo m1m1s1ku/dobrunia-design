@@ -28,7 +28,7 @@ export class ElaraApp extends Root implements Elara.Root {
         revision: string;
 	};
 	@property({type: Boolean, reflect: true, noAccessor: true})
-	public links: Item[];
+	public links: Item[] = [];
 
 	public constructor(){
 		super();
@@ -58,10 +58,14 @@ export class ElaraApp extends Root implements Elara.Root {
 		const idx = 0;
 		for(const link of response){
 			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
+			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
+			const nextURL = link.type === 'taxonomy' ? 'category/'+lastComponent : lastComponent;
+
 			this.links = [
+				...this.links,
 				{
-					route: isHome ? 'home' : link.url.split(/[\\/]/).pop(),
-					name: link.post_title,
+					route: isHome ? 'home' : nextURL,
+					name: link.title,
 					idx,
 					hidden: false
 				}

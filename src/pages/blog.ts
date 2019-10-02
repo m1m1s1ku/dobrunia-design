@@ -1,6 +1,5 @@
 import { html, TemplateResult } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
@@ -128,7 +127,7 @@ class Blog extends Page {
         const parsed = [];
 
         for(const article of articlesRes.data){
-            parsed.push({...article, content: unsafeHTML(article.content.slice(0, 200))});
+            parsed.push({...article});
         }
 
         const chunks = chunk(parsed, 1);
