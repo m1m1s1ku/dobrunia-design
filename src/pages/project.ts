@@ -1,14 +1,14 @@
 import { html, TemplateResult } from 'lit-html';
-import { repeat } from 'lit-html/directives/repeat';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Project as ProjectInfo } from '../bridge';
-import { onImageContainerClicked, Utils } from '../core/ui/ui';
+import { Utils } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
+import WPBridge from '../core/wordpress/bridge';
+import { WPSearchPost } from '../core/wordpress/interfaces';
 
 class Project extends Page {
     public static readonly is: string = 'ui-project';
@@ -16,7 +16,7 @@ class Project extends Page {
     public static readonly hasRouting = true;
 
     @property({type: Object})
-    public project: ProjectInfo;
+    public project: WPSearchPost;
 
     public get head(){
         return {
@@ -53,12 +53,16 @@ class Project extends Page {
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             const projectSlug = requestedHash[1];
-            const projectR = await fetch(Constants.route('projects/').concat(projectSlug), {
-                method: 'POST'
-            });
+            const bridge = new WPBridge(null, null);
+            const projects = await bridge.loader.projects(null, projectSlug).toPromise();
+            console.warn(projects);
 
-            const response = await projectR.json();
-            this.project = {... response.data, content: unsafeHTML(`${response.data.content}`)};
+            if(projects.length < 0){
+                throw new Error('Project not found');
+            }
+            const first = projects[0];
+
+            this.project = {...first};
             this.loaded = true;
             document.title = this.project.title + ' | ' + Constants.title;
             if(Utils.animationsReduced()){
@@ -75,18 +79,9 @@ class Project extends Page {
         ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
 
         ${this.project ? html`
-            <h1 class="title">${this.project.title}</h1>
-            <p>${this.project.description}</p>
-            ${this.project.content}
-            ${repeat(this.project.images, image => {
-                return html`
-                <div class="image-container" @click=${onImageContainerClicked}>
-                    <iron-image sizing="cover" preload src="${image.path}"></iron-image>
-                </div>
-                `;
-            })}
-        ` : html`
-        `}
+            <h1 class="title">${this.project.title.rendered}</h1>
+            <p>${unsafeHTML(this.project.content.rendered)}</p>
+        ` : html``}
         </div>
         `;
     }

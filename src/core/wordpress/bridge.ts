@@ -19,7 +19,7 @@ export interface TagsStatus {
 export declare namespace WPBridgeAPI {
     export interface Loader {
         single(id: number): Observable<WPCategory>;
-        projects(category: number): Observable<WPSearchPost[]>;
+        projects(category: number, slug: string): Observable<WPSearchPost[]>;
         media(id: number): Observable<WPMedia>;
         category(id: number, perPage?: number, page?: number): Observable<WPSearchPost[]>;
         categories(search?: string, perPage?: number, page?: number): Observable<ReadonlyArray<WPCategory>>;
@@ -76,8 +76,8 @@ export default class WPBridge {
         const maker = this.maker;
 
         return {
-            projects(category: number): Observable<WPSearchPost[]> {
-                return fromFetch(Constants.proxy+Constants.api+Constants.projects + (category ? '?categories='+category : ''), {signal: this._signal}).pipe(
+            projects(category: number, slug: string): Observable<WPSearchPost[]> {
+                return fromFetch(Constants.proxy+Constants.api+Constants.projects + (category ? '?categories='+category : '') + (slug ? category ? '&slug='+slug : '?slug='+slug : ''), {signal: this._signal}).pipe(
                     cancelFetchOnError<WPSearchPost[]>()
                 );
             },

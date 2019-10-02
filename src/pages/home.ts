@@ -4,7 +4,7 @@ import { property, LitElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
-import { CSS, Utils, chunk } from '../core/ui/ui';
+import { CSS, Utils, chunk, decodeHTML } from '../core/ui/ui';
 import { pulseWith } from '../core/animations';
 import WPBridge from '../core/wordpress/bridge';
 import { WPSearchPost } from '../core/wordpress/interfaces';
@@ -16,7 +16,7 @@ export function projectCard(project: WPSearchPost){
             <iron-image sizing="contain" preload src="${project.media.source_url}"></iron-image>
         ` : ''}
         <div class="text">
-            <h3 class="title">${project.title.rendered}</h3>
+            <h3 class="title">${decodeHTML(project.title.rendered)}</h3>
             <span>${project.category.name}</span>
         </div>
     </article>
@@ -31,7 +31,7 @@ export interface ElementWithProjects extends LitElement {
 export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: number, observer?: IntersectionObserver){
     const bridge = new WPBridge(null, null);
 
-    let projects = await bridge.loader.projects(filterSlug).toPromise();
+    let projects = await bridge.loader.projects(filterSlug, null).toPromise();
     for(const project of projects){
         project.category = await bridge.loader.single(project.categories[0]).toPromise();
         project.media = await bridge.loader.media(project.featured_media).toPromise();

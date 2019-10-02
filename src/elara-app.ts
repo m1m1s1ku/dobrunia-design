@@ -29,7 +29,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		super();
 		
 		this.bootstrap;
-		this.hasElaraRouting = false;
+		this.hasElaraRouting = true;
 	}
 
 	public get bootstrap(){		
