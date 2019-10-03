@@ -18,6 +18,11 @@ export function redirect(url: string, target = '_blank'): boolean {
  * @param {string} route route without base prefix
  */
 export function navigate(route: string): boolean {
+    if(route.indexOf('http') !== -1){
+        window.open(route, '_blank');
+        return true;
+    }
+    
      location.hash = `#!${route}`;
      return true;
 }

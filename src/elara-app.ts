@@ -59,7 +59,11 @@ export class ElaraApp extends Root implements Elara.Root {
 		for(const link of response){
 			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
-			const nextURL = link.type === 'taxonomy' ? 'category/'+lastComponent : lastComponent;
+
+			let nextURL = link.type === 'taxonomy' ? 'category/'+lastComponent : lastComponent;
+			if(link.type === 'custom' && !isHome){
+				nextURL = link.url;
+			}
 
 			this.links = [
 				...this.links,
