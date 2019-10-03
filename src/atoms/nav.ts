@@ -26,6 +26,9 @@ export default class Nav extends PureElement {
     @property({type: Boolean, reflect: true})
     public mobile = Utils.isMobile();
 
+    @property({type: Boolean, reflect: true})
+    public shown = false;
+
     private _resizeListener: (e: Event) => void;
 
     public constructor(){
@@ -63,6 +66,7 @@ export default class Nav extends PureElement {
                 position: absolute;
                 top: 2em;
                 right: 3em;
+                z-index: 999;
             }
 
             .item.active {
@@ -85,7 +89,87 @@ export default class Nav extends PureElement {
                 margin: 0 0.5em;
                 outline: none;
                 user-select: none;
-            }`
+            }
+
+            .menu {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 45px;
+                width: 45px;
+                color: var(--elara-font-color);
+            }
+            
+            .menu-content {
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                background-color: var(--elara-background-color);
+                color: var(--elara-font-color);
+                display: none;
+                transition: opacity .4s;
+            }
+    
+            .menu-content .item {
+                cursor: pointer;
+                position: relative;
+                font-size: 5vw;
+                color: var(--elara-font-color);
+                text-transform: lowercase;
+                margin: 0.5rem 0;
+                padding: 0 0.5rem;
+                transition: color 0.3s;
+                text-decoration: none;
+                user-select: none;
+                outline: none;
+            }
+    
+            @media (max-width: 600px){
+                .menu-content .item {
+                    font-size: 8vw;
+                }
+            }
+    
+            .menu-content .item::after {
+                content: '';
+                width: 100%;
+                top: 65%;
+                height: 6px;
+                background: var(--elara-primary);
+                position: absolute;
+                left: 0;
+                opacity: 0;
+                transform: scale3d(0,1,1);
+                transition: transform 0.3s, opacity 0.3s;
+                transform-origin: 100% 50%;
+            }
+    
+            .menu-content .item:hover, .menu-content .item.active {
+                color: var(--elara-font-hover);
+            }
+    
+            .menu-content .item:hover::after, .menu-content .item.active::after {
+                opacity: 1;
+                transform: scale3d(1,1,1);
+            }
+    
+            .menu.shown {
+                z-index: 999;
+            }
+            .menu-content.shown {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 999;
+                background-color: rgba(255, 255, 255, .8);
+            }
+            li {
+                list-style: none;
+            }
+            `
         ];
     }
 
@@ -111,12 +195,24 @@ export default class Nav extends PureElement {
                 <div class="links">
                     <ul>
                         ${this.mobile ?
-                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu"></paper-icon-button></li>` :
-                            html`${repeat(this.items, this._item.bind(this))}
-                        `}
+                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu" @click=${() => {
+                                this.shown = !this.shown;
+                            }}></paper-icon-button></li>` :
+                            html`${repeat(this.items, this._item.bind(this))}`}
                     </ul>
                 </div>
             </div>
+            ${this.mobile ? html`
+            <div class="menu ${this.shown === true ? 'shown' : ''}" @click=${e => {
+                if((e.currentTarget as HTMLElement).classList.contains('menu')){
+                    this.shown = false;
+                }
+            }}>
+                <div class="menu-content ${this.shown === true ? 'shown' : ''}">
+                    ${repeat(this.items, this._item.bind(this))}
+                </div>
+            </div>
+            ` : html``}
         </nav>
         `;
     }
@@ -124,6 +220,15 @@ export default class Nav extends PureElement {
     private _item(item: Item){
         if(item.hidden === true){
             return html``;
+        }
+
+        if(this.mobile){
+            return html`
+            <a class="item ${this.route === item.route ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
+                navigate(item.route);
+                this.shown = false;
+            }}>${item.name}</a>
+            `;
         }
 
         return html`
