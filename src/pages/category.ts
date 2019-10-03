@@ -60,7 +60,7 @@ class Category extends Page implements ElementWithProjects {
         const bridge = new WPBridge(null, null);
         const category = await bridge.loader.single(null, hash).toPromise();
 
-        if(!category){
+        if(!category || !category[0]){
             return;
         }
 

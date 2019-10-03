@@ -76,13 +76,6 @@ export class ElaraApp extends Root implements Elara.Root {
 			];
 		}
 
-		this.links = [...this.links, {
-			route: 'contact',
-			name: 'Contact',
-			idx:idx+1,
-			hidden: false
-		}];
-
 		await this.performUpdate();
 	}
 

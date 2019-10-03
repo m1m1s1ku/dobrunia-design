@@ -22,8 +22,8 @@ export function navigate(route: string): boolean {
         window.open(route, '_blank');
         return true;
     }
-    
-     location.hash = `#!${route}`;
+
+     location.hash = `#!${route.replace('#', '')}`;
      return true;
 }
 
