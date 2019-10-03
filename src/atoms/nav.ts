@@ -93,8 +93,8 @@ export default class Nav extends PureElement {
 
             .menu {
                 position: absolute;
-                top: 0;
-                right: 0;
+                top: 30px;
+                right: 30px;
                 height: 45px;
                 width: 45px;
                 color: var(--elara-font-color);
