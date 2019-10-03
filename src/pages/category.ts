@@ -44,7 +44,6 @@ class Category extends Page implements ElementWithProjects {
 
     public async firstUpdated(){
         window.addEventListener('hashchange', async () => {
-            this.projects = [];
             this.loaded = false;
             const requestedHash = location.hash.split('/');
             await this._loadRequested(requestedHash[1]);
@@ -61,6 +60,11 @@ class Category extends Page implements ElementWithProjects {
         const bridge = new WPBridge(null, null);
         const category = await bridge.loader.single(null, hash).toPromise();
 
+        if(!category){
+            return;
+        }
+
+        this.projects = [];
         await projectLoad(this, '#cards .card:last-child', category[0].id, this._observer);
         if(this.projects.length === 0){
             setTimeout(() => {
