@@ -67,6 +67,8 @@ class Project extends Page {
             }
             const first = projects[0];
 
+            // TODO : Load first image
+
             this.project = {...first};
             this.loaded = true;
             document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;

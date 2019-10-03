@@ -33,6 +33,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
 
     let projects = await bridge.loader.projects(filterSlug, null).toPromise();
     const loadedCategories = new Map<number, WPCategory>();
+    
     for(const project of projects){
         const wasGet = loadedCategories.get(project.categories[0]);
         if(!wasGet){
@@ -41,57 +42,6 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
         project.category = loadedCategories.get(project.categories[0]);
         project.media = await bridge.loader.media(project.featured_media).toPromise();
     }
-    
-    // Import old to new using bridge
-    /*const bridge = new WPBridge('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYmFzZS5kb2JydW5pYWRlc2lnbi5jb20iLCJpYXQiOjE1NzAwNDExMzMsIm5iZiI6MTU3MDA0MTEzMywiZXhwIjoxNTcwNjQ1OTMzLCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.-fXn4sI9ZV3wCjvRQFu1jfN3Pu1LJKsSBMk8m6V3ZIg', null);
-    for(const proj of filtered){
-        const uploadedImages = [];
-        console.warn('has ', proj.images.length, ' to upload before post');
-        for(const image of proj.images){
-            const imageBlob = await Processing.retrieveAsBlob(image.path, Constants.proxy);
-            const picName = slugify(image.filename, '-');
-            const imageNumber = await bridge.maker.media(new File([imageBlob], 'name'), picName).toPromise();
-            uploadedImages.push(imageNumber);
-            console.warn('inserted picture for project');
-        }
-
-        const first = uploadedImages.shift();
-
-        let content = proj.content;
-        for(const toAddFeatured of uploadedImages){
-            console.warn('has ', uploadedImages.length, ' to concat before post');
-            const media = await bridge.loader.media(toAddFeatured).toPromise();
-            console.warn(media.source_url);
-            content = content.concat(`
-            \n <img src="${media.source_url}" />
-            `);
-        }
-
-        const category = await bridge.maker.category({
-            description:'',
-            name: proj.category.name,
-            slug: proj.category.slug,
-            parent: null
-        }).toPromise();
-
-        console.warn('final content', content);
-
-        const project = await bridge.maker.project({
-            title: proj.title,
-            status: WPArticleStatus.publish,
-            content,
-            categories: [category],
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            featured_media: first,
-            tags: [],
-            date: new Date().toISOString(),
-            excerpt: proj.slug,
-            password: '',
-            slug: '',
-        }).toPromise();
-
-        console.warn('added project è_é', project);
-    }*/
 
     if(filterSlug){
         projects = projects.filter(project => {
