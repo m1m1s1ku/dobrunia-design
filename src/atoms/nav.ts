@@ -164,7 +164,7 @@ export default class Nav extends PureElement {
                 align-items: center;
                 justify-content: center;
                 z-index: 999;
-                background-color: rgba(255, 255, 255, .8);
+                background-color: rgba(255, 255, 255, .9);
             }
             li {
                 list-style: none;
