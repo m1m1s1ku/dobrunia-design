@@ -55,7 +55,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		const menuLinksR = await fetch(Constants.api+Constants.menu);
 		const response = await menuLinksR.json();
 
-		const idx = 0;
+		let idx = 0;
 		for(const link of response){
 			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
@@ -74,6 +74,7 @@ export class ElaraApp extends Root implements Elara.Root {
 					hidden: false
 				}
 			];
+			idx++;
 		}
 
 		await this.performUpdate();
