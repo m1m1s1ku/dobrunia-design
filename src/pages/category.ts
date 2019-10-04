@@ -19,6 +19,7 @@ class Category extends Page implements ElementWithProjects {
     public projects: ReadonlyArray<WPSearchPost> = [];
     
     private _observer = iObserverForCard(.2);
+    private _changeListener: () => {};
 
     public get head(){
         return {
@@ -50,14 +51,27 @@ class Category extends Page implements ElementWithProjects {
         ];
     }
 
-    public async firstUpdated(){
-        window.addEventListener('hashchange', async () => {
-            this.loaded = false;
-            const requestedHash = location.hash.split('/');
-            await this._loadRequested(requestedHash[1]);
-            this.loaded = true;
-        });
+    public connectedCallback(){
+        super.connectedCallback();
 
+        this._changeListener = this._reload.bind(this);
+        window.addEventListener('hashchange', this._changeListener);
+    }
+
+    public disconnectedCallback(){
+        super.disconnectedCallback();
+        window.removeEventListener('hashchange', this._changeListener);
+        this._changeListener = null;
+    }
+
+    private async _reload(){
+        this.loaded = false;
+        const requestedHash = location.hash.split('/');
+        await this._loadRequested(requestedHash[1]);
+        this.loaded = true;
+    }
+
+    public async firstUpdated(){
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             this._loadRequested(requestedHash[1]);

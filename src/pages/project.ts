@@ -47,7 +47,7 @@ class Project extends Page {
             }
 
             .project iron-image {
-                width: 100vw; 
+                width: 90vw; 
                 height: 240px;
                 margin: 1em;
             }
