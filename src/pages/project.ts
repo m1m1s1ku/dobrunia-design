@@ -1,4 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
+import {repeat} from 'lit-html/directives/repeat';
+
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
 
@@ -19,6 +21,8 @@ class Project extends Page {
     public project: WPSearchPost;
     @property({type: String, reflect: false, noAccessor: true})
     public featured: string;
+    @property({type: Array, reflect: false})
+    public gallery: string[];
 
     public get head(){
         return {
@@ -72,8 +76,24 @@ class Project extends Page {
             const media = await bridge.loader.media(first.featured_media).toPromise();
             const featured = media.source_url;
 
-            this.project = {...first};
+            const testing = document.createElement('div');
+            testing.innerHTML = first.content.rendered;
+
+            const postImages = testing.querySelectorAll('img');
+            const links = [];
+            
+            for(const image of Array.from(postImages)){
+                links.push(image.src);
+                image.parentElement.removeChild(image);
+            }
+
+            first.content.rendered = testing.innerText;
+
+            console.warn('has found', links);
+            this.project = first;
             this.featured = featured;
+
+            this.gallery = links;
             this.loaded = true;
             document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;
             if(Utils.animationsReduced()){
@@ -97,6 +117,13 @@ class Project extends Page {
             </div>
             `: html``}
             <main class="post-content">${unsafeHTML(this.project.content.rendered)}</main>
+            ${this.gallery && this.gallery.length > 0 ? html`
+                ${repeat(this.gallery, link => html`
+                <div class="image-container" @click=${onImageContainerClicked}>
+                    <iron-image sizing="contain" src=${link}></iron-image>
+                </div>
+                `)}
+            ` : html``}
         ` : html``}
         </div>
         `;
