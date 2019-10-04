@@ -43,7 +43,7 @@ class Project extends Page {
             }
 
             .project iron-image {
-                width: 30vw; 
+                width: 100vw; 
                 height: 240px;
                 margin: 1em;
             }
@@ -93,7 +93,7 @@ class Project extends Page {
             <h1 class="title">${unsafeHTML(this.project.title.rendered)}</h1>
             ${this.featured ? html`
             <div class="image-container" @click=${onImageContainerClicked}>
-                <iron-image sizing="cover" src=${this.featured}></iron-image>
+                <iron-image sizing="contain" src=${this.featured}></iron-image>
             </div>
             `: html``}
             <main class="post-content">${unsafeHTML(this.project.content.rendered)}</main>
