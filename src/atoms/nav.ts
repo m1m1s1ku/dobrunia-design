@@ -185,7 +185,7 @@ export default class Nav extends PureElement {
         return html`
         <nav class="main" role="navigation">
             <div class="header">
-                <div aria-hidden="true" tabindex="0" class="title" @click=${() => navigate('home')} role="link">${Constants.logo()}</div>
+                <div aria-hidden="true" tabindex="0" class="title" role="link">${Constants.logo()}</div>
                 <div class="links">
                     <ul>
                         ${this.mobile ?
