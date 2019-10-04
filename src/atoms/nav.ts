@@ -51,12 +51,6 @@ export default class Nav extends PureElement {
                 outline: none;
                 padding: 2em 0 0 3em;
             }
-
-            @media (max-width: 450px){
-                .title {
-                    padding: 1em 0 0 1em;
-                }
-            }
             
             .main {
                 background: var(--elara-nav-background);
