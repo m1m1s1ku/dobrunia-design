@@ -59,6 +59,8 @@ class Category extends Page implements ElementWithProjects {
     private async _loadRequested(hash: string){
         const bridge = new WPBridge(null, null);
         const category = await bridge.loader.single(null, hash).toPromise();
+        
+        document.title = category[0].name + ' | ' + Constants.title;
 
         if(!category || !category[0]){
             return;
@@ -66,13 +68,6 @@ class Category extends Page implements ElementWithProjects {
 
         this.projects = [];
         await projectLoad(this, '#cards .card:last-child', category[0].id, this._observer);
-        if(this.projects.length === 0){
-            setTimeout(() => {
-                document.title = this.projects[0].category.name + ' | ' + Constants.title;
-            }, 200);
-        } else {
-            document.title = this.projects[0].category.name + ' | ' + Constants.title;
-        }
     }
 
     public render(): void | TemplateResult {
