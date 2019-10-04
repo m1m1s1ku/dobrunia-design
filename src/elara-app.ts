@@ -130,9 +130,7 @@ export class ElaraApp extends Root implements Elara.Root {
 	
 	public render() {
 		return html`
-			${this.waiting ? html`
-			` : html``}
-
+			${this.waiting ? html`` : html``}
 			<ui-nav .items=${this.links}></ui-nav>
 			<main id="main" class="content"></main>
 		`;

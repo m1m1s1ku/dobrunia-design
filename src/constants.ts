@@ -20,9 +20,6 @@ const Constants = {
     logo: () => html`
         <iron-image style="width: 130px; height: 92px;" sizing="cover" preload src="assets/logo.png"></iron-image>
     `,
-    route: (path: string) => {
-        return 'https://api.dobruniadesign.com/api/'+path;
-    },
     modes: {
         default: 'day' as Elara.Modes
     },

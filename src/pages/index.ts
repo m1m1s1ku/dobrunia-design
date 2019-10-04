@@ -1,5 +1,4 @@
 import './home';
-import './single';
 import './article';
 import './blog';
 import './contact';

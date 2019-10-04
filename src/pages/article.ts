@@ -1,14 +1,14 @@
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { repeat } from 'lit-html/directives/repeat';
 import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, onImageContainerClicked } from '../core/ui/ui';
+import { Utils, decodeHTML } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
-import { Article } from '../bridge';
+import WPBridge from '../core/wordpress/bridge';
+import { WPSearchPost } from '../core/wordpress/interfaces';
 
 class Single extends Page {
     public static readonly is: string = 'ui-article';
@@ -16,7 +16,7 @@ class Single extends Page {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
-    public article: Article;
+    public article: WPSearchPost;
 
     public get head(){
         return {
@@ -36,13 +36,15 @@ class Single extends Page {
     private async _load(){
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            const articleR = await fetch(Constants.route('articles/slug/'+requestedHash[1]), {method: 'POST'});
-            const articleRes = await articleR.json();
+            const article = await new WPBridge(null, null).loader.post(requestedHash[1], false).toPromise();
             this.loaded = true;
 
-            const article = articleRes.data;
-            this.article = {...article, content: unsafeHTML(article.content)};
-            document.title = article.title + ' | ' + Constants.title;
+            if(article.length > 0){
+                const post = article[0] as WPSearchPost;
+                document.title = post.title.rendered + ' | ' + Constants.title;
+                this.article = post;
+            }
+
             if(Utils.animationsReduced()){
                 return;
             }
@@ -65,6 +67,13 @@ class Single extends Page {
                 align-items: center;
                 justify-content: center;
             }
+            .loading {
+                display: flex;
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
             `
         ];
     }
@@ -72,18 +81,14 @@ class Single extends Page {
     public render(): void | TemplateResult {
         return html`
         <div id="blog" class="blog single" role="main">
-            ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
+            ${!this.loaded ? html`
+            <div class="loading">
+                <paper-spinner active></paper-spinner>
+            </div>` : html``}
             ${this.article ? html`
-            <h1>${this.article.title}</h1>
+            <h1>${decodeHTML(this.article.title.rendered)}</h1>
             <div class="content">
-                ${this.article.content}
-            </div>
-            <div class="images">
-                ${repeat(this.article.images, image => html`
-                <div class="image-container" @click=${onImageContainerClicked}>
-                    <iron-image style="width: 33vw; height: 400px;" sizing="contain" src="${image.path}"></iron-image>
-                </div>
-                `)}
+                ${unsafeHTML(this.article.content.rendered)}
             </div>
             ` : html``}
         </div>
