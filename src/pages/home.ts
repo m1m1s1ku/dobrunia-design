@@ -31,6 +31,8 @@ export interface ElementWithProjects extends LitElement {
 export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: number, observer?: IntersectionObserver){
     const bridge = new WPBridge(null, null);
 
+    // TODO : Remove / improve that thing
+
     let projects = await bridge.loader.projects(filterSlug, null).toPromise();
     const loadedCategories = new Map<number, WPCategory>();
     
@@ -40,7 +42,6 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             loadedCategories.set(project.categories[0], await bridge.loader.single(project.categories[0], null).toPromise());
         }
         project.category = loadedCategories.get(project.categories[0]);
-        project.media = await bridge.loader.media(project.featured_media).toPromise();
     }
 
     if(filterSlug){
@@ -58,6 +59,9 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     let initial = 100;
     for(const chunk of chunks){
         setTimeout(async () => {
+            for(const proj of chunk){
+                proj.media = await bridge.loader.media(proj.featured_media).toPromise();
+            }
             host.projects = [...host.projects, ...chunk];
             await host.updateComplete;
             

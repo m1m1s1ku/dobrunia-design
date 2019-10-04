@@ -463,10 +463,10 @@ export const Utils = {
     }
 };
 
-export const chunk = (arr: unknown[], size: number) => {
+export function chunk<T>(arr: T[], size: number): T[][] {
     const R = [];
     for (let i=0, len=arr.length; i<len; i+=size){
         R.push(arr.slice(i,i+size));
     }
     return R;
-};
+}
