@@ -5,7 +5,7 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, decodeHTML } from '../core/ui/ui';
+import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import WPBridge from '../core/wordpress/bridge';
 import { WPSearchPost } from '../core/wordpress/interfaces';
@@ -15,8 +15,10 @@ class Project extends Page {
 
     public static readonly hasRouting = true;
 
-    @property({type: Object})
+    @property({type: Object, reflect: false, noAccessor: true})
     public project: WPSearchPost;
+    @property({type: String, reflect: false, noAccessor: true})
+    public featured: string;
 
     public get head(){
         return {
@@ -65,11 +67,13 @@ class Project extends Page {
             if(projects.length < 0){
                 throw new Error('Project not found');
             }
-            const first = projects[0];
 
-            // TODO : Load first image
+            const first = projects[0];
+            const media = await bridge.loader.media(first.featured_media).toPromise();
+            const featured = media.source_url;
 
             this.project = {...first};
+            this.featured = featured;
             this.loaded = true;
             document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;
             if(Utils.animationsReduced()){
@@ -87,6 +91,11 @@ class Project extends Page {
 
         ${this.project ? html`
             <h1 class="title">${unsafeHTML(this.project.title.rendered)}</h1>
+            ${this.featured ? html`
+            <div class="image-container" @click=${onImageContainerClicked}>
+                <iron-image sizing="cover" src=${this.featured}></iron-image>
+            </div>
+            `: html``}
             <main class="post-content">${unsafeHTML(this.project.content.rendered)}</main>
         ` : html``}
         </div>
