@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-import { property, LitElement } from 'lit-element';
+import { property, LitElement, css } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
@@ -129,7 +129,17 @@ class Home extends Page implements ElementWithProjects {
     public static get styles(){
         return [
             ... super.styles,
-            CSS.cards
+            CSS.cards,
+            css`
+            .loading {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+            }
+            `
         ];
     }
 

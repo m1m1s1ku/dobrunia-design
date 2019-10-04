@@ -38,6 +38,14 @@ class Category extends Page implements ElementWithProjects {
             .category {
                 padding: 2em;
             }
+
+            .loading {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            }
             `
         ];
     }
@@ -59,7 +67,7 @@ class Category extends Page implements ElementWithProjects {
     private async _loadRequested(hash: string){
         const bridge = new WPBridge(null, null);
         const category = await bridge.loader.single(null, hash).toPromise();
-        
+
         document.title = category[0].name + ' | ' + Constants.title;
 
         if(!category || !category[0]){
@@ -72,7 +80,11 @@ class Category extends Page implements ElementWithProjects {
 
     public render(): void | TemplateResult {
         return html`
-        ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
+        ${!this.loaded ? html`
+        <div class="loading">
+            <paper-spinner active></paper-spinner>
+        </div>
+        ` : html``}
 
         <div id="cards" class="category cards" role="main">
         ${repeat(this.projects, (project) =>  projectCard(project))}
