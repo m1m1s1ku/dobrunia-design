@@ -5,7 +5,7 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, decodeHTML } from '../core/ui/ui';
+import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import WPBridge from '../core/wordpress/bridge';
 import { WPSearchPost } from '../core/wordpress/interfaces';
@@ -17,6 +17,8 @@ class Single extends Page {
 
     @property({type: Object, reflect: false})
     public article: WPSearchPost;
+    @property({type: String, reflect: false})
+    public featured: string;
 
     public get head(){
         return {
@@ -34,15 +36,21 @@ class Single extends Page {
     }
     
     private async _load(){
+        const bridge = new WPBridge(null, null);
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            const article = await new WPBridge(null, null).loader.post(requestedHash[1], false).toPromise();
+            const article = await bridge.loader.post(requestedHash[1], false).toPromise();
             this.loaded = true;
 
             if(article.length > 0){
+                /* eslint-disable @typescript-eslint/camelcase */
+
+                const image = await bridge.loader.media(article[0].featured_media).toPromise();
+
                 const post = article[0] as WPSearchPost;
                 document.title = post.title.rendered + ' | ' + Constants.title;
                 this.article = post;
+                this.featured = image.source_url;
             }
 
             if(Utils.animationsReduced()){
@@ -87,6 +95,11 @@ class Single extends Page {
             </div>` : html``}
             ${this.article ? html`
             <h1>${decodeHTML(this.article.title.rendered)}</h1>
+            ${this.featured ? html`
+            <div class="image-container" @click=${onImageContainerClicked}>
+                <iron-image style="width: 100vw; height: 400px;" sizing="contain" src="${this.featured}"></iron-image>
+            </div>
+            ` : html``}
             <div class="content">
                 ${unsafeHTML(this.article.content.rendered)}
             </div>

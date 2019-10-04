@@ -123,6 +123,7 @@ class Blog extends Page {
         const bridge = new WPBridge(null, null);
 
         const articlesR = await bridge.loader.category(null, 100).toPromise();
+        this.loaded = true;
 
         const parsed = [];
 
@@ -166,7 +167,6 @@ class Blog extends Page {
                 article.animate(animationConfig.effect, animationConfig.options);
             }, !cancelAnimations ? initial += 100 : initial);
         }
-        this.loaded = true;
         
         this.ghost = parsed;
     }
@@ -179,15 +179,12 @@ class Blog extends Page {
         return html`
         <div class="blog" role="main">
             <div class="title-search">
-                <h1>Blog</h1>
+                <h1>Actualités</h1>
                 <paper-input autofocus type="search" label="Recherche ..." @value-changed=${(event: CustomEvent) => {
                     this.search(event.detail.value);
                 }}></paper-input>
             </div>
             ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
-            ${this.loaded && this.articles.length === 0 ?  html`
-            <div class="empty">Aucun article à afficher</div>
-            ` : html``}
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('article/'+article.slug)}>
                 <h3>${decodeHTML(article.title.rendered)}</h3>
