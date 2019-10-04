@@ -19,7 +19,7 @@ const Constants = {
     categories: 'wp/v2/categories',
     title: 'Dobrunia Design',
     logo: () => html`
-        <iron-image @click=${() => navigate('home')} style="width: 130px; height: 92px;" sizing="cover" preload src="assets/logo.png"></iron-image>
+        <iron-image @click=${() => navigate('home')} style="cursor: pointer; width: 130px; height: 92px;" sizing="cover" preload src="assets/logo.png"></iron-image>
     `,
     modes: {
         default: 'day' as Elara.Modes

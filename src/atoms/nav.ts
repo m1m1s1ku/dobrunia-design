@@ -47,7 +47,6 @@ export default class Nav extends PureElement {
             }
 
             .title {
-                cursor: pointer;
                 outline: none;
                 padding: 2em 0 0 3em;
             }
