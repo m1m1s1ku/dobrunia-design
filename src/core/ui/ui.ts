@@ -129,15 +129,16 @@ export const CSS = {
     cards: css`
     .cards {
         display: grid;
+        grid-row-gap: 5em;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
-        grid-gap: 1em;
-        background: repeating-linear-gradient(35deg,#fff,#fff 50vw, #fff 0px,#eecfcb 100vw);
+        background: repeating-linear-gradient(35deg,#fff,#fff 0, #fff 0px,#eecfcb 100vw);
         background-size: 100vw 190vh;
         padding: 1em 2em;
     }
 
     @media (max-width: 475px){
         .cards {
+            background-size: 100vw;
             grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); 
         }
     }

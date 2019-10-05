@@ -92,6 +92,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			opacity: 1;
 			margin: 0;
 			width: 100%;
+			margin-top: 1em;
 		}
 
 		.content.hidden {
