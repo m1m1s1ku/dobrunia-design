@@ -168,6 +168,20 @@ export class ElaraApp extends Root implements Elara.Root {
 			flex-direction: row;
 			justify-content: flex-end;
 		}
+
+		@media (max-width: 600px){
+			footer {
+				flex-direction: column;
+			}
+
+			.middle-type {
+				margin-top: auto;
+			}
+
+			.low-type {
+				position: initial;
+			}
+		}
 	`];
 	}
 	
