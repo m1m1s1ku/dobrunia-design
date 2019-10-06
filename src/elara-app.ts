@@ -260,6 +260,14 @@ export class ElaraApp extends Root implements Elara.Root {
 		footer a:hover svg {
 			fill: var(--elara-font-hover);
 		}
+
+		footer a iron-image {
+			transition: transform .3s;
+		}
+
+		footer a:hover iron-image {
+			transform: scale(1.1);
+		}
 	`];
 	}
 	
