@@ -250,7 +250,7 @@ export default class Nav extends PureElement {
             `;
         }
 
-        const split = item.route.split('/');
+        const split = item.route.replace('#', '').split('/');
 
         const isActive = item.route.replace('#', '') === this.route && location.hash.split('/').pop() === split.pop();
 
