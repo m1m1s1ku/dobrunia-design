@@ -17,6 +17,9 @@ class Category extends Page implements ElementWithProjects {
 
     @property({type: Object, reflect: false})
     public projects: ReadonlyArray<WPSearchPost> = [];
+
+    @property({type: Boolean, reflect: false})
+    public empty = false;
     
     private _observer = iObserverForCard(.2);
     private _changeListener: () => {};
@@ -75,6 +78,7 @@ class Category extends Page implements ElementWithProjects {
         if(requestedHash.length > 1){
             this._loadRequested(requestedHash[1]);
         } else {
+            this.empty = true;
             this.loaded = true;
         }
     }
@@ -85,6 +89,7 @@ class Category extends Page implements ElementWithProjects {
 
         if(!category || !category[0]){
             document.title = 'Non trouvé' + ' | ' + Constants.title;
+            this.empty = true;
             this.projects = [];
             this.loaded = true;
             return;
@@ -104,7 +109,7 @@ class Category extends Page implements ElementWithProjects {
         </div>
         ` : html``}
 
-        ${this.loaded && this.projects.length === 0 ? html`
+        ${this.loaded && this.empty ? html`
             <p class="not-found">Catégorie non trouvée</p>
         ` : html``}
 
