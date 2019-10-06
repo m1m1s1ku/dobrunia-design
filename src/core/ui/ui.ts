@@ -131,7 +131,7 @@ export const CSS = {
         text-shadow: 0 0.1px 0 white;
         display: grid;
         grid-row-gap: 5em;
-        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); 
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
         /* 
         background: repeating-linear-gradient(35deg,#fff,#fff 0, #fff 0px,#eecfcb 100vw);
         background-repeat: no-repeat;
