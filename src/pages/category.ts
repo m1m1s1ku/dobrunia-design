@@ -40,6 +40,12 @@ class Category extends Page implements ElementWithProjects {
                 padding: 2em;
                 padding-top: 0;
             }
+
+            .not-found {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
             `
         ];
     }
@@ -68,6 +74,8 @@ class Category extends Page implements ElementWithProjects {
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             this._loadRequested(requestedHash[1]);
+        } else {
+            this.loaded = true;
         }
     }
 
@@ -75,11 +83,14 @@ class Category extends Page implements ElementWithProjects {
         const bridge = new WPBridge(null, null);
         const category = await bridge.loader.single(null, hash).toPromise();
 
-        document.title = category[0].name + ' | ' + Constants.title;
-
         if(!category || !category[0]){
+            document.title = 'Non trouvé' + ' | ' + Constants.title;
+            this.projects = [];
+            this.loaded = true;
             return;
         }
+
+        document.title = category[0].name + ' | ' + Constants.title;
 
         this.projects = [];
         await projectLoad(this, '#cards .card:last-child', category[0].id, this._observer);
@@ -91,6 +102,10 @@ class Category extends Page implements ElementWithProjects {
         <div class="loading">
             <paper-spinner active></paper-spinner>
         </div>
+        ` : html``}
+
+        ${this.loaded && this.projects.length === 0 ? html`
+            <p class="not-found">Catégorie non trouvée</p>
         ` : html``}
 
         <div id="cards" class="category cards" role="main">
