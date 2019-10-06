@@ -56,7 +56,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
 
     const chunks = chunk(projects, 1);
 
-    let initial = 100;
+    let appendTime = 100;
     for(const chunk of chunks){
         setTimeout(async () => {
             for(const proj of chunk){
@@ -67,6 +67,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             
             const card = host.shadowRoot.querySelector(lastCardSelector);
             if(Utils.isInViewport(card)){
+                appendTime = 0;
                 card.classList.add('revealed');
                 if(Utils.animationsReduced()){
                     return;
@@ -74,11 +75,11 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
                 const animationConfig = pulseWith(300);
                 card.animate(animationConfig.effect, animationConfig.options);
             } else {
+                appendTime += 50;
                 card.classList.add('reveal');
                 observer.observe(card);
             }
-
-        }, initial += 50);
+        }, appendTime);
     }
 
     host.loaded = true;
