@@ -96,6 +96,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			margin: 0;
 			width: 100%;
 			margin-top: 1em;
+			min-height: 75vh;
 			background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.6) );
 		}
 
