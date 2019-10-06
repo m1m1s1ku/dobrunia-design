@@ -253,7 +253,7 @@ export default class Nav extends PureElement {
         const split = item.route.split('/');
 
         let isActive = item.route.replace('#', '') === this.route;
-        if(!isActive){
+        if(split.length > 1){
             isActive = item.route.indexOf('/') !== -1 && location.hash.split('/').pop() === split.pop();
         }
         return html`
