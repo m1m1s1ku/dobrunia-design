@@ -10,7 +10,7 @@ function randomValue(min: number, max: number){
 }
 
 function generate(colors: string[], canvas: HTMLCanvasElement, debug: boolean) {
-    let radius = 150;
+    let radius = 20;
     let center = [canvas.width/2,canvas.height];
 
     const ctx = canvas.getContext('2d');
@@ -129,7 +129,7 @@ export default function terrazzo(host: Element, colors: string[] = ['#edcfd0', '
     canvas.width = window.innerWidth;
     canvas.height = height;
 
-    const nb = randomValue(40,50);
+    const nb = randomValue(20,100);
     const ctx = canvas.getContext('2d');
     
     ctx.fillStyle = '#fff';

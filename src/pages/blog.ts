@@ -63,6 +63,7 @@ class Blog extends Page {
                 margin: 1em;
                 transition: all 0.3s cubic-bezier(.25,.8,.25,1);
                 border-radius: 2px;
+                background-color: rgba(255,255,255, .8);
                 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
             }
 

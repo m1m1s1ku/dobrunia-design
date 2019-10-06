@@ -48,6 +48,8 @@ export class ElaraApp extends Root implements Elara.Root {
 	}
 
 	public async firstUpdated(){
+		terrazzo(this);
+
 		const hashEvent = new HashChangeEvent('hashchange', {
 			newURL: location.origin + location.pathname + location.hash,
 			oldURL: null
@@ -79,8 +81,6 @@ export class ElaraApp extends Root implements Elara.Root {
 			idx++;
 		}
 
-		terrazzo(this);
-
 		await this.performUpdate();
 	}
 
@@ -88,7 +88,6 @@ export class ElaraApp extends Root implements Elara.Root {
 		return [
 		css`
 		.content {
-			background: var(--elara-background-color);
 			color: var(--elara-font-color);
 			display: inline-block;
 
@@ -97,6 +96,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			margin: 0;
 			width: 100%;
 			margin-top: 1em;
+			background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.6) );
 		}
 
 		.content.hidden {
@@ -115,7 +115,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			display: flex;
 			flex-direction: row;
 			padding: 1em 2em;
-			margin: 2em 0 0;
+			padding: 2em 0 0;
 			color: #3c3c3b;
 		}
 		

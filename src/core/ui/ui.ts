@@ -128,14 +128,16 @@ export const CSS = {
     `,
     cards: css`
     .cards {
+        text-shadow: 0 0.1px 0 white;
         display: grid;
         grid-row-gap: 5em;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); 
         /* 
         background: repeating-linear-gradient(35deg,#fff,#fff 0, #fff 0px,#eecfcb 100vw);
         background-repeat: no-repeat;
         background-size: 100vw 190vh;
         */
+       grid-column-gap: 1em;
         padding: 1em 2em;
     }
 
@@ -147,6 +149,8 @@ export const CSS = {
     }
 
     .card {
+        box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
+        background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.8) );
         cursor: pointer;
         text-align: center;
     }
@@ -171,13 +175,14 @@ export const CSS = {
     }
 
     .card iron-image {
+        margin: 1em 0 0 .5em;
         width: 100%;
         height: 240px;
     }
 
     .card .text .title {
         font-size: 1.3em;
-        margin: .5em;
+        margin: 0 0 .5em 0;
     }
 
     .card .text span {
