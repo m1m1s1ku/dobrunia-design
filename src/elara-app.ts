@@ -63,6 +63,7 @@ export class ElaraApp extends Root implements Elara.Root {
 				route: isHome ? 'home' : nextURL,
 				name: link.title,
 				idx: idx++,
+				filter: link.type === 'taxonomy',
 				hidden: false
 			};
 
