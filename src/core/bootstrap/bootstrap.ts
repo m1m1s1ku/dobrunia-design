@@ -1,6 +1,7 @@
 import { NotFoundError } from '../errors/errors';
 import { fadeWith } from '../animations';
 import { Utils } from '../ui/ui';
+import Constants from '../../constants';
 
 /**
  * Load a route with animations
@@ -9,7 +10,7 @@ import { Utils } from '../ui/ui';
  * @param {HTMLElement} content HTMLElement to load
  */
 export async function load (route: string, content: HTMLElement): Promise<HTMLElement> {
-    const titleTemplate = '%s';
+    const titleTemplate = '%s | ' + Constants.title;
 
     const Component = customElements.get('ui-' + route);
     content.classList.remove('full-width');

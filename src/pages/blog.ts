@@ -37,7 +37,7 @@ class Blog extends Page {
 
     public get head(){
         return {
-            title: 'Blog',
+            title: 'Actualités',
             description: null,
             type: null,
             image: null,

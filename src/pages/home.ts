@@ -113,7 +113,7 @@ class Home extends Page implements ElementWithProjects {
 
     public get head(){
         return {
-            title: 'Projets',
+            title: 'Accueil',
             description: '',
             type: 'page',
             image: '',
