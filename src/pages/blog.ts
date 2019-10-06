@@ -146,6 +146,8 @@ class Blog extends Page {
                 await this.updateComplete;
             };
 
+            let appendTime = 100;
+
             setTimeout(async () => {
                 await append();
 
@@ -157,6 +159,7 @@ class Blog extends Page {
                 }
 
                 if(!Utils.isInViewport(article)){
+                    appendTime = 0;
                     cancelAnimations = true;
                     article.classList.add('reveal');
                     this._observer.observe(article);
@@ -169,7 +172,7 @@ class Blog extends Page {
 
                 const animationConfig = pulseWith(300);
                 article.animate(animationConfig.effect, animationConfig.options);
-            }, !cancelAnimations ? initial += 100 : initial);
+            }, !cancelAnimations ? initial += appendTime : initial);
         }
         
         this.ghost = parsed;

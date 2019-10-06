@@ -78,7 +78,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
                 observer.observe(card);
             }
 
-        }, initial += 100);
+        }, initial += 50);
     }
 
     host.loaded = true;
