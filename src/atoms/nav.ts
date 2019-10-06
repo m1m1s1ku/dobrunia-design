@@ -191,8 +191,9 @@ export default class Nav extends PureElement {
                 opacity: 0;
             }
 
-            .filters li {
+            .filters li, .filters a {
                 display: inline-block;
+                margin-left: 10px;
             }
             `
         ];
