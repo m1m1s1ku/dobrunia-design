@@ -252,7 +252,7 @@ export default class Nav extends PureElement {
 
         const split = item.route.split('/');
 
-        const isActive = item.route.replace('#', '') === this.route || location.hash.split('/').pop() === split.pop();
+        const isActive = item.route.replace('#', '') === this.route && location.hash.split('/').pop() === split.pop();
 
         return html`
             <li><a class="item ${item && isActive ? 'active' : ''}" .tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => {
