@@ -12,6 +12,8 @@ import Elara from './core/elara';
 import Constants from './constants';
 import { Item } from './atoms/nav';
 
+import terrazzo from './core/ui/terrazzo';
+
 // Polyfills
 import('./polyfill');
 
@@ -76,6 +78,8 @@ export class ElaraApp extends Root implements Elara.Root {
 			];
 			idx++;
 		}
+
+		terrazzo(this);
 
 		await this.performUpdate();
 	}
@@ -183,6 +187,13 @@ export class ElaraApp extends Root implements Elara.Root {
 				position: initial;
 			}
 		}
+
+		canvas {
+			position: fixed;
+			height: 100vh;
+			width: 100vw;
+			z-index: -1;
+		}
 	`];
 	}
 	
@@ -190,6 +201,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		return html`
 			${this.waiting ? html`` : html``}
 			<ui-nav .items=${this.links}></ui-nav>
+			<canvas></canvas>
 			<main id="main" class="content"></main>
 			<footer>
 				<div class="left">

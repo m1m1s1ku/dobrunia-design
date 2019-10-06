@@ -131,9 +131,11 @@ export const CSS = {
         display: grid;
         grid-row-gap: 5em;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+        /* 
         background: repeating-linear-gradient(35deg,#fff,#fff 0, #fff 0px,#eecfcb 100vw);
         background-repeat: no-repeat;
         background-size: 100vw 190vh;
+        */
         padding: 1em 2em;
     }
 
