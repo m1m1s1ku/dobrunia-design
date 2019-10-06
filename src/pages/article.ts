@@ -75,13 +75,6 @@ class Single extends Page {
                 align-items: center;
                 justify-content: center;
             }
-            .loading {
-                display: flex;
-                width: 100%;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-            }
             `
         ];
     }

@@ -100,7 +100,15 @@ export const CSS = {
         ANIMATIONS: '(prefers-reduced-motion: reduce)'
     },
     spinner: css`
+    .loading {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
     paper-spinner {
+        position: absolute;
         --paper-spinner-layer-1-color: #edcfce;
         --paper-spinner-layer-2-color: #df899b;
         --paper-spinner-layer-3-color: #8e8685;

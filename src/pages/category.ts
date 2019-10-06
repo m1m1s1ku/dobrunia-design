@@ -38,14 +38,7 @@ class Category extends Page implements ElementWithProjects {
             css`
             .category {
                 padding: 2em;
-            }
-
-            .loading {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
+                padding-top: 0;
             }
             `
         ];
