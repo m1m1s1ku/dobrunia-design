@@ -64,7 +64,6 @@ class Blog extends Page {
                 transition: all 0.3s cubic-bezier(.25,.8,.25,1);
                 border-radius: 2px;
                 background-color: rgba(255,255,255, .8);
-                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
             }
 
             article .item-link {
@@ -99,7 +98,7 @@ class Blog extends Page {
             }
 
             article:hover {
-                box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+                box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
             }
 
             iron-image {
@@ -110,6 +109,10 @@ class Blog extends Page {
                 display: flex;
                 justify-content: space-between;
                 flex-direction: row;
+            }
+
+            paper-input {
+                --paper-input-container-focus-color: var(--elara-primary);
             }
             `
         ];
