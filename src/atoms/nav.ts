@@ -242,19 +242,22 @@ export default class Nav extends PureElement {
             return html``;
         }
 
-        if(this.mobile){
-            return html`
-            <a class="item ${item && item.route.indexOf(this.route) !== -1 ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
-                navigate(item.route);
-                this.shown = false;
-            }}>${item.name}</a>
-            `;
-        }
-
         let isActive = item.route.replace('#', '') === this.route && item.filter === false;
         if(item.filter === true){
             isActive = location.hash.split('/').pop() === item.route.replace('category/', '');
         }
+
+        if(this.mobile){
+            return html`
+            <a class="item ${item && isActive ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
+                navigate(item.route);
+                this.shown = false;
+                this.performUpdate();
+            }}>${item.name}</a>
+            `;
+        }
+
+
         return html`
             <li><a class="item ${item && isActive ? 'active' : ''}" .tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => {
                 navigate(item.route);
