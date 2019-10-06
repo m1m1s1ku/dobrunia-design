@@ -167,16 +167,28 @@ export default class Nav extends PureElement {
                 list-style: none;
             }
 
-            .item.active {
-
-            }
-            
             .filters {
                 display: flex;
                 justify-content: flex-end;
                 flex-direction: row;
                 font-size: .9em;
                 margin-right: 1em;
+            }
+
+            .filters iron-icon {
+               opacity: 1;
+               margin-top: -3px;
+               transition: opacity .3s;
+            }
+
+            .filters ul {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .filters iron-icon.hidden {
+                opacity: 0;
             }
 
             .filters li {
@@ -230,6 +242,9 @@ export default class Nav extends PureElement {
         ${this.filters && this.filters.length > 0 && (this.route === 'home' || this.route === 'category') ? html`
             <div class="filters">
                 <ul>
+                    <iron-icon class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
+                        navigate(Constants.defaults.route);
+                    }}></iron-icon>
                     ${repeat(this.filters, this._item.bind(this))}
                 </ul>
             </div>
