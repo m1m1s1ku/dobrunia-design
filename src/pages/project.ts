@@ -56,7 +56,6 @@ class Project extends Page {
                 flex-direction: column;
                 align-items: center;
                 background-color: rgba(255,255,255, .8);
-                box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
                 padding: 1em;
             }
             `
