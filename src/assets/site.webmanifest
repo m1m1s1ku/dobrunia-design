@@ -1,15 +1,10 @@
 {
-    "short_name": "Élara docs",
-    "name": "Élara documentation",
+    "short_name": "Dobrunia Design",
+    "name": "Dobrunia Design",
     "icons": [
         {
             "src":"icons/android-chrome-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src":"icons/android-chrome-512x512.png",
-            "sizes": "512x512",
             "type": "image/png"
         },
         {
@@ -23,8 +18,8 @@
             "type": "image/png"
         }
     ],
-    "start_url": "https://ghostfly.github.io/elara-doc/",
+    "start_url": "https://www.dobruniadesign.com",
     "background_color": "#fff",
-    "theme_color": "#b2ce3c",
+    "theme_color": "#b47e71",
     "display": "standalone"
 }
