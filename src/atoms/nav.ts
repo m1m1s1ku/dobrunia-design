@@ -20,6 +20,9 @@ export default class Nav extends PureElement {
     @property({type: Array, reflect: false})
     public items: Item[] = [];
 
+    @property({type: Array, reflect: false})
+    public filters: Item[] = [];
+
     @property({type: String, reflect: true})
     public route = null;
 
@@ -63,7 +66,7 @@ export default class Nav extends PureElement {
             }
 
             .item.active {
-                color: var(--elara-secondary);
+                color: var(--elara-primary);
             }
 
             .links ul {
@@ -162,6 +165,22 @@ export default class Nav extends PureElement {
             li {
                 list-style: none;
             }
+
+            .item.active {
+
+            }
+            
+            .filters {
+                display: flex;
+                justify-content: flex-end;
+                flex-direction: row;
+                font-size: .9em;
+                margin-right: 1em;
+            }
+
+            .filters li {
+                display: inline-block;
+            }
             `
         ];
     }
@@ -207,6 +226,13 @@ export default class Nav extends PureElement {
             </div>
             ` : html``}
         </nav>
+        ${this.filters && this.filters.length > 0 && (this.route === 'home' || this.route === 'category') ? html`
+            <div class="filters">
+                <ul>
+                    ${repeat(this.filters, this._item.bind(this))}
+                </ul>
+            </div>
+        ` : html``}
         `;
     }
 
@@ -217,15 +243,20 @@ export default class Nav extends PureElement {
 
         if(this.mobile){
             return html`
-            <a class="item ${this.route === item.route ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
+            <a class="item ${item && item.route.indexOf(this.route) !== -1 ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
                 navigate(item.route);
                 this.shown = false;
             }}>${item.name}</a>
             `;
         }
 
+        const split = item.route.split('/');
+
         return html`
-            <li><a .class="item ${item && this.route === item.route ? 'active' : ''}" .tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => navigate(item.route)}>${item.name}</a></li>
+            <li><a class="item ${item && location.hash.split('/').pop() === split.pop() ? 'active' : ''}" .tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => {
+                navigate(item.route);
+                this.performUpdate();
+            }}>${item.name}</a></li>
         `;
     }
 }

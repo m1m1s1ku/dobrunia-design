@@ -29,14 +29,54 @@ export class ElaraApp extends Root implements Elara.Root {
         name: string;
         revision: string;
 	};
-	@property({type: Boolean, reflect: true, noAccessor: true})
+	@property({type: Array, reflect: true, noAccessor: true})
 	public links: Item[] = [];
+	@property({type: Array, reflect: true, noAccessor: true})
+	public filters: Item[] = [];
 
 	public constructor(){
 		super();
 		
 		this.bootstrap;
 		this.hasElaraRouting = true;
+	}
+
+	async connectedCallback(): Promise<void> {
+		super.connectedCallback();
+		const menuLinksR = await fetch(Constants.api+Constants.menu);
+		const response = await menuLinksR.json();
+
+		let idx = 0;
+
+		const links = [];
+		const filters = [];
+		for(const link of response){
+			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
+			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
+
+			let nextURL = link.type === 'taxonomy' ? 'category/'+lastComponent : lastComponent;
+			if(link.type === 'custom' && !isHome){
+				nextURL = link.url;
+			}
+
+			const parsed = {
+				route: isHome ? 'home' : nextURL,
+				name: link.title,
+				idx: idx++,
+				hidden: false
+			};
+
+			if(link.type === 'taxonomy'){
+				filters.push(parsed);
+				continue;
+			}
+
+			links.push(parsed);
+		}
+
+		this.links = links;
+		this.filters = filters;
+		await this.performUpdate();
 	}
 
 	public get bootstrap(){		
@@ -56,32 +96,6 @@ export class ElaraApp extends Root implements Elara.Root {
 		});
 
 		await this._onHashChange(hashEvent);
-		const menuLinksR = await fetch(Constants.api+Constants.menu);
-		const response = await menuLinksR.json();
-
-		let idx = 0;
-		for(const link of response){
-			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
-			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
-
-			let nextURL = link.type === 'taxonomy' ? 'category/'+lastComponent : lastComponent;
-			if(link.type === 'custom' && !isHome){
-				nextURL = link.url;
-			}
-
-			this.links = [
-				...this.links,
-				{
-					route: isHome ? 'home' : nextURL,
-					name: link.title,
-					idx,
-					hidden: false
-				}
-			];
-			idx++;
-		}
-
-		await this.performUpdate();
 	}
 
 	public static get styles(): CSSResult[] {
@@ -200,7 +214,7 @@ export class ElaraApp extends Root implements Elara.Root {
 	public render() {
 		return html`
 			${this.waiting ? html`` : html``}
-			<ui-nav .items=${this.links}></ui-nav>
+			<ui-nav .items=${this.links} .filters=${this.filters} .route=${this.route}></ui-nav>
 			<canvas></canvas>
 			<main id="main" class="content"></main>
 			<footer>
