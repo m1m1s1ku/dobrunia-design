@@ -29,6 +29,7 @@ class Contact extends Page {
                 padding: 2em;
                 overflow: hidden;
                 background-color: rgba(255, 255, 255, 0.8);
+                padding-bottom: 4em;            
             }
 
             .side {
