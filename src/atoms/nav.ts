@@ -185,6 +185,7 @@ export default class Nav extends PureElement {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                margin-right: 25px;
             }
 
             .filters iron-icon.hidden {
