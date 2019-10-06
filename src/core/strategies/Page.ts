@@ -34,6 +34,7 @@ export default class Page extends LitElement implements Elara.Page {
     public static get styles(){
         return [
             CSS.grid,
+            CSS.spinner,
             CSS.images,
             CSS.typography.buttons,
             CSS.typography.lists,

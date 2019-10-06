@@ -99,6 +99,14 @@ export const CSS = {
         LIGHT: '(prefers-color-scheme: light)',
         ANIMATIONS: '(prefers-reduced-motion: reduce)'
     },
+    spinner: css`
+    paper-spinner {
+        --paper-spinner-layer-1-color: #edcfce;
+        --paper-spinner-layer-2-color: #df899b;
+        --paper-spinner-layer-3-color: #8e8685;
+        --paper-spinner-layer-4-color: #a08583;
+    }
+    `,
     images: css`
     .image-container {
         cursor: pointer;
