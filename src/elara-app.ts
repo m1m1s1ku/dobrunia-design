@@ -114,8 +114,6 @@ export class ElaraApp extends Root implements Elara.Root {
 			background-color: #eecfcb;
 			display: flex;
 			flex-direction: row;
-			padding: 1em 2em;
-			padding: 2em 0 0;
 			color: #3c3c3b;
 		}
 		
@@ -136,10 +134,11 @@ export class ElaraApp extends Root implements Elara.Root {
 
 		footer .right {
 			padding-left: 1em;
+			padding-right: 1em;
 		}
 
 		footer .left {
-			padding: 1em 0;
+			padding: 1em 1em;
 			position: relative;
 			display: flex;
 			flex-direction: column;
