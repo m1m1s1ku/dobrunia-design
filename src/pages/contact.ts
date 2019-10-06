@@ -28,6 +28,7 @@ class Contact extends Page {
                 min-height: 60vh;
                 padding: 2em;
                 overflow: hidden;
+                background-color: rgba(255, 255, 255, 0.8);
             }
 
             .side {

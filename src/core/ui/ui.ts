@@ -149,7 +149,7 @@ export const CSS = {
     }
 
     .card {
-        box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
+        /* box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5); */
         background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.8) );
         cursor: pointer;
         text-align: center;
