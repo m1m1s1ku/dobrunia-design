@@ -45,6 +45,7 @@ export default class Nav extends PureElement {
         return [
             CSS.typography.heading,
             CSS.typography.links,
+            CSS.spinner,
             css`
             :host {
                 z-index: 3;
@@ -196,6 +197,10 @@ export default class Nav extends PureElement {
                 display: inline-block;
                 margin-left: 10px;
             }
+
+            paper-spinner {
+                margin: 0 4em;
+            }
             `
         ];
     }
@@ -220,6 +225,9 @@ export default class Nav extends PureElement {
             <div class="header">
                 <div aria-hidden="true" tabindex="0" class="title" role="link">${Constants.logo()}</div>
                 <div class="links">
+                    ${this.items.length === 0 ? html`
+                        <paper-spinner active></paper-spinner>
+                    ` : html``}
                     <ul>
                         ${this.mobile ?
                             html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu" @click=${() => {
