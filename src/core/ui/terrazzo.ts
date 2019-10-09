@@ -137,12 +137,13 @@ export default function terrazzo(host: Element, colors: string[] = ['#edcfd0', '
 
   let drawn = 0;
   const animate = () => {
-    return setTimeout(() => {
+    const timeHandle = setTimeout(() => {
       const handle = requestAnimationFrame(animate);
       generate(colors, canvas, debug);
       drawn++;
       if(drawn > nb){
         cancelAnimationFrame(handle);
+        clearTimeout(timeHandle);
         return;
       }
     }, 1000 / 60);
