@@ -68,7 +68,6 @@ class Project extends Page {
             const projectSlug = requestedHash[1];
             const bridge = new WPBridge(null, null);
             const projects = await bridge.loader.projects(null, projectSlug).toPromise();
-            console.warn(projects);
 
             if(projects.length < 0){
                 throw new Error('Project not found');
@@ -91,10 +90,8 @@ class Project extends Page {
 
             first.content.rendered = testing.innerText;
 
-            console.warn('has found', links);
             this.project = first;
             this.featured = featured;
-
             this.gallery = links;
             this.loaded = true;
             document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;
