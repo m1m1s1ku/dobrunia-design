@@ -11,7 +11,7 @@ import WPBridge from '../core/wordpress/bridge';
 import { WPSearchPost } from '../core/wordpress/interfaces';
 
 class Single extends Page {
-    public static readonly is: string = 'ui-article';
+    public static readonly is: string = 'ui-post';
 
     public static readonly hasRouting: boolean = true;
 
