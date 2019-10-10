@@ -47,7 +47,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
         },
         body: JSON.stringify({
             query: `{
-                projets {
+                projets(first: 100) {
                   nodes {
                     title
                     slug
