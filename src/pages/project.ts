@@ -74,8 +74,13 @@ class Project extends Page {
             }
 
             const first = projects[0];
-            const media = await bridge.loader.media(first.featured_media).toPromise();
-            const featured = media.source_url;
+            try {
+                const media = await bridge.loader.media(first.featured_media).toPromise();
+                const featured = media.source_url;
+                this.featured = featured;
+            } catch(err){
+                console.error('err', err);
+            }
 
             const testing = document.createElement('div');
             testing.innerHTML = first.content.rendered;
@@ -91,7 +96,6 @@ class Project extends Page {
             first.content.rendered = testing.innerText;
 
             this.project = first;
-            this.featured = featured;
             this.gallery = links;
             this.loaded = true;
             document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;

@@ -57,7 +57,7 @@ export function redirectOnUnauthorized(): OperatorFunction<Response, Response>{
     return input$ => input$.pipe(
         tap((response: Response) => {
             if(response.status === 401){
-                navigate('login');
+                navigate('home');
             }
         })
     );
@@ -83,7 +83,7 @@ export default class WPBridge {
             },
             media(id: number): Observable<WPMedia> {
                 return fromFetch(Constants.proxy+Constants.api+Constants.media+'/'+id, {signal: this._signal}).pipe(
-                    redirectOnUnauthorized(),
+                    // redirectOnUnauthorized(),
                     cancelFetchOnError<WPMedia>()
                 );
             },
