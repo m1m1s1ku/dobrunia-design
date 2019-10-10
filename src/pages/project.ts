@@ -13,7 +13,7 @@ import WPBridge from '../core/wordpress/bridge';
 import { WPSearchPost } from '../core/wordpress/interfaces';
 
 class Project extends Page {
-    public static readonly is: string = 'ui-project';
+    public static readonly is: string = 'ui-projet';
 
     public static readonly hasRouting = true;
 

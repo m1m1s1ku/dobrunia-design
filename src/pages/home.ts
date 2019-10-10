@@ -11,7 +11,7 @@ import { WPSearchPost, WPCategory } from '../core/wordpress/interfaces';
 
 export function projectCard(project: WPSearchPost){
     return html`
-    <article class="project card" @click=${() => navigate('project'.concat('/'+ project.slug))}>
+    <article class="project card" @click=${() => navigate('projet'.concat('/'+ project.slug))}>
         ${project.media ? html`
             <iron-image sizing="contain" preload src="${project.media.source_url}"></iron-image>
         ` : ''}
