@@ -4,11 +4,8 @@ import { css, property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
-import { projectCard, projectLoad, ElementWithProjects, iObserverForCard } from './home';
+import { projectCard, projectLoad, ElementWithProjects, iObserverForCard, ProjectMinimal } from './home';
 import Constants from '../constants';
-
-import { WPSearchPost } from '../core/wordpress/interfaces';
-import WPBridge from '../core/wordpress/bridge';
 
 class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';
@@ -16,7 +13,7 @@ class Category extends Page implements ElementWithProjects {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
-    public projects: ReadonlyArray<WPSearchPost> = [];
+    public projects: ReadonlyArray<ProjectMinimal> = [];
 
     @property({type: Boolean, reflect: false})
     public empty = false;
@@ -84,9 +81,29 @@ class Category extends Page implements ElementWithProjects {
     }
 
     private async _loadRequested(hash: string){
-        const bridge = new WPBridge(null, null);
-        const category = await bridge.loader.single(null, hash).toPromise();
+        const query = `{
+            categories(where: {slug:"${hash}"}) {
+              edges {
+                node {
+                  id,
+                  name
+                }
+              }
+            }
+          }
+        `;
 
+        const projR = await fetch(Constants.graphql, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query
+            }),
+        }).then(res => res.json()).then(res => res.data);
+    
+        const category = projR.categories.edges;
         if(!category || !category[0]){
             document.title = 'Non trouvé' + ' | ' + Constants.title;
             this.empty = true;

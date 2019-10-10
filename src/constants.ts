@@ -8,6 +8,7 @@ import { navigate } from './core/routing/routing';
 const Constants = {
     domain: 'dobruniadesign.com',
     api: 'https://base.dobruniadesign.com/wp-json/',
+    graphql: 'https://base.dobruniadesign.com/graphql/',
     proxy: location.host === 'localhost:3000' ? '' : '',
     menu: 'dobrunia/menu',
     login: 'jwt-auth/v1/token',

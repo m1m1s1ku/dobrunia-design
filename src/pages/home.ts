@@ -6,47 +6,73 @@ import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
 import { CSS, Utils, chunk, decodeHTML } from '../core/ui/ui';
 import { pulseWith } from '../core/animations';
-import WPBridge from '../core/wordpress/bridge';
-import { WPSearchPost, WPCategory } from '../core/wordpress/interfaces';
+import Constants from '../constants';
 
-export function projectCard(project: WPSearchPost){
+export interface ProjectMinimal {
+    categories: {
+        nodes: 
+            {categoryId: number; slug: string; name: string}[];
+    };
+    featuredImage: {
+        sourceUrl: string;
+    };
+    title: string;
+    slug: string;
+}
+
+export function projectCard(project: ProjectMinimal){
     return html`
     <article class="project card" @click=${() => navigate('projet'.concat('/'+ project.slug))}>
-        ${project.media ? html`
-            <iron-image sizing="contain" preload src="${project.media.source_url}"></iron-image>
+        ${project.featuredImage ? html`
+            <iron-image sizing="contain" preload src="${project.featuredImage.sourceUrl}"></iron-image>
         ` : ''}
         <div class="text">
-            <h3 class="title">${decodeHTML(project.title.rendered)}</h3>
-            <span>${project.category.name}</span>
+            <h3 class="title">${decodeHTML(project.title)}</h3>
+            <span>${project.categories.nodes[0].slug}</span>
         </div>
     </article>
     `;
 }
 
 export interface ElementWithProjects extends LitElement {
-    projects: ReadonlyArray<WPSearchPost>;
+    projects: ReadonlyArray<ProjectMinimal>;
     loaded: boolean;
 }
 
 export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: number, observer?: IntersectionObserver){
-    const bridge = new WPBridge(null, null);
+    const projR = await fetch(Constants.graphql, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: `{
+                projets {
+                  nodes {
+                    title
+                    slug
+                    featuredImage {
+                      sourceUrl
+                    }
+                    categories {
+                      nodes {
+                        categoryId,
+                        slug,
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+        }),
+    }).then(res => res.json()).then(res => res.data);
 
-    // TODO : Remove / improve that thing
-
-    let projects = await bridge.loader.projects(filterSlug, null).toPromise();
-    const loadedCategories = new Map<number, WPCategory>();
-    
-    for(const project of projects){
-        const wasGet = loadedCategories.get(project.categories[0]);
-        if(!wasGet){
-            loadedCategories.set(project.categories[0], await bridge.loader.single(project.categories[0], null).toPromise());
-        }
-        project.category = loadedCategories.get(project.categories[0]);
-    }
+    let projects = projR.projets.nodes;
 
     if(filterSlug){
         projects = projects.filter(project => {
-            if(project.category.id === filterSlug){
+            if(project.categories.nodes.find(node => node.slug === filterSlug)){
                 return true;
             }
     
@@ -54,14 +80,11 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
         });
     }
 
-    const chunks = chunk(projects, 1);
+    const chunks = chunk(projects, 1) as ProjectMinimal[][];
 
     let appendTime = 100;
     for(const chunk of chunks){
         setTimeout(async () => {
-            for(const proj of chunk){
-                proj.media = await bridge.loader.media(proj.featured_media).toPromise();
-            }
             host.projects = [...host.projects, ...chunk];
             await host.updateComplete;
             
@@ -107,7 +130,7 @@ class Home extends Page implements ElementWithProjects {
     private _observer = iObserverForCard(.4);
 
     @property({type: Array, reflect: false})
-    public projects: ReadonlyArray<WPSearchPost> = [];
+    public projects: ReadonlyArray<ProjectMinimal> = [];
 
     @property({type: Boolean, reflect: false})
     public loaded = false;

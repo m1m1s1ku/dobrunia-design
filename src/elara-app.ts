@@ -73,31 +73,71 @@ export class ElaraApp extends Root implements Elara.Root {
 			console.error('Error while loading instagram feed', err);
 		}
 
-		const menuLinksR = await fetch(Constants.api+Constants.menu);
-		const response = await menuLinksR.json();
+		const menuQuery = `{
+			menus(where: {slug: "menu"}) {
+			  edges {
+				node {
+				  id
+				  name
+				  menuItems {
+					edges {
+					  node {
+						id
+						url
+						label
+						connectedObject {
+							... on Category {
+							  id
+							  name
+							  taxonomy {
+								name
+							  }
+							}
+						  }
+					  }
+					}
+				  }
+				}
+			  }
+			}
+		}`;
 
+		const menuLinksR = await fetch(Constants.graphql, {
+			method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: menuQuery
+            })
+		}).then(res => res.json()).then(res => res.data.menus.edges[0].node.menuItems.edges);
+
+		const response = menuLinksR;
 		let idx = 0;
 
 		const links = [];
 		const filters = [];
-		for(const link of response){
+		for(const edge of response){
+			const link = edge.node;
 			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
-			let nextURL = link.type === 'taxonomy' ? 'category/'+lastComponent : lastComponent;
+			const isCategory = link.connectedObject && link.connectedObject.taxonomy && link.connectedObject.taxonomy.name === 'category';
+
+			let nextURL = isCategory ? 'category/'+lastComponent : lastComponent;
 			if(link.type === 'custom' && !isHome){
 				nextURL = link.url;
 			}
 
 			const parsed = {
 				route: isHome ? 'home' : nextURL,
-				name: link.title,
+				name: link.label,
 				idx: idx++,
-				filter: link.type === 'taxonomy',
+				filter: isCategory,
 				hidden: false
 			};
 
-			if(link.type === 'taxonomy'){
+			if(isCategory){
 				filters.push(parsed);
 				continue;
 			}
