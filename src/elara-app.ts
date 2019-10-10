@@ -122,6 +122,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		terrazzo(this);
 
 		if(location.pathname !== '/'){
+			location.pathname = '';
 			location.hash = '#!'+location.pathname.slice(1, location.pathname.length);
 		}
 
