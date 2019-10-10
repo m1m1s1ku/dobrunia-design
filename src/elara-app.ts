@@ -121,6 +121,10 @@ export class ElaraApp extends Root implements Elara.Root {
 	public async firstUpdated(){
 		terrazzo(this);
 
+		if(location.pathname !== '/'){
+			location.hash = '#!'+location.pathname.slice(1, location.pathname.length);
+		}
+
 		const hashEvent = new HashChangeEvent('hashchange', {
 			newURL: location.origin + location.pathname + location.hash,
 			oldURL: null
