@@ -28,7 +28,7 @@ export function projectCard(project: ProjectMinimal){
         ` : ''}
         <div class="text">
             <h3 class="title">${decodeHTML(project.title)}</h3>
-            <span>${project.categories.nodes[0].slug}</span>
+            <span>${project.categories.nodes[0].name}</span>
         </div>
     </article>
     `;
