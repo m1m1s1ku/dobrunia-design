@@ -7,8 +7,7 @@ import Constants from '../constants';
 
 import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
-import WPBridge from '../core/wordpress/bridge';
-import { WPSearchPost } from '../core/wordpress/interfaces';
+import { ProjectMinimal } from './project';
 
 class Single extends Page {
     public static readonly is: string = 'ui-post';
@@ -16,7 +15,7 @@ class Single extends Page {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
-    public article: WPSearchPost;
+    public article: ProjectMinimal;
     @property({type: String, reflect: false})
     public featured: string;
 
@@ -36,22 +35,37 @@ class Single extends Page {
     }
     
     private async _load(){
-        const bridge = new WPBridge(null, null);
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            const article = await bridge.loader.post(requestedHash[1], false).toPromise();
+            const projectQuery = `
+            {
+                postBy(slug: "${requestedHash[1]}") {
+                  title
+                  content
+                  excerpt
+                  featuredImage {
+                    sourceUrl
+                  }
+                }
+            }              
+            `;
+
+            const first = await fetch(Constants.graphql, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: projectQuery
+                })
+            }).then(res => res.json()).then(res => res.data.postBy) as ProjectMinimal;
+
             this.loaded = true;
 
-            if(article.length > 0){
-                /* eslint-disable @typescript-eslint/camelcase */
-
-                const image = await bridge.loader.media(article[0].featured_media).toPromise();
-
-                const post = article[0] as WPSearchPost;
-                document.title = post.title.rendered + ' | ' + Constants.title;
-                this.article = post;
-                this.featured = image.source_url;
-            }
+            const post = first;
+            document.title = post.title + ' | ' + Constants.title;
+            this.article = post;
+            this.featured = post.featuredImage.sourceUrl;
 
             if(Utils.animationsReduced()){
                 return;
@@ -87,14 +101,14 @@ class Single extends Page {
                 <paper-spinner active></paper-spinner>
             </div>` : html``}
             ${this.article ? html`
-            <h1>${decodeHTML(this.article.title.rendered)}</h1>
+            <h1>${decodeHTML(this.article.title)}</h1>
             ${this.featured ? html`
             <div class="image-container" @click=${onImageContainerClicked}>
                 <iron-image style="width: 100vw; height: 400px;" sizing="contain" src="${this.featured}"></iron-image>
             </div>
             ` : html``}
             <div class="content">
-                ${unsafeHTML(this.article.content.rendered)}
+                ${unsafeHTML(this.article.content)}
             </div>
             ` : html``}
         </div>

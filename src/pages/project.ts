@@ -7,10 +7,17 @@ import { css, property } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
+import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
-import WPBridge from '../core/wordpress/bridge';
-import { WPSearchPost } from '../core/wordpress/interfaces';
+
+export interface ProjectMinimal {
+    title: string;
+    content: string;
+    excerpt: string;
+    featuredImage: {
+        sourceUrl: string;
+    };
+}
 
 class Project extends Page {
     public static readonly is: string = 'ui-projet';
@@ -18,7 +25,7 @@ class Project extends Page {
     public static readonly hasRouting = true;
 
     @property({type: Object, reflect: false, noAccessor: true})
-    public project: WPSearchPost;
+    public project: ProjectMinimal;
     @property({type: String, reflect: false, noAccessor: true})
     public featured: string;
     @property({type: Array, reflect: false})
@@ -66,24 +73,34 @@ class Project extends Page {
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
             const projectSlug = requestedHash[1];
-            const bridge = new WPBridge(null, null);
-            const projects = await bridge.loader.projects(null, projectSlug).toPromise();
 
-            if(projects.length < 0){
-                throw new Error('Project not found');
-            }
+            const projectQuery = `
+            {
+                projetBy(slug: "${projectSlug}") {
+                  title
+                  content
+                  excerpt
+                  featuredImage {
+                    sourceUrl
+                  }
+                }
+            }              
+            `;
 
-            const first = projects[0];
-            try {
-                const media = await bridge.loader.media(first.featured_media).toPromise();
-                const featured = media.source_url;
-                this.featured = featured;
-            } catch(err){
-                console.error('err', err);
-            }
+            const first = await fetch(Constants.graphql, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: projectQuery
+                })
+            }).then(res => res.json()).then(res => res.data.projetBy) as ProjectMinimal;
+
+            this.featured = first.featuredImage.sourceUrl;
 
             const testing = document.createElement('div');
-            testing.innerHTML = first.content.rendered;
+            testing.innerHTML = first.content;
 
             const postImages = testing.querySelectorAll('img');
             const links = [];
@@ -93,12 +110,12 @@ class Project extends Page {
                 image.parentElement.removeChild(image);
             }
 
-            first.content.rendered = testing.innerText;
+            first.content = testing.innerText;
 
             this.project = first;
             this.gallery = links;
             this.loaded = true;
-            document.title = decodeHTML(this.project.title.rendered) + ' | ' + Constants.title;
+            document.title = this.project.title + ' | ' + Constants.title;
             if(Utils.animationsReduced()){
                 return;
             }
@@ -113,13 +130,13 @@ class Project extends Page {
         ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
 
         ${this.project ? html`
-            <h1 class="title">${unsafeHTML(this.project.title.rendered)}</h1>
+            <h1 class="title">${this.project.title}</h1>
             ${this.featured ? html`
             <div class="image-container" @click=${onImageContainerClicked}>
                 <iron-image sizing="contain" src=${this.featured}></iron-image>
             </div>
             `: html``}
-            <main class="post-content">${unsafeHTML(this.project.content.rendered)}</main>
+            <main class="post-content">${unsafeHTML(this.project.content)}</main>
             ${this.gallery && this.gallery.length > 0 ? html`
                 ${repeat(this.gallery, link => html`
                 <div class="image-container" @click=${onImageContainerClicked}>
