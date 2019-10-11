@@ -86,7 +86,8 @@ class Category extends Page implements ElementWithProjects {
               edges {
                 node {
                   id,
-                  name
+                  name,
+                  slug
                 }
               }
             }
@@ -104,7 +105,8 @@ class Category extends Page implements ElementWithProjects {
         }).then(res => res.json()).then(res => res.data);
     
         const category = projR.categories.edges;
-        if(!category || !category[0]){
+        const cat = category[0].node;
+        if(!category || !cat){
             document.title = 'Non trouvé' + ' | ' + Constants.title;
             this.empty = true;
             this.projects = [];
@@ -112,10 +114,10 @@ class Category extends Page implements ElementWithProjects {
             return;
         }
 
-        document.title = category[0].name + ' | ' + Constants.title;
+        document.title = cat.name + ' | ' + Constants.title;
 
         this.projects = [];
-        await projectLoad(this, '#cards .card:last-child', category[0].id, this._observer);
+        await projectLoad(this, '#cards .card:last-child', cat.slug, this._observer);
     }
 
     public render(): void | TemplateResult {

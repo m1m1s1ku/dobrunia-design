@@ -69,7 +69,6 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     }).then(res => res.json()).then(res => res.data);
 
     let projects = projR.projets.nodes;
-
     if(filterSlug){
         projects = projects.filter(project => {
             if(project.categories.nodes.find(node => node.slug === filterSlug)){
