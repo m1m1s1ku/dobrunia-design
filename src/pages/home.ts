@@ -7,6 +7,7 @@ import { navigate } from '../core/routing/routing';
 import { CSS, Utils, chunk, decodeHTML } from '../core/ui/ui';
 import { pulseWith } from '../core/animations';
 import Constants from '../constants';
+import { wrap } from '../core/errors/errors';
 
 export interface ProjectMinimal {
     categories: {
@@ -66,7 +67,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
               }
             `,
         }),
-    }).then(res => res.json()).then(res => res.data);
+    }).then(res => res.json()).then(res => res.data).catch(_ => this.dispatchEvent(wrap(_)));
 
     let projects = projR.projets.nodes;
     if(filterSlug){

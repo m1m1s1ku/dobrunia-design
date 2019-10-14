@@ -6,6 +6,7 @@ import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
 import { projectCard, projectLoad, ElementWithProjects, iObserverForCard, ProjectMinimal } from './home';
 import Constants from '../constants';
+import { wrap } from '../core/errors/errors';
 
 class Category extends Page implements ElementWithProjects {
     public static readonly is: string = 'ui-category';
@@ -102,8 +103,8 @@ class Category extends Page implements ElementWithProjects {
             body: JSON.stringify({
                 query
             }),
-        }).then(res => res.json()).then(res => res.data);
-    
+        }).then(res => res.json()).then(res => res.data).catch(_ => this.dispatchEvent(wrap(_)));
+        
         const category = projR.categories.edges;
         const cat = category[0].node;
         if(!category || !cat){

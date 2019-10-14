@@ -9,6 +9,7 @@ import { pulseWith } from '../core/animations';
 import { Utils, chunk, decodeHTML } from '../core/ui/ui';
 
 import Constants from '../constants';
+import { wrap } from '../core/errors/errors';
 
 interface ArticleMinimal {
     id: string;
@@ -159,7 +160,7 @@ class Blog extends Page {
                     }
                   }`
             })
-        }).then(res => res.json()).then(res => res.data.posts.edges);
+        }).then(res => res.json()).then(res => res.data.posts.edges).catch(_ => this.dispatchEvent(wrap(_)));
 
         this.loaded = true;
 

@@ -9,6 +9,7 @@ import Constants from '../constants';
 
 import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
+import { wrap } from '../core/errors/errors';
 
 export interface ProjectMinimal {
     title: string;
@@ -95,7 +96,9 @@ class Project extends Page {
                 body: JSON.stringify({
                     query: projectQuery
                 })
-            }).then(res => res.json()).then(res => res.data.projetBy) as ProjectMinimal;
+            }).then(res => res.json())
+            .then(res => res.data.projetBy)
+            .catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
             this.featured = first.featuredImage.sourceUrl;
 

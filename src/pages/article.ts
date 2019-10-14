@@ -8,6 +8,7 @@ import Constants from '../constants';
 import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
+import { wrap } from '../core/errors/errors';
 
 class Single extends Page {
     public static readonly is: string = 'ui-post';
@@ -58,7 +59,7 @@ class Single extends Page {
                 body: JSON.stringify({
                     query: projectQuery
                 })
-            }).then(res => res.json()).then(res => res.data.postBy) as ProjectMinimal;
+            }).then(res => res.json()).then(res => res.data.postBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
             this.loaded = true;
 

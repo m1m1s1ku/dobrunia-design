@@ -30,3 +30,14 @@ export class PrototypeError extends Error {
     public reload = false;
     public underlyingError: Error;
 }
+
+export function wrap(underlying: Error){
+    const err = new NetworkError('Erreur réseau');
+    err.underlyingError = underlying;
+
+    return new CustomEvent('error', {
+        detail: err,
+        composed: true,
+        bubbles: true
+    });
+}

@@ -100,10 +100,6 @@ function _onGenericError(event) {
     willThrow = event.error;
   } else {
     willThrow = event.detail;
-    // @ts-ignore
-    if(willThrow.network === true){
-      willThrow.message = 'Erreur réseau. <br>' + willThrow.message;
-    }
   }
 
   document.body.appendChild(makeGenericHandler(willThrow));
