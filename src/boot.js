@@ -19,17 +19,11 @@ function makeGenericHandler(error = null){
   handler.innerHTML = `
   <div class="content">
     ${error !== null ? `
-      <h4>
-        ${error.continue == true ? `
-          Oops.
-          ` : `
-          Error detected, please reload.
-          `}
-      </h4>
-      <p>${error.message}</p>
+      <h4>Oops.</h4>
+      ${error.message ? `<p>${error.message}</p>` : ''}
       <div class="actions">
-        ${error.continue == true ? '<paper-button class="continue" onclick="dismiss()">Dismiss</paper-button>' : ''}
-        <paper-button class="reload" onclick="reload()" raised toggles>Reload</paper-button>
+        ${error.continue == true ? '<button class="continue" onclick="dismiss()">Pas grave, je continue.</button>' : ''}
+        <button class="reload" onclick="reload()" raised toggles>Rafraîchir</button>
       </div>
     ` : `
       <div id="spinner" class="spinner large"></div>
@@ -94,15 +88,25 @@ function _onDomLoaded(){
   });
 }
 
+/**
+ *
+ *
+ * @param {ErrorEvent|CustomEvent<Error>} event
+ * @returns
+ */
 function _onGenericError(event) {
-  if(event.error && event.error.elara === true){ 
-    console.warn('Elara error ::', event.error);
-    event.preventDefault();
-    event.stopPropagation();
-    return; 
+  let willThrow = null;
+  if(event instanceof ErrorEvent){
+    willThrow = event.error;
+  } else {
+    willThrow = event.detail;
+    // @ts-ignore
+    if(willThrow.network === true){
+      willThrow.message = 'Erreur réseau. <br>' + willThrow.message;
+    }
   }
 
-  document.body.appendChild(makeGenericHandler(event.error));
+  document.body.appendChild(makeGenericHandler(willThrow));
 }
 
 function _onUnload(){

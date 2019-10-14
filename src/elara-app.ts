@@ -14,6 +14,7 @@ import Constants from './constants';
 import { Item } from './atoms/nav';
 
 import terrazzo from './core/ui/terrazzo';
+import { NetworkError } from './core/errors/errors';
 
 // Polyfills
 import('./polyfill');
@@ -110,7 +111,18 @@ export class ElaraApp extends Root implements Elara.Root {
             body: JSON.stringify({
                 query: menuQuery
             })
-		}).then(res => res.json()).then(res => res.data.menus.edges[0].node.menuItems.edges);
+		}).then(res => res.json())
+			.then(res => res.data.menus.edges[0].node.menuItems.edges)
+			.catch(_ => {
+				const err = new NetworkError('Impossible de charger le menu, merci de recharger la page.');
+				err.underlyingError = _;
+
+				this.dispatchEvent(new CustomEvent('error', {
+					detail: err,
+					composed: true,
+					bubbles: true
+				}));
+			});
 
 		const response = menuLinksR;
 		let idx = 0;

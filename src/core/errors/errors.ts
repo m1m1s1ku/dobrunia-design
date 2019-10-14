@@ -15,6 +15,15 @@ export class NotFoundError extends Error {
     public underlyingError: Error;
 }
 
+
+export class NetworkError extends Error {
+    public elara = false;
+    public continue = false;
+    public reload = true;
+    public network = true;
+    public underlyingError: Error;
+}
+
 export class PrototypeError extends Error {
     public elara = false;
     public continue = true;

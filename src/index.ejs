@@ -181,11 +181,34 @@
         top: 0;
       }
 
-      paper-button.continue {
+
+      button.continue, button.reload {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        height: 35px;
+        line-height: 35px;
+        padding: 0 1.5rem;
+        color: #424242;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: .8px;
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        white-space: nowrap;
+        outline: none;
+        border: none;
+        user-select: none;
+        border-radius: 2px;
+        transition: all .3s ease-out;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.225);
+      }
+      button.continue {
           background-color: var(--elara-secondary);
           color: white;
       }
-      paper-button.reload {
+      button.reload {
           background-color: var(--elara-primary);
           color: white;
       }
