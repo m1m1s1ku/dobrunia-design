@@ -69,7 +69,6 @@ export class ElaraApp extends Root implements Elara.Root {
 			distinctUntilChanged(),
 			debounceTime(500),
 			tap(() => {
-				// TODO : Get colors from wordpress
 				terrazzo(this, this._terrazzoColors, true);
 			})
 		), animationFrameScheduler);
