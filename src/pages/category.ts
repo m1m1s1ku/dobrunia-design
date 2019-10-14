@@ -74,7 +74,7 @@ class Category extends Page implements ElementWithProjects {
     public async firstUpdated(){
         const requestedHash = location.hash.split('/');
         if(requestedHash.length > 1){
-            this._loadRequested(requestedHash[1]);
+            await this._loadRequested(requestedHash[1]);
         } else {
             this.empty = true;
             this.loaded = true;

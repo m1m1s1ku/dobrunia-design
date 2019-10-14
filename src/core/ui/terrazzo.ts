@@ -122,12 +122,12 @@ if (debug) {
 }
 }
 
-export default function terrazzo(host: Element, colors: string[] = ['#edcfd0', '#df899b', '#8e8685', '#a08583'], debug = false){
+export default function terrazzo(host: Element, colors: string[], isResize = false, debug = false){
   const canvas = host.shadowRoot ? host.shadowRoot.querySelector('canvas') : host.querySelector('canvas');
   const height = document.body.scrollHeight;
 
   canvas.width = window.innerWidth;
-  canvas.height = height;
+  canvas.height = isResize ? canvas.height : height;
 
   const nb = randomValue(20,100);
   const ctx = canvas.getContext('2d');

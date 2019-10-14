@@ -17,6 +17,9 @@ import { Item } from './atoms/nav';
 import terrazzo from './core/ui/terrazzo';
 import { wrap } from './core/errors/errors';
 
+import { fromEvent, scheduled, animationFrameScheduler, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+
 interface MenuLink {
 	id: string; 
 	url: string; 
@@ -51,6 +54,10 @@ export class ElaraApp extends Root implements Elara.Root {
 		src: string;
 		shortcode: string;
 	}[];
+
+	private _terrazzoColors = ['#edcfd0', '#df899b', '#8e8685', '#a08583'];
+
+	private _resizeSub: Subscription;
 
 	public constructor(){
 		super();
@@ -164,10 +171,24 @@ export class ElaraApp extends Root implements Elara.Root {
 		await this.performUpdate();
 	}
 
-	async connectedCallback(): Promise<void> {
+	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
 		await this._loadInstagram();
 		await this._setupMenu();
+		
+		this._resizeSub = scheduled(fromEvent(window, 'resize').pipe(
+			distinctUntilChanged(),
+			debounceTime(500),
+			tap(() => {
+				// TODO : Get colors from wordpress
+				terrazzo(this, this._terrazzoColors, true);
+			})
+		), animationFrameScheduler).subscribe();
+	}
+
+	public async disconnectedCallback(): Promise<void> {
+		super.disconnectedCallback();
+		this._resizeSub.unsubscribe();
 	}
 
 	public get bootstrap(){		
@@ -179,7 +200,7 @@ export class ElaraApp extends Root implements Elara.Root {
 	}
 
 	public async firstUpdated(){
-		terrazzo(this);
+		terrazzo(this, this._terrazzoColors, false);
 
 		if(location.pathname !== '/'){
 			location.hash = '#!'+location.pathname.slice(1, location.pathname.length);
