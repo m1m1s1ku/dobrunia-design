@@ -54,11 +54,13 @@ function _onDomLoaded(){
     handler.parentElement.removeChild(handler);
   }
 
-  const loadingPromises = [];
-
-  const elara = document.querySelector('elara-app');
-  // @ts-ignore
-  loadingPromises.push(elara.bootstrap);
+  const loadingPromises = [
+    customElements.whenDefined('elara-app').then(() => {
+      const elara = document.querySelector('elara-app');
+      // @ts-ignore
+      loadingPromises.push(elara.bootstrap);
+    })
+  ];
 
   for(const elementName of neededElements){
     loadingPromises.push(customElements.whenDefined(elementName));

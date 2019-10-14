@@ -4,8 +4,6 @@ import { oc } from 'ts-optchain';
 
 import Root from './core/strategies/Root';
 
-import { navigate } from './core/routing/routing';
-
 import './pages/index';
 import './atoms/nav';
 import './atoms/not-found';
@@ -74,11 +72,15 @@ export class ElaraApp extends Root implements Elara.Root {
 		), animationFrameScheduler);
 
 		this._subscriptions = new Subscription();
-
-		this.bootstrap;
 		this.hasElaraRouting = true;
 	}
 
+	/**
+	 * Load instagram feed using partially public api
+	 *
+	 * @private
+	 * @memberof ElaraApp
+	 */
 	private async _loadInstagram(){
 		try {
 			const instaThumbs = [];
@@ -105,6 +107,12 @@ export class ElaraApp extends Root implements Elara.Root {
 		}
 	}
 
+	/**
+	 * Setup bootstrap for website
+	 *
+	 * @private
+	 * @memberof ElaraApp
+	 */
 	private async _setup(){
 		const menuQuery = `{
 			terrazzo {
@@ -210,7 +218,14 @@ export class ElaraApp extends Root implements Elara.Root {
 		super.disconnectedCallback();
 		this._subscriptions.unsubscribe();
 	}
-
+	
+	/**
+	 * Bootstrap is launched by boot.js
+	 * Could contains any kind of promise who will be handled by global promise loader
+	 *
+	 * @readonly
+	 * @memberof ElaraApp
+	 */
 	public get bootstrap(){		
 		return Promise.all([
 			this._setup(),
@@ -218,10 +233,11 @@ export class ElaraApp extends Root implements Elara.Root {
 		]);
 	}
 
-	public async show(route: string): Promise<void> {
-		navigate(route);
-	}
-
+	/**
+	 * Default routing logig
+	 *
+	 * @memberof ElaraApp
+	 */
 	public async firstUpdated(){
 		if(location.pathname !== '/'){
 			location.hash = '#!'+location.pathname.slice(1, location.pathname.length);

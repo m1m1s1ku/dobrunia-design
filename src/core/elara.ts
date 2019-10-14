@@ -16,7 +16,6 @@ namespace Elara {
         };
         loaded: boolean;
         loadedElement: HTMLElement;
-        show(route: string): Promise<void>;
         askModeChange(mode: Elara.Modes): boolean;
     }
 
