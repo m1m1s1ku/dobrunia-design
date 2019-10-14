@@ -88,6 +88,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			}
 
 			this.socialThumbs = instaThumbs;
+			await this.performUpdate();
 		} catch (err) {
 			console.error('Error while loading instagram feed', err);
 		}
