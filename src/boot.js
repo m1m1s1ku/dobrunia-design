@@ -55,6 +55,9 @@ function _onDomLoaded(){
   }
 
   const loadingPromises = [
+    // When elara is defined we directly run her bootstrap to load website while global loading.
+    // We do this to ensure dynamic elements are loaded right on time, and to please lighthouse on main-thread work
+    // if we do that while lit-component is ready dom mutations will lead to browser computing time, useless cause it's needed to first paint
     customElements.whenDefined('elara-app').then(() => {
       const elara = document.querySelector('elara-app');
       // @ts-ignore
