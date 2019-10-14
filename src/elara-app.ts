@@ -94,7 +94,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		}
 	}
 
-	private async _setupMenu(){
+	private async _setup(){
 		const menuQuery = `{
 			terrazzo {
 				terrazzofour
@@ -191,7 +191,6 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
-		await this._setupMenu();
 		await this._loadInstagram();
 		
 		this._resizeSub = scheduled(fromEvent(window, 'resize').pipe(
@@ -210,7 +209,10 @@ export class ElaraApp extends Root implements Elara.Root {
 	}
 
 	public get bootstrap(){		
-		return Promise.all([import('./polymer')]);
+		return Promise.all([
+			this._setup(),
+			import('./polymer')
+		]);
 	}
 
 	public async show(route: string): Promise<void> {
