@@ -10,6 +10,7 @@ import { Utils, chunk, decodeHTML } from '../core/ui/ui';
 
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
+import { oc } from 'ts-optchain';
 
 interface ArticleMinimal {
     id: string;
@@ -167,7 +168,13 @@ class Blog extends Page {
         const parsed = [];
 
         for(const article of articlesR){
-            parsed.push({...article.node});
+            parsed.push(
+                {
+                    ...article.node, 
+                    featuredImage: {
+                        sourceUrl: oc<ArticleMinimal>(article.node).featuredImage.sourceUrl('./assets/logo.png')
+                    }
+            });
         }
 
         const chunks = chunk(parsed, 1);

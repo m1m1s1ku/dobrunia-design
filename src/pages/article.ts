@@ -1,6 +1,7 @@
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { css, property } from 'lit-element';
+import { oc } from 'ts-optchain';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -66,7 +67,7 @@ class Single extends Page {
             const post = first;
             document.title = post.title + ' | ' + Constants.title;
             this.article = post;
-            this.featured = post.featuredImage.sourceUrl;
+            this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
 
             if(Utils.animationsReduced()){
                 return;

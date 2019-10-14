@@ -1,5 +1,6 @@
 import { html, css, CSSResult, property } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
+import { oc } from 'ts-optchain';
 
 import Root from './core/strategies/Root';
 
@@ -15,6 +16,16 @@ import { Item } from './atoms/nav';
 
 import terrazzo from './core/ui/terrazzo';
 import { wrap } from './core/errors/errors';
+
+interface MenuLink {
+	id: string; 
+	url: string; 
+	connectedObject: {
+		taxonomy: {
+			name: string;
+		};
+	};
+}
 
 // Polyfills
 import('./polyfill');
@@ -125,7 +136,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
-			const isCategory = link.connectedObject && link.connectedObject.taxonomy && link.connectedObject.taxonomy.name === 'category';
+			const isCategory = !!(oc<MenuLink>(link).connectedObject.taxonomy.name());
 			let nextURL = isCategory ? 'category/'+lastComponent : lastComponent;
 			// Does redirect to another endpoint, just throw it back like it is
 			if(link.url.indexOf(Constants.domain) === -1){
