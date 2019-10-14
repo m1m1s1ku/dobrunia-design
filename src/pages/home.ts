@@ -147,7 +147,10 @@ class Home extends Page implements ElementWithProjects {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        projectLoad(this, '#cards .card:last-child', null, this._observer);
+    }
+
+    public async firstUpdated(){
+        await projectLoad(this, '#cards .card:last-child', null, this._observer);
     }
 
     public static get styles(){
