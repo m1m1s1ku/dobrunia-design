@@ -288,22 +288,14 @@ export default class Nav extends PureElement {
             isActive = location.hash.split('/').pop() === item.route.replace('category/', '');
         }
 
-        if(this.mobile){
-            return html`
-            <a class="item ${item && isActive ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
-                navigate(item.route);
-                this.shown = false;
-                this.performUpdate();
-            }}>${item.name}</a>
-            `;
-        }
-
-
         return html`
-            <li><a class="item ${item && isActive ? 'active' : ''}" .tabindex="${item && this.route === item.route ? '-1' : '0'}" @click=${() => {
-                navigate(item.route);
-                this.performUpdate();
-            }}>${item.name}</a></li>
+        <li><a class="item ${item && isActive ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
+            navigate(item.route);
+            if(this.mobile){
+                this.shown = false;
+            }
+            this.performUpdate();
+        }}>${item.name}</a></li>
         `;
     }
 }
