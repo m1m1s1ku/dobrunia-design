@@ -31,7 +31,7 @@ export class PrototypeError extends Error {
     public underlyingError: Error;
 }
 
-export function wrap(underlying: Error){
+export function wrap(underlying: Error): CustomEvent<Error> {
     const err = new NetworkError('Erreur réseau');
     err.underlyingError = underlying;
 
