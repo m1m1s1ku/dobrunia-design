@@ -268,9 +268,9 @@ export default class Nav extends PureElement {
         ${this.filters && this.filters.length > 0 ? html`
             <div class="filters ${(this.route === 'home' || this.route === 'category') ? '' : 'hidden'}">
                 <ul>
-                    <iron-icon class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
+                    <li><iron-icon aria-label="Réinitialiser" class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
                         navigate(Constants.defaults.route);
-                    }}></iron-icon>
+                    }}></iron-icon></li>
                     ${repeat(this.filters, this._item.bind(this))}
                 </ul>
             </div>
