@@ -174,6 +174,8 @@ export default class Nav extends PureElement {
                 flex-direction: row;
                 font-size: .9em;
                 margin-right: 1em;
+                opacity: 1;
+                transition: opacity .3s;
             }
 
             .filters iron-icon {
@@ -198,9 +200,18 @@ export default class Nav extends PureElement {
                 margin-left: 10px;
             }
 
+            .filters.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+
             paper-spinner {
                 margin: 0 4em;
             }
+
+            .header.has-no-filters {
+                margin-bottom: -4em;
+            } 
             `
         ];
     }
@@ -222,7 +233,7 @@ export default class Nav extends PureElement {
 	public render(): void | TemplateResult {
         return html`
         <nav class="main" role="navigation">
-            <div class="header">
+            <div class="header ${(this.route === 'home' || this.route === 'category') ? '' : 'has-no-filters'}">
                 <div aria-hidden="true" tabindex="0" class="title" role="link">${Constants.logo()}</div>
                 <div class="links">
                     ${this.items.length === 0 ? html`
@@ -249,8 +260,8 @@ export default class Nav extends PureElement {
             </div>
             ` : html``}
         </nav>
-        ${this.filters && this.filters.length > 0 && (this.route === 'home' || this.route === 'category') ? html`
-            <div class="filters">
+        ${this.filters && this.filters.length > 0 ? html`
+            <div class="filters ${(this.route === 'home' || this.route === 'category') ? '' : 'hidden'}">
                 <ul>
                     <iron-icon class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
                         navigate(Constants.defaults.route);

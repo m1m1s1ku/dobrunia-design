@@ -47,9 +47,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		this.hasElaraRouting = true;
 	}
 
-	async connectedCallback(): Promise<void> {
-		super.connectedCallback();
-
+	private async _loadInstagram(){
 		try {
 			const instaThumbs = [];
 			const instagramR = await fetch('https://www.instagram.com/dobruniadesign/?__a=1');
@@ -72,7 +70,9 @@ export class ElaraApp extends Root implements Elara.Root {
 		} catch (err) {
 			console.error('Error while loading instagram feed', err);
 		}
+	}
 
+	private async _setupMenu(){
 		const menuQuery = `{
 			menus(where: {slug: "menu"}) {
 			  edges {
@@ -123,9 +123,9 @@ export class ElaraApp extends Root implements Elara.Root {
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
 			const isCategory = link.connectedObject && link.connectedObject.taxonomy && link.connectedObject.taxonomy.name === 'category';
-
 			let nextURL = isCategory ? 'category/'+lastComponent : lastComponent;
-			if(link.type === 'custom' && !isHome){
+			// Does redirect to another endpoint, just throw it back like it is
+			if(link.url.indexOf(Constants.domain) === -1){
 				nextURL = link.url;
 			}
 
@@ -133,7 +133,7 @@ export class ElaraApp extends Root implements Elara.Root {
 				route: isHome ? 'home' : nextURL,
 				name: link.label,
 				idx: idx++,
-				filter: isCategory,
+				filter: !!isCategory,
 				hidden: false
 			};
 
@@ -148,6 +148,12 @@ export class ElaraApp extends Root implements Elara.Root {
 		this.links = links;
 		this.filters = filters;
 		await this.performUpdate();
+	}
+
+	async connectedCallback(): Promise<void> {
+		super.connectedCallback();
+		await this._loadInstagram();
+		await this._setupMenu();
 	}
 
 	public get bootstrap(){		
