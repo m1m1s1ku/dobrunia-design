@@ -33,6 +33,9 @@ export default class Nav extends PureElement {
     @property({type: Boolean, reflect: true})
     public shown = false;
 
+    @property({type: String, reflect: true})
+    public logo = '';
+
     private _resizeListener: (e: Event) => void;
 
     public constructor(){
@@ -234,7 +237,9 @@ export default class Nav extends PureElement {
         return html`
         <nav class="main" role="navigation">
             <div class="header ${(this.route === 'home' || this.route === 'category') ? '' : 'has-no-filters'}">
-                <div aria-hidden="true" tabindex="0" class="title" role="link">${Constants.logo()}</div>
+                <div aria-hidden="true" tabindex="0" class="title" role="link">
+                    <iron-image @click=${() => navigate('home')} style="cursor: pointer; width: 130px; height: 92px;" sizing="cover" preload src="${this.logo}"></iron-image>
+                </div>
                 <div class="links">
                     ${this.items.length === 0 ? html`
                         <paper-spinner active></paper-spinner>

@@ -58,6 +58,8 @@ export class ElaraApp extends Root implements Elara.Root {
 	private _terrazzoColors = ['#edcfd0', '#df899b', '#8e8685', '#a08583'];
 
 	private _resizeSub: Subscription;
+	@property({type: String, reflect: false, noAccessor: true})
+	private _logo: string;
 
 	public constructor(){
 		super();
@@ -98,6 +100,7 @@ export class ElaraApp extends Root implements Elara.Root {
 				terrazzoone
 				terrazzothree
 				terrazzotwo
+				logo
 			}
 			menus(where: {slug: "menu"}) {
 			  edges {
@@ -142,6 +145,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		for(const key of Object.keys(colors)){
 			this._terrazzoColors.push(colors[key]);
 		}
+		this._logo = colors.logo;
 
 		terrazzo(this, this._terrazzoColors, false);
 
@@ -371,7 +375,7 @@ export class ElaraApp extends Root implements Elara.Root {
 	public render() {
 		return html`
 			${this.waiting ? html`` : html``}
-			<ui-nav .items=${this.links} .filters=${this.filters} .route=${this.route}></ui-nav>
+			<ui-nav .logo=${this._logo} .items=${this.links} .filters=${this.filters} .route=${this.route}></ui-nav>
 			<canvas></canvas>
 			<main id="main" class="content"></main>
 			<footer>
