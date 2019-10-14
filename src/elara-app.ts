@@ -191,8 +191,6 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
-		await this._loadInstagram();
-		
 		this._resizeSub = scheduled(fromEvent(window, 'resize').pipe(
 			distinctUntilChanged(),
 			debounceTime(500),
@@ -201,6 +199,7 @@ export class ElaraApp extends Root implements Elara.Root {
 				terrazzo(this, this._terrazzoColors, true);
 			})
 		), animationFrameScheduler).subscribe();
+		await this._loadInstagram();
 	}
 
 	public async disconnectedCallback(): Promise<void> {
