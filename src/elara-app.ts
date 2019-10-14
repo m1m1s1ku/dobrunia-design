@@ -93,6 +93,12 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	private async _setupMenu(){
 		const menuQuery = `{
+			terrazzo {
+				terrazzofour
+				terrazzoone
+				terrazzothree
+				terrazzotwo
+			}
 			menus(where: {slug: "menu"}) {
 			  edges {
 				node {
@@ -121,7 +127,7 @@ export class ElaraApp extends Root implements Elara.Root {
 			}
 		}`;
 
-		const menuLinksR = await fetch(Constants.graphql, {
+		const requestR = await fetch(Constants.graphql, {
 			method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -129,11 +135,18 @@ export class ElaraApp extends Root implements Elara.Root {
             body: JSON.stringify({
                 query: menuQuery
             })
-		}).then(res => res.json())
-			.then(res => res.data.menus.edges[0].node.menuItems.edges)
-			.catch(_ => this.dispatchEvent(wrap(_)));
+		}).then(res => res.json()).catch(_ => this.dispatchEvent(wrap(_)));
 
-		const response = menuLinksR;
+		const colors = requestR.data.terrazzo;
+		this._terrazzoColors = [];
+		for(const key of Object.keys(colors)){
+			this._terrazzoColors.push(colors[key]);
+		}
+
+		terrazzo(this, this._terrazzoColors, false);
+
+		const menuLinks = requestR.data.menus.edges[0].node.menuItems.edges;
+		const response = menuLinks;
 		let idx = 0;
 
 		const links = [];
@@ -173,8 +186,8 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
-		await this._loadInstagram();
 		await this._setupMenu();
+		await this._loadInstagram();
 		
 		this._resizeSub = scheduled(fromEvent(window, 'resize').pipe(
 			distinctUntilChanged(),
@@ -200,8 +213,6 @@ export class ElaraApp extends Root implements Elara.Root {
 	}
 
 	public async firstUpdated(){
-		terrazzo(this, this._terrazzoColors, false);
-
 		if(location.pathname !== '/'){
 			location.hash = '#!'+location.pathname.slice(1, location.pathname.length);
 			location.pathname = '';
