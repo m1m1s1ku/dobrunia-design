@@ -80,7 +80,7 @@ class Contact extends Page {
                 </div>
             </div>
             <div class="side">
-                <iron-image sizing="cover" style="width: 33vw; height: 100%" src="https://res.cloudinary.com/ghostfly/image/upload/c_fill,w_1000/bmjlubngyypftackz4eq.jpg"></iron-image>
+                <iron-image sizing="cover" style="width: 33vw; height: 100%" src="http://base.dobruniadesign.com/wp-content/uploads/2019/10/contact.jpg"></iron-image>
             </div>
         </div>
         `;
