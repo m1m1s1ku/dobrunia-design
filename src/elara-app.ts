@@ -188,10 +188,8 @@ export class ElaraApp extends Root implements Elara.Root {
 			}
 
 			if(link.url.indexOf('page') !== -1){
-				nextURL = 'https://dobruniadesign.com/page/a-propos/'.replace('https://', '').replace('dobruniadesign.com', '').split('/').filter(Boolean).join('/');
+				nextURL = link.url.replace('https://', '').replace('dobruniadesign.com', '').split('/').filter(Boolean).join('/');
 			}
-
-			debugger;
 
 			const parsed = {
 				route: isHome ? 'home' : nextURL,
