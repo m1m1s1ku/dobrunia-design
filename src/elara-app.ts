@@ -247,7 +247,7 @@ export class ElaraApp extends Root implements Elara.Root {
 	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
 		if(location.host !== 'localhost:3000'){
-			const config = await fetch(location.href+'config.json').then(res => res.json()).catch(() => {});
+			const config = await fetch(location.origin+'/config.json').then(res => res.json()).catch(() => {});
 			Sentry.init({
 				dsn: 'https://3bc9f9c176b241ab9cde3999fd345215@sentry.io/1783297',
 				release: config ? config.revision : 'error-on-config-load'
