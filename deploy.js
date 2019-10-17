@@ -206,21 +206,7 @@ try {
         writeFileSync(configFile, JSON.stringify({
           name: 'Dobrunia Design',
           revision: 'dobrunia-' + rev,
-          domain: 'dobruniadesign.com',
-          api: 'https://base.dobruniadesign.com/wp-json/',
-          proxy: '',
-          login: 'jwt-auth/v1/token',
-          media: 'wp/v2/media',
-          posts: 'wp/v2/posts',
-          tags: 'wp/v2/tags',
-          validate: 'jwt-auth/v1/token/validate',
-          categories: 'wp/v2/categories',
-          modes: {
-              default: 'day'
-          },
-          defaults: {
-              route: 'home'
-          }
+          domain: 'dobruniadesign.com'
         }, null, 2));
         console.log('config ok');
 

@@ -17,6 +17,7 @@ import { wrap } from './core/errors/errors';
 
 import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import * as Sentry from '@sentry/browser';
 
 interface MenuLink {
 	id: string; 
@@ -245,6 +246,13 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
+		if(location.host !== 'localhost:3000'){
+			const config = await fetch('https://www.dobruniadesign.com/config.json').then(res => res.json()).catch(() => {});
+			Sentry.init({
+				dsn: 'https://3bc9f9c176b241ab9cde3999fd345215@sentry.io/1783297',
+				release: config ? config.revision : 'error-on-config-load'
+			});
+		}
 		this._subscriptions.add(this._resize$.subscribe());
 		await this._loadInstagram();
 	}
