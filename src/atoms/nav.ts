@@ -288,6 +288,10 @@ export default class Nav extends PureElement {
             isActive = location.hash.split('/').pop() === item.route.replace('category/', '');
         }
 
+        if(item.route.indexOf('page') !== -1){
+            isActive = location.hash.split('/').pop() === item.route.replace('page/', '');
+        }
+
         return html`
         <li><a class="item ${item && isActive ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
             navigate(item.route);
