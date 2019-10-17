@@ -6,7 +6,7 @@ import { oc } from 'ts-optchain';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
+import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
 import { wrap } from '../core/errors/errors';
