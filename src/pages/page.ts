@@ -121,6 +121,32 @@ class PageController extends Page {
                     width: 250px;
                 }
             }
+
+            .elara_row {overflow:auto; margin-bottom:20px;}
+
+            .elara_cfull {width:100%;}
+            .elara_chalf {width:50%;}
+            .elara_cthird {width:33.3%;}
+            .elara_ctwo-thirds {width:66.6%;}
+            .elara_cquarter {width:25%;}
+            .elara_cthree-quarters {width:75%;}
+
+            .elara_column {float:left;}
+            .elara_column div.elara_inner {padding:0 20px;}
+
+            .elara_column:first-of-type .elara_inner {padding-left:0;}
+            .elara_column:last-of-type .elara_inner {padding-right:0;}
+
+            @media only screen and (max-width: 40em) {
+                .elara_cfull {width:100%;}
+                .elara_chalf {width:100%;}
+                .elara_cthird {width:100%;}
+                .elara_ctwo-thirds {width:100%;}
+                .elara_cquarter {width:100%;}
+                .elara_cthree-quarters {width:100%;}
+                .elara_column .elara_inner {padding:0 !important;}
+                .elara_column {margin-bottom:20px;}
+            }
             `
         ];
     }
