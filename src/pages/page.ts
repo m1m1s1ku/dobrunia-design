@@ -124,6 +124,10 @@ class PageController extends Page {
                 padding: 1em;
             }
 
+            h3 {
+                margin: 0;
+            }
+
             @media (max-width: 600px){
                 .cols {
                     flex-direction: column-reverse;
