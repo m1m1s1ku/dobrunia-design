@@ -21,6 +21,8 @@ class PageController extends Page {
     @property({type: String, reflect: false})
     public featured: string;
 
+    private _onHashChangeListener: (this: Window, ev: HashChangeEvent) => void;
+
     public get head(){
         return {
             title: 'Article',
@@ -33,6 +35,19 @@ class PageController extends Page {
 
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this._onHashChangeListener = this._onPageChanged.bind(this);
+        window.addEventListener('hashchange', this._onHashChangeListener);
+        
+        this._load();
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        window.removeEventListener('hashchange', this._onHashChangeListener);
+    }
+
+    private _onPageChanged(){
         this._load();
     }
     
