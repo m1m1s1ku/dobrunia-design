@@ -38,7 +38,7 @@ class PageController extends Page {
 
         this._onHashChangeListener = this._onPageChanged.bind(this);
         window.addEventListener('hashchange', this._onHashChangeListener);
-        
+
         this._load();
     }
 
@@ -148,7 +148,6 @@ class PageController extends Page {
                 <paper-spinner active></paper-spinner>
             </div>` : html``}
             ${this.article ? html`
-            <h1>${decodeHTML(this.article.title)}</h1>
             <div class="cols">
                 <div class="content">
                     ${unsafeHTML(this.article.content)}
