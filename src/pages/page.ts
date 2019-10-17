@@ -85,15 +85,41 @@ class PageController extends Page {
                 background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.6) );
             }
 
-            .images {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-
             li {
                 list-style: initial;
+            }
+
+            .content {
+                background-color: rgba(255, 255, 255, 0.8);
+            }
+
+            .cols {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            iron-image {
+                width: 25vw; 
+                height: 400px;
+            }
+
+            .image-container {
+                padding: 1em;
+            }
+
+            @media (max-width: 600px){
+                .cols {
+                    flex-direction: column-reverse;
+                }
+
+                .image-container {
+                    text-align: center;
+                }
+
+                iron-image {
+                    width: 250px;
+                }
             }
             `
         ];
@@ -108,13 +134,15 @@ class PageController extends Page {
             </div>` : html``}
             ${this.article ? html`
             <h1>${decodeHTML(this.article.title)}</h1>
-            ${this.featured ? html`
-            <div class="image-container" @click=${onImageContainerClicked}>
-                <iron-image style="width: 100vw; height: 400px;" sizing="contain" src="${this.featured}"></iron-image>
-            </div>
-            ` : html``}
-            <div class="content">
-                ${unsafeHTML(this.article.content)}
+            <div class="cols">
+                <div class="content">
+                    ${unsafeHTML(this.article.content)}
+                </div>
+                ${this.featured ? html`
+                <div class="image-container" @click=${onImageContainerClicked}>
+                    <iron-image sizing="contain" src="${this.featured}"></iron-image>
+                </div>
+                ` : html``}
             </div>
             ` : html``}
         </div>
