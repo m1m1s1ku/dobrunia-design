@@ -46,6 +46,8 @@ export class ElaraApp extends Root implements Elara.Root {
 	@property({type: Array, reflect: true, noAccessor: true})
 	public links: Item[] = [];
 	@property({type: Array, reflect: true, noAccessor: true})
+	public legalLinks: {id: string; label: string; url: string}[] = [];
+	@property({type: Array, reflect: true, noAccessor: true})
 	public filters: Item[] = [];
 	@property({type: Array, reflect: false, noAccessor: true})
 	public socialThumbs: {
@@ -59,6 +61,7 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	private _subscriptions: Subscription;
 	private _resize$: Observable<Event>;
+
 
 	public constructor(){
 		super();
@@ -116,17 +119,18 @@ export class ElaraApp extends Root implements Elara.Root {
 	private async _setup(){
 		const menuQuery = `{
 			terrazzo {
-				terrazzofour
-				terrazzoone
-				terrazzothree
-				terrazzotwo
-				logo
+			  terrazzofour
+			  terrazzoone
+			  terrazzothree
+			  terrazzotwo
+			  logo
 			}
-			menus(where: {slug: "menu"}) {
+			menus {
 			  edges {
 				node {
 				  id
 				  name
+				  slug
 				  menuItems {
 					edges {
 					  node {
@@ -134,21 +138,21 @@ export class ElaraApp extends Root implements Elara.Root {
 						url
 						label
 						connectedObject {
-							... on Category {
-							  id
+						  ... on Category {
+							id
+							name
+							taxonomy {
 							  name
-							  taxonomy {
-								name
-							  }
 							}
 						  }
+						}
 					  }
 					}
 				  }
 				}
 			  }
 			}
-		}`;
+		  }`;
 
 		const requestR = await fetch(Constants.graphql, {
 			method: 'POST',
@@ -169,14 +173,20 @@ export class ElaraApp extends Root implements Elara.Root {
 
 		terrazzo(this, this._terrazzoColors, false);
 
-		const menuLinks = requestR.data.menus.edges[0].node.menuItems.edges;
-		const response = menuLinks;
-		let idx = 0;
+		let menuLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'menu');
+		menuLinks = menuLinks.node.menuItems.edges.map(edge => edge.node);
 
+		const legalLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'legal-links');
+		this.legalLinks = legalLinks.node.menuItems.edges.map(edge => edge.node).map(node => {
+			node.url = node.url.replace('https://dobruniadesign.com', '');
+			return node;
+		});
+
+		let idx = 0;
 		const links = [];
 		const filters = [];
-		for(const edge of response){
-			const link = edge.node;
+		
+		for(const link of menuLinks){
 			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
@@ -408,7 +418,11 @@ export class ElaraApp extends Root implements Elara.Root {
 				<div class="left">
 					<span class="big-type"><a rel="noopener" target="_blank" href="https://www.google.fr/maps/dir//Dobrunia+design/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x12cddbba95967955:0x9af320f68ee988ce?sa=X&ved=2ahUKEwjwwqmtov7dAhVFJBoKHcAJB60Q9RcwEnoECAcQEw">Concept store - 9 Rue Miron, 06000 Nice</a></span>
 					<span class="middle-type"><a href="mailto:info@dobruniadesign.com">info@dobruniadesign.com</a></span>
-					<span class="low-type">&copy; ${new Date().getFullYear()} Dobrunia Design. - Tous droits réservés.</span>
+					<span class="low-type">&copy; ${new Date().getFullYear()} Dobrunia Design. - Tous droits réservés.
+					${repeat(this.legalLinks, link => {
+						return html`<a href="${link.url}">${link.label}</a>`;
+					})}
+					</span>
 				</div>
 				<div class="right">
 					<h4>Nous suivre</h4>
