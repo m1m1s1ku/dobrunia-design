@@ -105,6 +105,7 @@ class PageController extends Page {
             }
 
             .content {
+                padding: 1em;
                 background-color: rgba(255, 255, 255, 0.8);
             }
 
