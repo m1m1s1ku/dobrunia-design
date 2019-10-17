@@ -39,7 +39,8 @@ export default class Page extends LitElement implements Elara.Page {
             CSS.typography.buttons,
             CSS.typography.lists,
             CSS.typography.links,
-            CSS.typography.heading
+            CSS.typography.heading,
+            CSS.shortcodes
         ];
     }
 }
