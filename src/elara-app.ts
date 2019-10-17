@@ -181,6 +181,7 @@ export class ElaraApp extends Root implements Elara.Root {
 		const colors = requestR.data.terrazzo;
 		this._terrazzoColors = [];
 		for(const key of Object.keys(colors)){
+			if(key === 'logo') continue;
 			this._terrazzoColors.push(colors[key]);
 		}
 		this._logo = colors.logo;
@@ -260,6 +261,11 @@ export class ElaraApp extends Root implements Elara.Root {
 	public async disconnectedCallback(): Promise<void> {
 		super.disconnectedCallback();
 		this._subscriptions.unsubscribe();
+	}
+
+	public terrazzo(idx: number, color: string){
+		this._terrazzoColors[idx] = color;
+		terrazzo(this, this._terrazzoColors);
 	}
 	
 	/**
