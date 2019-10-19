@@ -29,11 +29,11 @@ interface MenuLink {
 	};
 }
 
-interface WindowWithWordpress extends Window {
+/* interface WindowWithWordpress extends Window {
 	wp: {
 		customize: (id: string, callback: (handler: {bind(cb: (value: string) => void): void}) => void) => void;
 	}; 
-}
+}*/
 
 // Polyfills
 import('./polyfill');
@@ -253,13 +253,8 @@ export class ElaraApp extends Root implements Elara.Root {
 
 	public async connectedCallback(): Promise<void> {
 		super.connectedCallback();
-		if(location.host === 'base.dobruniadesign.com'){
-			(window as unknown as WindowWithWordpress).wp.customize( 'terrazzoone', ( value ) => {
-				value.bind(( newval ) => {
-					debugger;
-					this.terrazzo(0, newval);
-				});
-			} );
+		if(location.href.indexOf('dobrunia-rest') !== -1){
+			// x
 		}
 		if(location.host !== 'localhost:3000'){
 			const config = await fetch(location.origin+'/config.json').then(res => res.json()).catch(() => {});

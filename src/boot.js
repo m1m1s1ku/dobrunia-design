@@ -61,7 +61,7 @@ function _onDomLoaded(){
     customElements.whenDefined('elara-app').then(() => {
       const elara = document.querySelector('elara-app');
       // @ts-ignore
-      loadingPromises.push(elara.bootstrap);
+      return elara.bootstrap;
     })
   ];
 
