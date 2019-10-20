@@ -26,7 +26,12 @@ function makeGenericHandler(error = null){
         <button class="reload" onclick="reload()" raised toggles>Rafraîchir</button>
       </div>
     ` : `
-      <div id="spinner" class="spinner large"></div>
+    <div id="loader">
+      <div id="dot"></div>
+      <div class="step" id="s1"></div>
+      <div class="step" id="s2"></div>
+      <div class="step" id="s3"></div>
+    </div>
     `}
   </div>
   `;
@@ -80,15 +85,17 @@ function _onDomLoaded(){
       
       if(debug) return;
 
-      if(spinner){
-        spinner.parentElement.removeChild(spinner);
-      }
-      if(handler){
-        handler.classList.add('hidden');
-        handler.parentElement.removeChild(handler);
-      }
-
-      document.body.classList.remove('scrolling-disabled');
+      setTimeout(() => {
+        if(spinner){
+          spinner.parentElement.removeChild(spinner);
+        }
+        if(handler){
+          handler.classList.add('hidden');
+          handler.parentElement.removeChild(handler);
+        }
+  
+        document.body.classList.remove('scrolling-disabled');
+      }, 500);
     });
   });
 }

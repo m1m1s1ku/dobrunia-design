@@ -123,58 +123,6 @@
         opacity: 0;
       }
 
-      .handler svg {
-        width: 200px;
-        height: 200px;
-      }
-
-      .spinner {
-        width: 50px;
-        height: 50px;
-        position: relative;
-        margin: 0 auto;
-      }
-      .spinner:before, .spinner:after {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 1px dotted var(--elara-primary);
-        opacity: 0.6;
-        position: absolute;
-        top: 0;
-        left: 0;
-        animation: bounce 2s linear infinite;
-      }
-      .spinner:after {
-        animation-delay: -1s;
-      }
-
-      @keyframes bounce {
-        0% {
-          transform: scale(0);
-        }
-        20% {
-          transform: scale(1);
-        }
-        40% {
-          transform: scale(1.5);
-        }
-        60% {
-          transform: scale(2);
-          opacity: 0.5;
-        }
-        80% {
-          transform: scale(2.5);
-          opacity: 0.25;
-        }
-        100% {
-          transform: scale(3);
-          opacity: 0;
-        }
-      }
-
       .error-tree {
         position: absolute;
         right: 0;
@@ -212,6 +160,65 @@
           background-color: var(--elara-primary);
           color: white;
       }
+
+      #loader {
+        margin: -45px -60px;
+        width: 120px;
+        height: 90px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+
+      #dot {
+        background: var(--elara-primary);
+        border-radius: 50%; 
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        bottom: 30px;
+        left: 27px;
+        transform-origin: center bottom;
+        animation: dot .6s ease-in-out infinite;
+      }
+
+      @keyframes dot {
+        0% { transform: scale(1,.7) }
+        20% { transform: scale(.7,1.2) }
+        40% { transform: scale(1,1)} 
+        50% { bottom: 100px;} 
+        46% { transform: scale(1,1)} 
+        80% { transform: scale(.7,1.2) } 
+        90% { transform: scale(.7,1.2) } 
+        100% { transform: scale(1,.7) }
+      }
+
+      .step {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-top: 2px solid var(--elara-secondary);
+        top: 0;
+        right:0;
+      }
+
+      @keyframes anim { 
+        0% { 
+          opacity: 0;
+          top: 0; 
+          right: 0; 
+        }
+        50% { opacity: 1; }
+        100% { 
+          top: 90px; 
+          right: 90px;
+          opacity: 0;
+        }
+      }
+
+      #s1 { animation: anim 1.8s linear infinite; }
+      #s2 { animation: anim 1.8s linear infinite -.6s; }
+      #s3 { animation: anim 1.8s linear infinite -1.2s; }
     </style>
     <!-- {{SSRPayload}} -->
     <noscript>JavaScript is needed to use this website.</noscript>
