@@ -10,7 +10,6 @@ import './pages/index';
 import './atoms/nav';
 import './atoms/not-found';
 
-import Elara from './core/elara';
 import Constants from './constants';
 import { Item } from './atoms/nav';
 
@@ -45,7 +44,7 @@ interface WPLink {
 	icon?: SVGTemplateResult;
 }
 
-export class ElaraApp extends Root implements Elara.Root {
+export class ElaraApp extends Root {
 	public static readonly is: string = 'elara-app';
 
 	public default = 'home';
@@ -53,10 +52,6 @@ export class ElaraApp extends Root implements Elara.Root {
 	@property({type: Boolean, reflect: true, noAccessor: true})
 	public waiting = false;
 
-	public config: {
-        name: string;
-        revision: string;
-	};
 	@property({type: Array, reflect: false, noAccessor: true})
 	public links: Item[] = [];
 	@property({type: Array, reflect: false, noAccessor: true})

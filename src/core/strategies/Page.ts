@@ -1,6 +1,4 @@
 import { LitElement, property } from 'lit-element';
-
-import Elara from '../elara';
 import { CSS } from '../ui/ui';
 
 /**

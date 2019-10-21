@@ -1,7 +1,6 @@
 import { html, TemplateResult, property, css, CSSResult } from 'lit-element';
 
 import PureElement from '../core/strategies/Element';
-import { Utils } from '../core/ui/ui';
 
 /**
  * @class Tree
@@ -56,7 +55,7 @@ export class Tree extends PureElement {
         if (depth <= 2) {
             ctx.strokeStyle = '#1b1b1b';
         } else {
-            ctx.strokeStyle = Utils.dayOrNight() === 'night' ? '#f0f0f0' : '#333';
+            ctx.strokeStyle = '#333';
         }
         ctx.stroke();
         

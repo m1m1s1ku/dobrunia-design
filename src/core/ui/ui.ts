@@ -1,11 +1,4 @@
 import { css, TemplateResult } from 'lit-element';
-import Elara from '../elara';
-
-export const UI = {
-    modes: {
-        localStorageKey: 'night-mode'
-    }
-};
 
 export function decodeHTML(html: string){
     const txt = document.createElement('textarea');
@@ -241,10 +234,6 @@ export const CSS = {
     `
 };
 
-export function ElaraElement(): Elara.Root {
-    return document.querySelector('elara-app');
-};
-
 interface GalleryState {
     container: HTMLElement;
     listeners: {
@@ -445,65 +434,6 @@ export const Utils = {
             bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
             bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
         );
-    },
-    mode: (): Elara.Modes => {
-        return localStorage.getItem(UI.modes.localStorageKey) as Elara.Modes;
-    },
-    // Day-night handling
-    nightSwitchClick: async (click: Event, host: Elara.UpdatableElement): Promise<boolean> => {
-        click.preventDefault();
-        click.stopPropagation();
-        const hasNightMode = !Utils.isSunny();
-        const future = !hasNightMode ? 'night' : 'day';
-        localStorage.setItem(UI.modes.localStorageKey, future);
-
-        await host.requestUpdate();
-        
-        return ElaraElement().askModeChange(future);
-    },
-    applyVariablesFor: (mode: Elara.Modes): boolean => {
-        const root = document.documentElement;
-
-        if(mode === 'night'){
-            // root.style.setProperty('--elara-font-color', '#f2f2f2');
-            // root.style.setProperty('--elara-font-hover', '#333');
-        } else {
-            root.style.removeProperty('--elara-background-color');
-            root.style.removeProperty('--elara-font-color');
-            root.style.removeProperty('--elara-font-hover');
-        }
-
-        return true;
-    },
-    hasSwitched: (): boolean => {
-        return Utils.mode() !== null;
-    },
-    isSunny: (): boolean => {
-        return true;
-    },
-    dayOrNight: (): Elara.Modes => {
-        if(Utils.hasSwitched()){
-            if(Utils.isSunny()){
-                return 'day';
-            } else {
-                return 'night';
-            }
-        } else {
-            if(Utils.isDarkOS()){
-                return 'night';
-            } else {
-                return 'day';
-            }
-        }
-    },
-    isDarkOS(): boolean {
-        if(!window.matchMedia){
-            console.warn('Elara:: Night mode not supported at the moment');
-
-            return false;
-        }
-
-        return window.matchMedia(CSS.queries.DARK).matches;
     },
     animationsReduced(): boolean {
         if(!window.matchMedia){

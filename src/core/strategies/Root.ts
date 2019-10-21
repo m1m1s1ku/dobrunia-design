@@ -1,12 +1,8 @@
 import { property } from 'lit-element';
 
-import Elara from '../elara';
-
 import Page from './Page';
 
 import { load } from '../bootstrap/bootstrap';
-import { Utils } from '../ui/ui';
-
 /**
  * Root strategy
  *
@@ -24,16 +20,6 @@ export default class Root extends Page {
 	@property({reflect: true, type: String})
 	public route: string;
 	
-	public connectedCallback(){
-		super.connectedCallback();
-
-		Utils.applyVariablesFor(Utils.dayOrNight());
-	}
-
-	public disconnectedCallback(){
-		super.disconnectedCallback();
-	}
-		
 	/**
 	 * Create the render root
 	 */
@@ -47,10 +33,6 @@ export default class Root extends Page {
 	public async load(route: string){
 		this.route = route;
 		return await load(route, this._content);
-	}
-		
-	public askModeChange(mode: Elara.Modes): boolean {
-		return Utils.applyVariablesFor(mode);
 	}
 		
 	protected get _content(): HTMLElement {
