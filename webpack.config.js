@@ -160,7 +160,7 @@ const productionConfig = WebpackMerge([
         template: INDEX_TEMPLATE,
         minify: {
           collapseWhitespace: true,
-          removeComments: true,
+          removeComments: false,
           minifyCSS: true,
           minifyJS: true
         }

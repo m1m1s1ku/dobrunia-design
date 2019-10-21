@@ -13,43 +13,6 @@ const htmlFile = join(distFolder, 'index.html');
 const htaccessFile = join(distFolder, '.htaccess');
 const serviceWorkerFile = join(distFolder, 'elara-worker.js');
 
-const options = {
-  files: htmlFile,
-  from: '<!-- {{SSRFunctions}} -->',
-  to: `
-  <?php  
-  function get(){
-	  $url = "https://base.dobruniadesign.com" . $_SERVER['REQUEST_URI'];
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_URL, $url);
-
-    $response = curl_exec($ch);
-
-    return json_decode($response);
-  }
-
-  function ogFor($title, $url, $description, $image){
-    return <<<EOD
-    <title>$title</title>
-    <meta property='og:title' content="$title" />
-    <meta property='og:url' content="$url" />
-    <meta name='description' content="$description" />
-    <meta property='og:type' content="website" />
-    <meta property='og:image' content="$image" />
-    EOD;
-  }
-
-  $response = get();
-  $title = $response['title'];
-  $description = $response['description'];
-  $image = $response['image'];
-  $url = $response['url'];
-
-  ?>
-  `
-};
 try {
     exec('git rev-parse --short HEAD', (_err, stdout) => {
         const rev = stdout.replace('\n', '');
@@ -59,6 +22,57 @@ try {
           domain: 'dobruniadesign.com'
         }, null, 2));
         console.log('config ok');
+
+        const options = {
+          files: htmlFile,
+          from: '<!-- {{SSRFunctions}} -->',
+          to: `
+          <?php
+          function get(){
+            $url = "https://base.dobruniadesign.com" . $_SERVER['REQUEST_URI'];
+            $ch = curl_init();
+        
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+        
+            $response = curl_exec($ch);
+        
+            return json_decode($response);
+          }
+        
+          function ogFor($title, $url, $description, $image){
+            return <<<EOD
+            <title>$title</title>
+            <meta property='og:title' content="$title" />
+            <meta property='og:url' content="$url" />
+            <meta name='description' content="$description" />
+            <meta property='og:type' content="website" />
+            <meta property='og:image' content="$image" />
+            EOD;
+          }
+        
+          $response = get();
+          $title = $response->title;
+          $description = $response->description;
+          $image = $response->image;
+          $url = $response->url;
+        
+          ?>
+          `
+        };
+
+        replace.sync(options);
+        console.log('replaced functions');
+    
+        options.from = '<!-- {{SSRHead}} -->';
+        options.to = '<?= ogFor($title, $url, $description, $image); ?>';
+        replace.sync(options);
+        console.log('replaced head');
+    
+        options.from = '<!-- {{SSRPayload}} -->';
+        options.to = '';
+        replace.sync(options);
+        console.log('replaced payload');
 
         const oldName = 'elara-worker.js';
         const newFileName = 'dobrunia-worker-'+rev+'.js';
@@ -74,19 +88,6 @@ try {
         renameSync(htmlFile, newFile);
         console.log('Rename ok');    
     });
-
-    replace.sync(options);
-    console.log('replaced functions');
-
-    options.from = '<!-- {{SSRHead}} -->';
-    options.to = '<?= ogFor($title, $url, $description, $image); ?>';
-    replace.sync(options);
-    console.log('replaced head');
-
-    options.from = '<!-- {{SSRPayload}} -->';
-    options.to = '';
-    replace.sync(options);
-    console.log('replaced payload');
 
     writeFileSync(htaccessFile, `
     RewriteEngine On
