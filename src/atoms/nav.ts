@@ -6,6 +6,7 @@ import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { CSS, Utils } from '../core/ui/ui';
 import Constants from '../constants';
+import { ElaraApp } from '../elara-app';
 
 export interface Item {
     route: string; 
@@ -37,6 +38,7 @@ export default class Nav extends PureElement {
     public logo = '';
 
     private _resizeListener: (e: Event) => void;
+    _elara: ElaraApp;
 
     public constructor(){
         super();
@@ -221,6 +223,7 @@ export default class Nav extends PureElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
+        this._elara = document.querySelector<ElaraApp>('elara-app');
         window.addEventListener('resize', this._resizeListener);
     }
 
@@ -234,9 +237,11 @@ export default class Nav extends PureElement {
     }
 
 	public render(): void | TemplateResult {
+        const hasFilters = this.route.indexOf('home') !== -1 || this.route.indexOf('category') !== -1;
+
         return html`
         <nav class="main" role="navigation">
-            <div class="header ${(this.route === 'home' || this.route === 'category') ? '' : 'has-no-filters'}">
+            <div class="header ${hasFilters ? '' : 'has-no-filters'}">
                 <div aria-hidden="true" tabindex="0" class="title" role="link">
                     <iron-image @click=${() => navigate('home')} style="cursor: pointer; width: 130px; height: 92px;" sizing="cover" preload src="${this.logo}"></iron-image>
                 </div>
@@ -266,7 +271,7 @@ export default class Nav extends PureElement {
             ` : html``}
         </nav>
         ${this.filters && this.filters.length > 0 ? html`
-            <div class="filters ${(this.route === 'home' || this.route === 'category') ? '' : 'hidden'}">
+            <div class="filters ${hasFilters ? '' : 'hidden'}">
                 <ul>
                     <li><iron-icon aria-label="Réinitialiser" class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
                         navigate(Constants.defaults.route);
@@ -283,17 +288,8 @@ export default class Nav extends PureElement {
             return html``;
         }
 
-        let isActive = item.route.replace('#', '') === this.route && item.filter === false;
-        if(item.filter === true){
-            isActive = location.hash.split('/').pop() === item.route.replace('category/', '');
-        }
-
-        if(item.route.indexOf('page') !== -1){
-            isActive = location.hash.split('/').pop() === item.route.replace('page/', '');
-        }
-
         return html`
-        <li><a class="item ${item && isActive ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
+        <li><a class="item ${item && this._elara.router.history.currentRoute.substr(1) === item.route ? 'active' : ''}" role="link" tabindex="${this.route === item.route ? '-1' : '0'}" @click=${() => {
             navigate(item.route);
             if(this.mobile){
                 this.shown = false;

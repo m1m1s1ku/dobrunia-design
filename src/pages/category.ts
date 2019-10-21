@@ -20,7 +20,7 @@ class Category extends Page implements ElementWithProjects {
     public empty = false;
     
     private _observer = iObserverForCard(.2);
-    private _changeListener: () => {};
+    private _toLoad: string;
 
     public get head(){
         return {
@@ -51,39 +51,23 @@ class Category extends Page implements ElementWithProjects {
         ];
     }
 
-    public connectedCallback(){
-        super.connectedCallback();
-
-        this._changeListener = this._reload.bind(this);
-        window.addEventListener('hashchange', this._changeListener);
-    }
-
-    public disconnectedCallback(){
-        super.disconnectedCallback();
-        window.removeEventListener('hashchange', this._changeListener);
-        this._changeListener = null;
-    }
-
-    private async _reload(){
-        this.loaded = false;
-        const requestedHash = location.hash.split('/');
-        await this._loadRequested(requestedHash[1]);
-        this.loaded = true;
+    public constructor(slug: string){
+        super();
+        this._toLoad = slug;
     }
 
     public async firstUpdated(){
-        const requestedHash = location.hash.split('/');
-        if(requestedHash.length > 1){
-            await this._loadRequested(requestedHash[1]);
+        if(this._toLoad){
+            await this._loadRequested();
         } else {
             this.empty = true;
             this.loaded = true;
         }
     }
 
-    private async _loadRequested(hash: string){
+    private async _loadRequested(){
         const query = `{
-            categories(where: {slug:"${hash}"}) {
+            categories(where: {slug:"${this._toLoad}"}) {
               edges {
                 node {
                   id,
@@ -119,6 +103,7 @@ class Category extends Page implements ElementWithProjects {
 
         this.projects = [];
         await projectLoad(this, '#cards .card:last-child', cat.slug, this._observer);
+        this._toLoad = null;
     }
 
     public render(): void | TemplateResult {

@@ -45,6 +45,7 @@ export default class Root extends Page {
 	}
 		
 	public async load(route: string){
+		this.route = route;
 		return await load(route, this._content);
 	}
 		
