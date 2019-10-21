@@ -92,6 +92,9 @@ export class ElaraApp extends Root implements Elara.Root {
 		this._subscriptions = new Subscription();
 
 		this.router = crayon.create();
+		this.router.path('/', () => {
+			return this.load('home');
+		});
 		this.router.path('/home', () => {
 			return this.load('home');
 		});
@@ -102,6 +105,10 @@ export class ElaraApp extends Root implements Elara.Root {
 
 		this.router.path('/blog', () => {
 			return this.load('blog');
+		});
+
+		this.router.path('/**', () => {
+			return this.load('not-found');
 		});
 
 		this._subscriptions.add(this.router.events.subscribe(event => {
