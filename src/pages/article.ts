@@ -20,6 +20,7 @@ class Single extends Page {
     public article: ProjectMinimal;
     @property({type: String, reflect: false})
     public featured: string;
+    private _toLoad: string;
 
     public get head(){
         return {
@@ -31,50 +32,53 @@ class Single extends Page {
         };
     }
 
-    public connectedCallback(): void {
-        super.connectedCallback();
-        this._load();
+    public constructor(toLoad: string){
+        super();
+
+        this._toLoad = toLoad;
+    }
+
+    public firstUpdated(){
+        return this._load();
     }
     
     private async _load(){
-        const requestedHash = location.hash.split('/');
-        if(requestedHash.length > 1){
-            const projectQuery = `
-            {
-                postBy(slug: "${requestedHash[1]}") {
-                  title
-                  content
-                  excerpt
-                  featuredImage {
-                    sourceUrl
-                  }
+        const projectQuery = `
+        {
+            postBy(slug: "${this._toLoad}") {
+                title
+                content
+                excerpt
+                featuredImage {
+                sourceUrl
                 }
-            }              
-            `;
-
-            const first = await fetch(Constants.graphql, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: projectQuery
-                })
-            }).then(res => res.json()).then(res => res.data.postBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
-
-            this.loaded = true;
-
-            const post = first;
-            document.title = post.title + ' | ' + Constants.title;
-            this.article = post;
-            this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
-
-            if(Utils.animationsReduced()){
-                return;
             }
-            const fade = fadeWith(300, true);
-            this.page.animate(fade.effect, fade.options);
+        }              
+        `;
+
+        const first = await fetch(Constants.graphql, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: projectQuery
+            })
+        }).then(res => res.json()).then(res => res.data.postBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+
+        this.loaded = true;
+
+        const post = first;
+        document.title = post.title + ' | ' + Constants.title;
+        this.article = post;
+        this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
+
+        if(Utils.animationsReduced()){
+            return;
         }
+        const fade = fadeWith(300, true);
+        this.page.animate(fade.effect, fade.options);
+        
     }
 
     public static get styles(){

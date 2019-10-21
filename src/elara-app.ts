@@ -107,6 +107,10 @@ export class ElaraApp extends Root implements Elara.Root {
 			return this.load('blog');
 		});
 
+		this.router.path('/post/:slug', (req) => {
+			return this.load('post/'+req.params.slug);
+		});
+
 		this.router.path('/**', (req) => {
 			return this.load(req.pathname.replace('/', ''));
 		});
