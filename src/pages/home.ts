@@ -141,6 +141,7 @@ class Home extends Page implements ElementWithProjects {
 
     public async firstUpdated(){
         await projectLoad(this, '#cards .card:last-child', null, this._observer);
+        document.title = 'Accueil' + ' | ' + Constants.title;
     }
 
     public static get styles(){
