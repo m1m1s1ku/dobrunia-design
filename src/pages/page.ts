@@ -20,8 +20,7 @@ class PageController extends Page {
     public article: ProjectMinimal;
     @property({type: String, reflect: false})
     public featured: string;
-
-    private _onHashChangeListener: (this: Window, ev: HashChangeEvent) => void;
+    _toLoad: string;
 
     public get head(){
         return {
@@ -33,62 +32,47 @@ class PageController extends Page {
         };
     }
 
-    public connectedCallback(): void {
-        super.connectedCallback();
+    public constructor(toLoad: string){
+        super();
 
-        this._onHashChangeListener = this._onPageChanged.bind(this);
-        window.addEventListener('hashchange', this._onHashChangeListener);
-
-        this._load();
-    }
-
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-        window.removeEventListener('hashchange', this._onHashChangeListener);
-    }
-
-    private _onPageChanged(){
-        this._load();
+        this._toLoad = toLoad;
     }
     
-    private async _load(){
-        const requestedHash = location.hash.split('/');
-        if(requestedHash.length > 1){
-            const pageQuery = `
-            {
-                pageBy(uri: "${requestedHash[1]}") {
-                    title
-                    featuredImage {
-                      sourceUrl
-                    }
-                    content(format: RENDERED)
-                  }
-            }              
-            `;
+    private async _load(uri: string){
+        const pageQuery = `
+        {
+            pageBy(uri: "${uri}") {
+                title
+                featuredImage {
+                    sourceUrl
+                }
+                content(format: RENDERED)
+                }
+        }              
+        `;
 
-            const first = await fetch(Constants.graphql, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: pageQuery
-                })
-            }).then(res => res.json()).then(res => res.data.pageBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+        const first = await fetch(Constants.graphql, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: pageQuery
+            })
+        }).then(res => res.json()).then(res => res.data.pageBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
-            this.loaded = true;
+        this.loaded = true;
 
-            const post = first;
-            document.title = post.title + ' | ' + Constants.title;
-            this.article = post;
-            this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
+        const post = first;
+        document.title = post.title + ' | ' + Constants.title;
+        this.article = post;
+        this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
 
-            if(Utils.animationsReduced()){
-                return;
-            }
-            const fade = fadeWith(300, true);
-            this._page.animate(fade.effect, fade.options);
+        if(Utils.animationsReduced()){
+            return;
         }
+        const fade = fadeWith(300, true);
+        this._page.animate(fade.effect, fade.options);
     }
 
     public static get styles(){
@@ -144,6 +128,10 @@ class PageController extends Page {
             }
             `
         ];
+    }
+
+    public async firstUpdated(){
+        await this._load(this._toLoad);
     }
 
     public render(): void | TemplateResult {

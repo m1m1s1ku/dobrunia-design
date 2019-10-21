@@ -12,7 +12,10 @@ import Constants from '../../constants';
 export async function load (route: string, content: HTMLElement): Promise<HTMLElement> {
     const titleTemplate = '%s | ' + Constants.title;
 
-    const Component = customElements.get('ui-' + route);
+    const split = route.split('/');
+    const isDeep = split.length > 1;
+
+    const Component = customElements.get('ui-' + split[0]);
     content.classList.remove('full-width');
 
     const NotFound = customElements.get('ui-not-found');
@@ -22,7 +25,11 @@ export async function load (route: string, content: HTMLElement): Promise<HTMLEl
         return this;
     };*/
 
-    const loaded = Component ? new Component() : new NotFound(route);
+    if(content.firstElementChild){
+        content.removeChild(content.firstElementChild);
+    }
+    
+    const loaded = Component ? new Component(isDeep ? split[1] : undefined) : new NotFound(route);
 
     if(loaded.head && loaded.head.title && !loaded.customTitle){
         document.title = titleTemplate.replace('%s', loaded.head.title);
@@ -37,6 +44,7 @@ export async function load (route: string, content: HTMLElement): Promise<HTMLEl
     } else if(!loaded.isFullWidth) {
         content.classList.remove('full-width');
     }
+
     content.appendChild(loaded);
 
     if(!Utils.animationsReduced()){

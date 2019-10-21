@@ -4,7 +4,6 @@ import Elara from '../elara';
 
 import Page from './Page';
 
-import { hashChange } from '../routing/routing';
 import { load } from '../bootstrap/bootstrap';
 import { Utils } from '../ui/ui';
 
@@ -25,26 +24,14 @@ export default class Root extends Page {
 	@property({reflect: true, type: String})
 	public route: string;
 	
-	public loadedElement: HTMLElement;
-
-	private _onHashChangeListener: () => void;
-
 	public connectedCallback(){
 		super.connectedCallback();
 
 		Utils.applyVariablesFor(Utils.dayOrNight());
-
-		if(this.hasElaraRouting === true){
-			this._onHashChangeListener = this._onHashChange.bind(this);
-			window.addEventListener('hashchange', this._onHashChangeListener, { passive: true });
-		}
 	}
 
 	public disconnectedCallback(){
 		super.disconnectedCallback();
-		if(this.hasElaraRouting === true){
-			window.removeEventListener('hashchange', this._onHashChangeListener);
-		}
 	}
 		
 	/**
@@ -55,15 +42,6 @@ export default class Root extends Page {
 		// return this;
 
 		return this.attachShadow({mode: 'open'});
-	}
-
-	protected async _onHashChange(event: HashChangeEvent){
-		const route = hashChange(event, this.default);
-		if(this.route !== route){
-			this.route = route;
-			this._content.innerHTML = '';
-			this.loadedElement = await this.load(route);
-		}
 	}
 		
 	public async load(route: string){

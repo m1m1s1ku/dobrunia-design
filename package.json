@@ -19,6 +19,7 @@
     "@sentry/browser": "^5.7.1",
     "@webcomponents/webcomponentsjs": "^2.3.0",
     "core-js": "^3.2.1",
+    "crayon": "^4.1.6",
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
     "regenerator-runtime": "^0.13.3",
