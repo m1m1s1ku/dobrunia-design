@@ -22,16 +22,6 @@ class Single extends Page {
     public featured: string;
     private _toLoad: string;
 
-    public get head(){
-        return {
-            title: 'Article',
-            description: null,
-            type: null,
-            image: null,
-            slug: '#!article'
-        };
-    }
-
     public constructor(toLoad: string){
         super();
 

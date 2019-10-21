@@ -32,18 +32,8 @@ class Project extends Page {
     public featured: string;
     @property({type: Array, reflect: false})
     public gallery: string[];
-    
-    private _toLoad: string;
 
-    public get head(){
-        return {
-            title: null,
-            description: null,
-            type: 'article',
-            image: null,
-            slug: null
-        };
-    }
+    private _toLoad: string;
 
     public constructor(slug: string){
         super();

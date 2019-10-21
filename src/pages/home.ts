@@ -135,16 +135,6 @@ class Home extends Page implements ElementWithProjects {
     @property({type: Boolean, reflect: false})
     public loaded = false;
 
-    public get head(){
-        return {
-            title: 'Accueil',
-            description: '',
-            type: 'page',
-            image: '',
-            slug: '#!home'
-        };
-    }
-
     public connectedCallback(): void {
         super.connectedCallback();
     }

@@ -20,17 +20,7 @@ class PageController extends Page {
     public article: ProjectMinimal;
     @property({type: String, reflect: false})
     public featured: string;
-    _toLoad: string;
-
-    public get head(){
-        return {
-            title: 'Article',
-            description: null,
-            type: null,
-            image: null,
-            slug: '#!article'
-        };
-    }
+    private _toLoad: string;
 
     public constructor(toLoad: string){
         super();

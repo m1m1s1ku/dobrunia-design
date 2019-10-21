@@ -14,22 +14,11 @@ import { CSS } from '../ui/ui';
  * @extends {LitElement}
  * @implements {Elara.Page}
  */
-export default class Page extends LitElement implements Elara.Page {
+export default class Page extends LitElement {
     public static hasRouting = false;
 
     @property({type: Boolean, reflect: true})
     public loaded = false;
-    public default: string = null;
-    
-    public get head(){
-        return {
-            title: null,
-            description: null,
-            type: null,
-            image: null,
-            slug: null
-        };
-    }
 
     public static get styles(){
         return [

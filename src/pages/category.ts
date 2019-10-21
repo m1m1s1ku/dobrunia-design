@@ -22,16 +22,6 @@ class Category extends Page implements ElementWithProjects {
     private _observer = iObserverForCard(.2);
     private _toLoad: string;
 
-    public get head(){
-        return {
-            title: null,
-            description: null,
-            type: 'category',
-            image: null,
-            slug: '#!category'
-        };
-    }
-
     public static get styles(){
         return [
             ... super.styles,

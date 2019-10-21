@@ -45,16 +45,6 @@ class Blog extends Page {
         threshold: this._ratio
     });
 
-    public get head(){
-        return {
-            title: 'Actualités',
-            description: null,
-            type: null,
-            image: null,
-            slug: null
-        };
-    }
-
     public static get styles(){
         return [
             ... super.styles,

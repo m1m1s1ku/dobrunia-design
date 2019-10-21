@@ -237,7 +237,7 @@ export default class Nav extends PureElement {
     }
 
 	public render(): void | TemplateResult {
-        const hasFilters = this.route.indexOf('home') !== -1 || this.route.indexOf('category') !== -1;
+        const hasFilters = this.route && this.route.indexOf('home') !== -1 || this.route.indexOf('category') !== -1;
 
         return html`
         <nav class="main" role="navigation">
