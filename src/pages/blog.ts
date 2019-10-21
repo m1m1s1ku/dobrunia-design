@@ -123,10 +123,10 @@ class Blog extends Page {
             `
         ];
     }
-
-    public connectedCallback(): void {
-        super.connectedCallback();
+    
+    public async firstUpdated(){
         this._load();
+        document.title = 'Blog' + ' | ' + Constants.title;
     }
     
     private async _load(){
