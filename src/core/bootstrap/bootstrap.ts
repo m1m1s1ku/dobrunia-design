@@ -1,4 +1,3 @@
-import { NotFoundError } from '../errors/errors';
 import { fadeWith } from '../animations';
 import { Utils } from '../ui/ui';
 import Constants from '../../constants';
@@ -28,7 +27,7 @@ export async function load (route: string, content: HTMLElement): Promise<HTMLEl
     if(content.firstElementChild){
         content.removeChild(content.firstElementChild);
     }
-    
+
     const loaded = Component ? new Component(isDeep ? split[1] : undefined) : new NotFound(route);
 
     if(loaded.head && loaded.head.title && !loaded.customTitle){
@@ -52,9 +51,6 @@ export async function load (route: string, content: HTMLElement): Promise<HTMLEl
         content.animate(config.effect, config.options);
     }
     
-    if(loaded instanceof NotFound){
-        throw new NotFoundError(route);
-    }
     window.scrollTo(0,0);
 
     const handle = window.requestAnimationFrame(async() => {

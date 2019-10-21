@@ -107,8 +107,8 @@ export class ElaraApp extends Root implements Elara.Root {
 			return this.load('blog');
 		});
 
-		this.router.path('/**', () => {
-			return this.load('not-found');
+		this.router.path('/**', (req) => {
+			return this.load(req.pathname.replace('/', ''));
 		});
 
 		this._subscriptions.add(this.router.events.subscribe(event => {
