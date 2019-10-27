@@ -16,14 +16,51 @@ function reload(){
 function makeGenericHandler(error = null){
   const handler = document.createElement('div');
   handler.id = handler.className = 'handler';
+  if(error){
+    handler.classList.add('in-error');
+  }
   handler.innerHTML = `
+  <style>
+  .dot {
+    width: 12px;
+    height: 12px;
+    background: #fcfcfc;
+    border-radius: 50%;
+    position: absolute;
+    top: 4%;
+    right: 6%;
+  }
+  button {
+    cursor: pointer;
+    line-height: 2em;
+    background: #fcfcfc;
+    border-radius: 10px;
+    outline: 0;
+    border: none;
+    box-shadow: 2px 2px 10px rgba(119, 119, 119, 0.5);
+    transition: all 0.5s ease-in-out;
+    font-size: 0.9em;
+    font-weight: 100;
+    letter-spacing: 2px;
+    margin: .5em;
+  }
+  button:hover {
+    background: #efefef;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+  }
+  .dot:hover {
+    background: #c9c9c9;
+  }
+  </style>
+  <div class="dot"></div>
   <div class="content">
     ${error !== null ? `
-      <h4>Oops.</h4>
+      <h4>Une erreur est survenue.</h4>
       ${error.message ? `<p>${error.message}</p>` : ''}
       <div class="actions">
-        ${error.continue == true ? '<button class="continue" onclick="dismiss()">Pas grave, je continue.</button>' : ''}
-        <button class="reload" onclick="reload()" raised toggles>Rafraîchir</button>
+        ${error.continue == true ? '<button class="button-box continue" onclick="dismiss()">Continuer</button>' : ''}
+        <button class="reload" onclick="reload()" raised toggles>Réessayer</button>
       </div>
     ` : `
     <div id="loader">
@@ -35,6 +72,11 @@ function makeGenericHandler(error = null){
     `}
   </div>
   `;
+  
+  handler.querySelector('.dot').addEventListener('click', () => {
+    handler.parentElement.removeChild(handler);
+  });
+
   return handler;
 }
 
