@@ -80,7 +80,11 @@ class Category extends Page implements ElementWithProjects {
         }).then(res => res.json()).then(res => res.data).catch(_ => this.dispatchEvent(wrap(_)));
         
         const category = projR.categories.edges;
-        const cat = category[0].node;
+        let cat = null;
+        if(category && category.length > 0){
+            cat = category[0].node;
+        }
+
         if(!category || category && category.length === 0 || !cat){
             document.title = 'Non trouvé' + ' | ' + Constants.title;
             this.empty = true;
