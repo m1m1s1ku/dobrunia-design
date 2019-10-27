@@ -6,7 +6,7 @@ import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
 
 import { pulseWith } from '../core/animations';
-import { Utils, chunk, decodeHTML } from '../core/ui/ui';
+import { Utils, decodeHTML } from '../core/ui/ui';
 
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
@@ -167,44 +167,32 @@ class Blog extends Page {
             });
         }
 
-        const chunks = chunk(parsed, 1);
-
         let cancelAnimations = false;
 
-        let initial = 100;
-        for(const chunk of chunks){
-            const append = async () => {
-                this.articles = [...this.articles, ...chunk];
-                await this.updateComplete;
-            };
+        for(const chunk of parsed){
+            this.articles = [...this.articles, chunk];
+            await this.updateComplete;
 
-            let appendTime = 100;
+            const article = this.shadowRoot.querySelector('.blog article:last-child');
+            if(cancelAnimations){
+                article.classList.add('reveal');
+                this._observer.observe(article);
+                continue;
+            }
 
-            setTimeout(async () => {
-                await append();
+            if(!Utils.isInViewport(article)){
+                cancelAnimations = true;
+                article.classList.add('reveal');
+                this._observer.observe(article);
+                continue;
+            }
 
-                const article = this.shadowRoot.querySelector('.blog article:last-child');
-                if(cancelAnimations){
-                    article.classList.add('reveal');
-                    this._observer.observe(article);
-                    return;
-                }
+            if(Utils.animationsReduced()){
+                continue;
+            }
 
-                if(!Utils.isInViewport(article)){
-                    appendTime = 0;
-                    cancelAnimations = true;
-                    article.classList.add('reveal');
-                    this._observer.observe(article);
-                    return;
-                }
-
-                if(Utils.animationsReduced()){
-                    return;
-                }
-
-                const animationConfig = pulseWith(300);
-                article.animate(animationConfig.effect, animationConfig.options);
-            }, !cancelAnimations ? initial += appendTime : initial);
+            const animationConfig = pulseWith(300);
+            article.animate(animationConfig.effect, animationConfig.options);
         }
         
         this.ghost = parsed;
