@@ -29,7 +29,20 @@ try {
           to: `
           <?php
           function get(){
-            $url = "https://base.dobruniadesign.com" . $_SERVER['REQUEST_URI'];
+            $request = $_SERVER['REQUEST_URI'];
+
+            if($request == '/home'){
+              $request = '/';
+            } else if($request != '/'){
+              $request = $request . '/';
+            }
+
+            $isCategory = strpos($request, 'category');
+            if($isCategory !== false){
+              return null;
+            }
+
+            $url = "https://base.dobruniadesign.com" . $request;
             $ch = curl_init();
         
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -52,11 +65,18 @@ try {
           }
         
           $response = get();
+
           $title = $response->title;
           $description = $response->description;
           $image = $response->image;
           $url = $response->url;
-        
+
+          if($response == null || $url == false){
+            $title = 'Dobrunia Design';
+            $description = '';
+            $image = 'https://base.dobruniadesign.com/wp-content/uploads/2019/10/cropped-logo-fasada-bis.jpg';
+            $url = 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
+          }
           ?>
           `
         };
