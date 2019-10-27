@@ -33,8 +33,10 @@ try {
 
             if($request == '/home'){
               $request = '/';
-            } else if($request != '/'){
-              $request = $request . '/';
+            }
+
+            if($request[-1] !== '/'){
+              $request .= '/';
             }
 
             $url = "https://base.dobruniadesign.com" . $request;
