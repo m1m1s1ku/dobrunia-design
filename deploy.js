@@ -31,7 +31,7 @@ try {
           function get(){
             $request = $_SERVER['REQUEST_URI'];
 
-            if($request == '/home'){
+            if($request == '/home' || $request == '/blog'){
               $request = '/';
             }
 
