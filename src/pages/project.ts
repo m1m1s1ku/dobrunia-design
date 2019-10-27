@@ -53,10 +53,10 @@ class Project extends Page {
             }
 
             .project iron-image {
-                width: 90vw; 
+                width: 300px; 
                 height: 240px;
-                margin: 1em;
             }
+
             .post-content {
                 display: flex;
                 flex-direction: column;
@@ -64,6 +64,16 @@ class Project extends Page {
                 background-color: rgba(255,255,255, .8);
                 padding: 1em;
             }
+
+            .gallery {
+                display: grid;
+                grid-auto-rows: minmax(80px, auto);
+                grid-gap: 10px;
+                grid-auto-flow: dense;
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                width: 100%;
+                justify-items: center;
+            }            
             `
         ];
     }
@@ -134,11 +144,13 @@ class Project extends Page {
             `: html``}
             <main class="post-content">${unsafeHTML(this.project.content)}</main>
             ${this.gallery && this.gallery.length > 0 ? html`
+            <div class="gallery">
                 ${repeat(this.gallery, link => html`
                 <div class="image-container" @click=${onImageContainerClicked}>
-                    <iron-image sizing="contain" src=${link}></iron-image>
+                    <iron-image sizing="cover" src=${link}></iron-image>
                 </div>
                 `)}
+            </div>
             ` : html``}
         ` : html``}
         </div>
