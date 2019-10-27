@@ -37,11 +37,6 @@ try {
               $request = $request . '/';
             }
 
-            $isCategory = strpos($request, 'category');
-            if($isCategory !== false){
-              return null;
-            }
-
             $url = "https://base.dobruniadesign.com" . $request;
             $ch = curl_init();
         
