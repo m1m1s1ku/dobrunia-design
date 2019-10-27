@@ -8,7 +8,7 @@ import { oc } from 'ts-optchain';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, onImageContainerClicked } from '../core/ui/ui';
+import { Utils, onImageContainerClicked, decodeHTML } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { wrap } from '../core/errors/errors';
 
@@ -74,6 +74,10 @@ class Project extends Page {
                 width: 100%;
                 justify-items: center;
             }            
+
+            .gallery.short {
+                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            }
             `
         ];
     }
@@ -119,6 +123,8 @@ class Project extends Page {
 
         first.content = testing.innerText;
 
+        first.title = decodeHTML(first.title);
+
         this.project = first;
         this.gallery = links;
         this.loaded = true;
@@ -144,7 +150,7 @@ class Project extends Page {
             `: html``}
             <main class="post-content">${unsafeHTML(this.project.content)}</main>
             ${this.gallery && this.gallery.length > 0 ? html`
-            <div class="gallery">
+            <div class="gallery ${this.gallery.length < 3 ? 'short' : ''}">
                 ${repeat(this.gallery, link => html`
                 <div class="image-container" @click=${onImageContainerClicked}>
                     <iron-image sizing="cover" src=${link}></iron-image>
