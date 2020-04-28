@@ -1,16 +1,13 @@
 import { html, TemplateResult } from 'lit-html';
-import { property, css, CSSResult } from 'lit-element';
-
-import PureElement from '../core/strategies/Element';
+import { property, css, CSSResult, LitElement, customElement } from 'lit-element';
 
 import './tree';
 
 import Constants from '../constants';
 import { navigate } from '../core/routing/routing';
 
-class NotFound extends PureElement {
-    public static readonly is: string = 'ui-not-found';
-
+@customElement('ui-not-found')
+export class NotFound extends LitElement {
     @property({type: String, reflect: true})
     public asked: string;
 
@@ -48,4 +45,3 @@ class NotFound extends PureElement {
         `;
     }
 }
-customElements.define(NotFound.is, NotFound);

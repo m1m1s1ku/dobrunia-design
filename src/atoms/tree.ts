@@ -1,12 +1,9 @@
-import { html, TemplateResult, property, css, CSSResult } from 'lit-element';
-
-import PureElement from '../core/strategies/Element';
+import { html, TemplateResult, property, css, CSSResult, LitElement } from 'lit-element';
 
 /**
  * @class Tree
- * @extends {PureElement}
  */
-export class Tree extends PureElement {
+export class Tree extends LitElement {
     public static readonly is: string = 'ui-tree';
 
     @property({type: Number, reflect: true})

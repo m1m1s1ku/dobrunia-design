@@ -16,8 +16,6 @@
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
-        "plugins": [
-            { "transform": "ts-optchain/transform" }
-        ]
+        "plugins": []
     }
 }

@@ -1,7 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { css, property } from 'lit-element';
-import { oc } from 'ts-optchain';
+import { css, property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -11,9 +10,8 @@ import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
 import { wrap } from '../core/errors/errors';
 
-class PageController extends Page {
-    public static readonly is: string = 'ui-page';
-
+@customElement('ui-page')
+export class PageController extends Page {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
@@ -56,7 +54,8 @@ class PageController extends Page {
         const post = first;
         document.title = post.title + ' | ' + Constants.title;
         this.article = post;
-        this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
+        const hasSource = post?.featuredImage?.sourceUrl;
+        this.featured = hasSource ? post.featuredImage.sourceUrl : '/assets/logo.png';
 
         if(Utils.animationsReduced()){
             return;
@@ -151,4 +150,3 @@ class PageController extends Page {
         return this.shadowRoot.querySelector('#page');
     }
 }
-customElements.define(PageController.is, PageController);

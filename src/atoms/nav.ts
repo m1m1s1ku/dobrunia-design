@@ -1,7 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
-import { CSSResult, css, property } from 'lit-element';
+import { CSSResult, css, property, LitElement } from 'lit-element';
 
-import PureElement from '../core/strategies/Element';
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { CSS, Utils } from '../core/ui/ui';
@@ -16,7 +15,7 @@ export interface Item {
     filter: boolean;
 }
 
-export default class Nav extends PureElement {
+export default class Nav extends LitElement {
     public static readonly is: string = 'ui-nav';
 
     @property({type: Array, reflect: false})

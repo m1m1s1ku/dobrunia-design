@@ -32,7 +32,8 @@ export default class Root extends Page {
 		
 	public async load(route: string){
 		this.route = route;
-		return await load(route, this._content);
+		await load(route, this._content);
+		return;
 	}
 		
 	protected get _content(): HTMLElement {

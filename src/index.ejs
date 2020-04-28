@@ -21,7 +21,6 @@
     <meta name="msapplication-config" content="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://base.dobruniadesign.com" crossorigin>
-    <link rel="preconnect" href="https://sentry.io" crossorigin>
 
     <custom-style>
         <style>
@@ -202,21 +201,10 @@
     <script src="<%= htmlWebpackPlugin.options.pathname %>/boot.js"></script>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/webcomponents-loader.js"></script>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/web-animations-next-lite.min.js"></script>
-    <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/custom-elements-es5-adapter.js"></script>
   </head>
   <body>
     <elara-app></elara-app>
   </body>
-  <script>
-    // Check that service workers are registered
-    if ('serviceWorker' in navigator) {
-      // Use the window load event to keep the page load performant
-      window.addEventListener('load', () => {
-        // TODO : Enable when done
-        // navigator.serviceWorker.register('<%= htmlWebpackPlugin.options.pathname %>/elara-worker.js');
-      });
-    }
-  </script>
   <style>
     @font-face {
       font-family: 'Hind';
