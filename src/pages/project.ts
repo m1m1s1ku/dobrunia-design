@@ -2,8 +2,7 @@ import { html, TemplateResult } from 'lit-html';
 import {repeat} from 'lit-html/directives/repeat';
 
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
-import { css, property } from 'lit-element';
-import { oc } from 'ts-optchain';
+import { css, property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -21,7 +20,8 @@ export interface ProjectMinimal {
     };
 }
 
-class Project extends Page {
+@customElement('ui-projet')
+export class Project extends Page {
     public static readonly is: string = 'ui-projet';
 
     public static readonly hasRouting = true;
@@ -108,7 +108,11 @@ class Project extends Page {
         .then(res => res.data.projetBy)
         .catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
-        this.featured = oc<ProjectMinimal>(first).featuredImage.sourceUrl('/assets/logo.png');
+        if(first && first.featuredImage && first.featuredImage.sourceUrl){
+            this.featured = first.featuredImage.sourceUrl;
+        } else {
+            this.featured = '/assets/logo.png';
+        }
 
         const testing = document.createElement('div');
         testing.innerHTML = first.content;
@@ -167,4 +171,3 @@ class Project extends Page {
         return this.shadowRoot.querySelector('#project');
     }
 }
-customElements.define(Project.is, Project);

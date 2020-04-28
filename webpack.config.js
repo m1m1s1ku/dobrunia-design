@@ -3,7 +3,6 @@ const WebpackMerge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const RemoveServiceWorkerPlugin = require('webpack-remove-serviceworker-plugin/packages/webpack-remove-serviceworker-plugin');
 
 const { resolve, join } = require('path');
 
@@ -53,11 +52,6 @@ const polyfills = [
   },
   {
     from: resolve('./src/boot.js'),
-    to: OUTPUT_PATH,
-    flatten: true
-  },
-  {
-    from: resolve('./src/elara-worker.js'),
     to: OUTPUT_PATH,
     flatten: true
   },
@@ -113,9 +107,6 @@ const commonConfig = WebpackMerge([
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          options: {
-            compiler: 'ttypescript'
-          },
           exclude: /node_modules/
         },
         {
@@ -144,7 +135,8 @@ const developmentConfig = WebpackMerge([
       overlay: true,
       port: 3000,
       historyApiFallback: true,
-      host: 'localhost'
+      host: '0.0.0.0',
+      disableHostCheck: true
     }
   }
 ]);
@@ -164,8 +156,7 @@ const productionConfig = WebpackMerge([
           minifyCSS: true,
           minifyJS: true
         }
-      }),
-      new RemoveServiceWorkerPlugin({ filename: 'service-worker.js' })
+      })
     ]
   }
 ]);

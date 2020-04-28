@@ -10,7 +10,6 @@ import { Utils, decodeHTML } from '../core/ui/ui';
 
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
-import { oc } from 'ts-optchain';
 
 interface ArticleMinimal {
     id: string;
@@ -162,7 +161,7 @@ class Blog extends Page {
                 {
                     ...article.node, 
                     featuredImage: {
-                        sourceUrl: oc<ArticleMinimal>(article.node).featuredImage.sourceUrl('./assets/logo.png')
+                        sourceUrl: article?.node?.featuredImage?.sourceUrl ? article.node.featuredImage.sourceUrl : './assets/logo.png'
                     }
             });
         }

@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-import { css, property } from 'lit-element';
+import { css, property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { CSS } from '../core/ui/ui';
@@ -8,9 +8,8 @@ import { projectCard, projectLoad, ElementWithProjects, iObserverForCard, Projec
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
 
-class Category extends Page implements ElementWithProjects {
-    public static readonly is: string = 'ui-category';
-
+@customElement('ui-category')
+export class Category extends Page implements ElementWithProjects {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
@@ -118,4 +117,3 @@ class Category extends Page implements ElementWithProjects {
         `;
     }
 }
-customElements.define(Category.is, Category);

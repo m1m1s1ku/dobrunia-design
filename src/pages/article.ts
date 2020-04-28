@@ -1,7 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { css, property } from 'lit-element';
-import { oc } from 'ts-optchain';
+import { css, property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -11,7 +10,8 @@ import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
 import { wrap } from '../core/errors/errors';
 
-class Single extends Page {
+@customElement('ui-post')
+export class Single extends Page {
     public static readonly is: string = 'ui-post';
 
     public static readonly hasRouting: boolean = true;
@@ -61,7 +61,7 @@ class Single extends Page {
         const post = first;
         document.title = post.title + ' | ' + Constants.title;
         this.article = post;
-        this.featured = oc<ProjectMinimal>(post).featuredImage.sourceUrl('/assets/logo.png');
+        this.featured = post?.featuredImage?.sourceUrl ? post.featuredImage.sourceUrl : '/assets/logo.png';
 
         if(Utils.animationsReduced()){
             return;
@@ -115,4 +115,3 @@ class Single extends Page {
         return this.shadowRoot.querySelector('#blog');
     }
 }
-customElements.define(Single.is, Single);
