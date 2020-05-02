@@ -25,7 +25,7 @@ export function projectCard(project: ProjectMinimal){
     return html`
     <article class="project card" @click=${() => navigate('projet'.concat('/'+ project.slug))}>
         ${project.featuredImage ? html`
-            <iron-image sizing="contain" preload src="${project.featuredImage.sourceUrl}"></iron-image>
+            <elara-image sizing="contain" preload src="${project.featuredImage.sourceUrl}"></elara-image>
         ` : ''}
         <div class="text">
             <h3 class="title">${decodeHTML(project.title)}</h3>

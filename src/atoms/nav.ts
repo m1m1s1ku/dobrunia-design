@@ -240,7 +240,7 @@ export default class Nav extends LitElement {
         <nav class="main" role="navigation">
             <div class="header ${hasFilters ? '' : 'has-no-filters'}">
                 <div aria-hidden="true" tabindex="0" class="title" role="link">
-                    <iron-image @click=${() => navigate('home')} style="cursor: pointer; width: 130px; height: 92px;" sizing="cover" preload src="${this.logo}"></iron-image>
+                    <elara-image @click=${() => navigate('home')} style="cursor: pointer; width: 130px; height: 92px;" sizing="cover" preload src="${this.logo}"></elara-image>
                 </div>
                 <div class="links">
                     ${this.items.length === 0 ? html`

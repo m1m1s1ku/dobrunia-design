@@ -8,6 +8,9 @@ import Root from './core/strategies/Root';
 import './pages/index';
 import './atoms/nav';
 import './atoms/not-found';
+import './atoms/image';
+import './atoms/tree';
+import './atoms/spinner';
 
 import Constants from './constants';
 import { Item } from './atoms/nav';
@@ -331,7 +334,7 @@ export class ElaraApp extends Root {
 						<div class="pics">
 							${repeat(this.socialThumbs, thumb => html`
 							<a target="_blank" href="https://instagram.com/p/${thumb.shortcode}" rel="noopener">
-								<iron-image style="width: 90px; height: 90px;" sizing="contain" src="${thumb.src}"></iron-image>
+								<elara-image style="width: 90px; height: 90px;" src="${thumb.src}"></elara-image>
 							</a>	
 							`)}
 						</div>

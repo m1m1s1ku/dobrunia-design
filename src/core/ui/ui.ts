@@ -125,7 +125,7 @@ export interface IronImageCompatibleElement extends HTMLImageElement {
 }
 
 const show = (container: HTMLElement) => {
-    const image = container.querySelector('iron-image');
+    const image = container.querySelector('elara-image');
 
     state.container = container;
     state.touchstartX = 0;
@@ -155,11 +155,10 @@ const show = (container: HTMLElement) => {
 };
 
 const hide = (container: HTMLElement) => {
-    const image = container.querySelector('iron-image');
+    const image = container.querySelector('elara-image');
 
     document.body.className = '';
 
-    image.sizing = state.sizing;
     image.style.width = state.width;
     image.style.height = state.height;
 

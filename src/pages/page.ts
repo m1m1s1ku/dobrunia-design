@@ -82,7 +82,7 @@ export class PageController extends Page {
                 </div>
                 ${this.featured ? html`
                 <div class="image-container" @click=${onImageContainerClicked}>
-                    <iron-image sizing="contain" src="${this.featured}"></iron-image>
+                    <elara-image sizing="contain" src="${this.featured}"></elara-image>
                 </div>
                 ` : html``}
             </div>
