@@ -55,7 +55,7 @@ export class PageController extends Page {
         document.title = post.title + ' | ' + Constants.title;
         this.article = post;
         const hasSource = post?.featuredImage?.sourceUrl;
-        this.featured = hasSource ? post.featuredImage.sourceUrl : '/assets/logo.png';
+        this.featured = hasSource ? post.featuredImage.sourceUrl : null;
 
         if(Utils.animationsReduced()){
             return;
@@ -82,7 +82,7 @@ export class PageController extends Page {
                 </div>
                 ${this.featured ? html`
                 <div class="image-container" @click=${onImageContainerClicked}>
-                    <elara-image sizing="contain" src="${this.featured}"></elara-image>
+                    <elara-image .catch=${true} src="${this.featured}"></elara-image>
                 </div>
                 ` : html``}
             </div>

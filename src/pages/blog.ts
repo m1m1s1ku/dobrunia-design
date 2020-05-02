@@ -135,7 +135,7 @@ class Blog extends Page {
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('post/'+article.slug)}>
                 ${article.featuredImage ? html`
-                <elara-image sizing="contain" class="article-thumb" src=${article.featuredImage.sourceUrl}></elara-image>
+                <elara-image .catch=${true} class="article-thumb" src=${article.featuredImage.sourceUrl}></elara-image>
                 ` : html``}
                 <h3>${decodeHTML(article.title)}</h3>
                 <a class="item-link">

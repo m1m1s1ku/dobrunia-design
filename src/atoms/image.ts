@@ -15,6 +15,9 @@ export class ElaraImage extends LitElement {
     @property({type: String, reflect: true})
     public placeholder = '';
 
+    @property({type: Boolean, reflect: true})
+    public catch = false;
+
     private _listener: (ev: Event) => void;   
     private _errorListener: (ev: Event) => void = this._onError.bind(this);   
     private _handle: number;
@@ -45,13 +48,19 @@ export class ElaraImage extends LitElement {
 
     public updated(){
         this._listener = this._previewLoadListener(this._handle);
-        this._img.addEventListener('load', this._listener);
-        this._img.addEventListener('error', this._errorListener);
+        if(this._img){
+            this._img.addEventListener('load', this._listener);
+            this._img.addEventListener('error', this._errorListener);
+        }
     }
 
     private _onError(){
         this._img.style.visibility = null;
-        this._img.src = '/assets/logo.png';
+
+        if(this.catch){
+            this._img.parentElement.removeChild(this._img);
+        }
+
         const spin = this.querySelector('elara-spinner');
         if(spin){
             this.removeChild(spin);

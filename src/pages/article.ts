@@ -81,7 +81,7 @@ export class Single extends Page {
             <h1>${decodeHTML(this.article.title)}</h1>
             ${this.featured ? html`
             <div class="image-container" @click=${onImageContainerClicked}>
-                <elara-image src="${this.featured}"></elara-image>
+                <elara-image .catch=${true} src="${this.featured}"></elara-image>
             </div>
             ` : html``}
             <div class="content">

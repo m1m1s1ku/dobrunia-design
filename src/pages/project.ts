@@ -107,7 +107,7 @@ export class Project extends Page {
             <h1 class="title">${this.project.title}</h1>
             ${this.featured ? html`
             <div class="image-container" @click=${onImageContainerClicked}>
-                <elara-image sizing="contain" src=${this.featured}></elara-image>
+                <elara-image .catch=${true} src=${this.featured}></elara-image>
             </div>
             `: html``}
             <main class="post-content">${unsafeHTML(this.project.content)}</main>
@@ -115,7 +115,7 @@ export class Project extends Page {
             <div class="gallery ${this.gallery.length < 3 ? 'short' : ''}">
                 ${repeat(this.gallery, link => html`
                 <div class="image-container" @click=${onImageContainerClicked}>
-                    <elara-image sizing="cover" src=${link}></elara-image>
+                    <elara-image .catch=${true} src=${link}></elara-image>
                 </div>
                 `)}
             </div>
