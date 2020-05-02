@@ -180,7 +180,7 @@ export default class Nav extends LitElement {
                 transition: opacity .3s;
             }
 
-            .filters iron-icon {
+            .filters mwc-icon-button {
                opacity: 1;
                margin-top: -3px;
                transition: opacity .3s;
@@ -193,7 +193,7 @@ export default class Nav extends LitElement {
                 margin-right: 25px;
             }
 
-            .filters iron-icon.hidden {
+            .filters mwc-icon-button.hidden {
                 opacity: 0;
             }
 
@@ -206,7 +206,7 @@ export default class Nav extends LitElement {
                 cursor: pointer;
             }
 
-            iron-icon {
+            mwc-icon-button {
                 cursor: pointer;
             }
 
@@ -289,9 +289,9 @@ export default class Nav extends LitElement {
         ${this.filters && this.filters.length > 0 ? html`
             <div class="filters ${hasFilters ? '' : 'hidden'}">
                 <ul>
-                    <li><iron-icon aria-label="Réinitialiser" class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
+                    <li><mwc-icon-button aria-label="Réinitialiser" class=${this.route === 'home' ? 'hidden' : ''} icon="close" @click=${() => {
                         navigate(Constants.defaults.route);
-                    }}></iron-icon></li>
+                    }}></mwc-icon-button></li>
                     ${repeat(this.filters, this._item.bind(this))}
                 </ul>
             </div>
