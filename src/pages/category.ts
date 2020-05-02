@@ -1,9 +1,8 @@
 import { html, TemplateResult } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-import { css, property, customElement } from 'lit-element';
+import { property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
-import { CSS } from '../core/ui/ui';
 import { projectCard, projectLoad, ElementWithProjects, iObserverForCard, ProjectMinimal } from './home';
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
@@ -20,25 +19,6 @@ export class Category extends Page implements ElementWithProjects {
     
     private _observer = iObserverForCard(.2);
     private _toLoad: string;
-
-    public static get styles(){
-        return [
-            ... super.styles,
-            CSS.cards,
-            css`
-            .category {
-                padding: 2em;
-                padding-top: 0;
-            }
-
-            .not-found {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            `
-        ];
-    }
 
     public constructor(slug: string){
         super();

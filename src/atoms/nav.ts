@@ -3,7 +3,7 @@ import { CSSResult, css, property, LitElement } from 'lit-element';
 
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
-import { CSS, Utils } from '../core/ui/ui';
+import { Utils } from '../core/ui/ui';
 import Constants from '../constants';
 import { ElaraApp } from '../elara-app';
 
@@ -47,9 +47,6 @@ export default class Nav extends LitElement {
 
     public static get styles(): CSSResult[] {
         return [
-            CSS.typography.heading,
-            CSS.typography.links,
-            CSS.spinner,
             css`
             :host {
                 z-index: 3;
@@ -84,6 +81,7 @@ export default class Nav extends LitElement {
 
             .links ul li {
                 display: inline-block;
+                cursor: pointer;
                 list-style: none;
             }
 

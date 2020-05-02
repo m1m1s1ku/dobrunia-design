@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-import { css, property } from 'lit-element';
+import { property } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
@@ -43,85 +43,6 @@ class Blog extends Page {
         rootMargin: '0px',
         threshold: this._ratio
     });
-
-    public static get styles(){
-        return [
-            ... super.styles,
-            css`
-            .blog {
-                padding: 2em;
-            }
-
-            article {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1em;
-                cursor: pointer;
-                margin: 1em;
-                transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-                border-radius: 2px;
-                background-color: rgba(255,255,255, .8);
-            }
-
-            article .item-link {
-                flex: 1;
-                display: block;
-                text-align: right;
-                text-decoration: none;
-            }
-
-            article.reveal {
-                opacity: 0;
-            }
-
-            article.revealed {
-                opacity: 1;
-                transition: opacity .3s;
-            }
-
-            @media (prefers-reduced-motion: reduce){
-                article.reveal {
-                    opacity: 1;
-                }
-        
-                article.revealed {
-                    transition: 0s;
-                }
-            }
-
-            svg {
-                height: 30px;
-                width: 30px;
-            }
-
-            article:hover {
-                box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-            }
-
-            iron-image {
-                margin: .5em;
-            }
-
-            .title-search {
-                display: flex;
-                justify-content: space-between;
-                flex-direction: row;
-            }
-
-            paper-input {
-                --paper-input-container-focus-color: var(--elara-primary);
-            }
-            
-            .article-thumb {
-                margin: 0 .5em;
-                width: 100px;
-                height: 100px;
-            }
-            `
-        ];
-    }
     
     public async firstUpdated(){
         this._load();
@@ -172,7 +93,7 @@ class Blog extends Page {
             this.articles = [...this.articles, chunk];
             await this.updateComplete;
 
-            const article = this.shadowRoot.querySelector('.blog article:last-child');
+            const article = this.querySelector('.blog article:last-child');
             if(cancelAnimations){
                 article.classList.add('reveal');
                 this._observer.observe(article);

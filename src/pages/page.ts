@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { css, property, customElement } from 'lit-element';
+import { property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -64,61 +64,6 @@ export class PageController extends Page {
         this._page.animate(fade.effect, fade.options);
     }
 
-    public static get styles(){
-        return [
-            ... super.styles,
-            css`
-            .page {
-                padding: 2em;
-                background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.6) );
-            }
-
-            li {
-                list-style: initial;
-            }
-
-            .content {
-                padding: 1em;
-                width: 100%;
-                background-color: rgba(255, 255, 255, 0.8);
-            }
-
-            .cols {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            iron-image {
-                width: 25vw; 
-                height: 400px;
-            }
-
-            .image-container {
-                padding: 1em;
-            }
-
-            h3 {
-                margin: 0;
-            }
-
-            @media (max-width: 600px){
-                .cols {
-                    flex-direction: column-reverse;
-                }
-
-                .image-container {
-                    text-align: center;
-                }
-
-                iron-image {
-                    width: 250px;
-                }
-            }
-            `
-        ];
-    }
-
     public async firstUpdated(){
         await this._load(this._toLoad);
     }
@@ -147,6 +92,6 @@ export class PageController extends Page {
     }
 
     private get _page(){
-        return this.shadowRoot.querySelector('#page');
+        return this.querySelector('#page');
     }
 }

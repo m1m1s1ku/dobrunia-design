@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { css, property, customElement } from 'lit-element';
+import { property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -67,26 +67,7 @@ export class Single extends Page {
             return;
         }
         const fade = fadeWith(300, true);
-        this.page.animate(fade.effect, fade.options);
-        
-    }
-
-    public static get styles(){
-        return [
-            ... super.styles,
-            css`
-            .single {
-                padding: 2em;
-            }
-
-            .images {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-            `
-        ];
+        this.page.animate(fade.effect, fade.options); 
     }
 
     public render(): void | TemplateResult {
@@ -112,6 +93,6 @@ export class Single extends Page {
     }
 
     private get page(){
-        return this.shadowRoot.querySelector('#blog');
+        return this.querySelector('#blog');
     }
 }

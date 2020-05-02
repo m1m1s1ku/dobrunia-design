@@ -54,12 +54,12 @@ export async function load (route: string, content: HTMLElement): Promise<HTMLEl
     window.scrollTo(0,0);
 
     const handle = window.requestAnimationFrame(async() => {
-        if(!loaded.shadowRoot){
+        if(!loaded){
             cancelAnimationFrame(handle);
             return;
         }
 
-        const pageContent = loaded.shadowRoot.querySelector('.animated');
+        const pageContent = loaded.querySelector('.animated');
         if(!pageContent){
             cancelAnimationFrame(handle);
             return;

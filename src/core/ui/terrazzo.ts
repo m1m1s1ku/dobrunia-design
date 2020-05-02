@@ -123,7 +123,7 @@ if (debug) {
 }
 
 export default function terrazzo(host: Element, colors: string[], isResize = false, debug = false){
-  const canvas = host.shadowRoot ? host.shadowRoot.querySelector('canvas') : host.querySelector('canvas');
+  const canvas = host.querySelector('canvas');
   const height = document.body.scrollHeight;
 
   canvas.width = window.innerWidth;

@@ -2,7 +2,7 @@ import { html, TemplateResult } from 'lit-html';
 import {repeat} from 'lit-html/directives/repeat';
 
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
-import { css, property, customElement } from 'lit-element';
+import { property, customElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
@@ -38,48 +38,6 @@ export class Project extends Page {
     public constructor(slug: string){
         super();
         this._toLoad = slug;
-    }
-
-    public static get styles(){
-        return [
-            ... super.styles,
-            css`
-            .project {
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                padding: 2em;
-            }
-
-            .project iron-image {
-                width: 300px; 
-                height: 240px;
-            }
-
-            .post-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                background-color: rgba(255,255,255, .8);
-                padding: 1em;
-            }
-
-            .gallery {
-                display: grid;
-                grid-auto-rows: minmax(80px, auto);
-                grid-gap: 10px;
-                grid-auto-flow: dense;
-                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-                width: 100%;
-                justify-items: center;
-            }            
-
-            .gallery.short {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-            }
-            `
-        ];
     }
 
     public async firstUpdated(){
@@ -168,6 +126,6 @@ export class Project extends Page {
     }
 
     private get page(){
-        return this.shadowRoot.querySelector('#project');
+        return this.querySelector('#project');
     }
 }

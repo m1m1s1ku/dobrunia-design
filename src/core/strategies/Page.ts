@@ -1,5 +1,4 @@
 import { LitElement, property } from 'lit-element';
-import { CSS } from '../ui/ui';
 
 /**
  * Page strategy
@@ -18,16 +17,7 @@ export default class Page extends LitElement {
     @property({type: Boolean, reflect: true})
     public loaded = false;
 
-    public static get styles(){
-        return [
-            CSS.grid,
-            CSS.spinner,
-            CSS.images,
-            CSS.typography.buttons,
-            CSS.typography.lists,
-            CSS.typography.links,
-            CSS.typography.heading,
-            CSS.shortcodes
-        ];
+    protected createRenderRoot(){
+        return this;
     }
 }

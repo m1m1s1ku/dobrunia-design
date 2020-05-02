@@ -1,10 +1,10 @@
 import { html, TemplateResult } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
-import { property, LitElement, css } from 'lit-element';
+import { property, LitElement } from 'lit-element';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';
-import { CSS, Utils, chunk, decodeHTML } from '../core/ui/ui';
+import { Utils, chunk, decodeHTML } from '../core/ui/ui';
 import { pulseWith } from '../core/animations';
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
@@ -88,7 +88,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             host.projects = [...host.projects, ...chunk];
             await host.updateComplete;
             
-            const card = host.shadowRoot.querySelector(lastCardSelector);
+            const card = host.querySelector(lastCardSelector);
             if(Utils.isInViewport(card)){
                 appendTime = 0;
                 card.classList.add('revealed');
@@ -142,14 +142,6 @@ class Home extends Page implements ElementWithProjects {
     public async firstUpdated(){
         await projectLoad(this, '#cards .card:last-child', null, this._observer);
         document.title = 'Accueil' + ' | ' + Constants.title;
-    }
-
-    public static get styles(){
-        return [
-            ... super.styles,
-            CSS.cards,
-            css``
-        ];
     }
 
     public render(): void | TemplateResult {

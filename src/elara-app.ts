@@ -1,4 +1,4 @@
-import { html, css, CSSResult, property, svg, SVGTemplateResult } from 'lit-element';
+import { html, property, svg, SVGTemplateResult } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 
 import crayon from 'crayon';
@@ -106,8 +106,6 @@ export class ElaraApp extends Root {
 				terrazzo(this, this._terrazzoColors, true);
 			})
 		), animationFrameScheduler);
-
-		this.hasElaraRouting = true;
 	}
 
 	/**
@@ -302,148 +300,6 @@ export class ElaraApp extends Root {
 		]);
 	}
 
-	public static get styles(): CSSResult[] {
-		return [
-		css`
-		.content {
-			color: var(--elara-font-color);
-			display: inline-block;
-
-			font-family: var(--elara-font-primary);
-			opacity: 1;
-			margin: 0;
-			width: 100%;
-			margin-top: 1em;
-			min-height: 75vh;
-			background: linear-gradient( to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.6) );
-		}
-
-		.content.hidden {
-			opacity: 0;
-			z-index: 0;
-			visibility: hidden;
-		}
-
-		footer {
-			position: relative;
-			user-select: none;
-			font-family: var(--elara-font-primary);
-			min-height: 130px;
-			justify-content: space-between;
-			background-color: #eecfcb;
-			display: flex;
-			flex-direction: row;
-			color: #3c3c3b;
-		}
-		
-		footer a {
-			cursor: pointer;
-			color: #3c3c3b;
-			text-decoration: none;
-		}
-
-		footer a:hover {
-			color: var(--elara-font-hover);
-		}
-
-		.logotype::first-letter {
-			font-size: 1.5em;
-		}
-
-
-		footer .right {
-			padding-left: 1em;
-			padding-right: 1em;
-		}
-
-		footer .left {
-			padding: 1em 1em;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-		}
-
-		.big-type, .middle-type {
-			font-size: 16px;
-			letter-spacing: 3px;
-		}
-
-		.middle-type {
-			margin-top: .7em;
-		}
-
-		.low-type {
-			position: absolute;
-			bottom: 10px;
-			letter-spacing: 2px;
-			font-size: 13px;
-		}
-			
-		footer svg {
-			width: 30px;
-			height: 30px;
-			margin: 5px;
-			cursor: pointer;
-		}
-
-		footer .icons {
-			display: flex;
-			flex-direction: row;
-			justify-content: flex-end;
-		}
-
-		@media (max-width: 600px){
-			footer {
-				flex-direction: column;
-			}
-
-			.middle-type {
-				margin-top: auto;
-			}
-
-			.low-type {
-				position: initial;
-			}
-		}
-
-		canvas {
-			position: fixed;
-			height: 100vh;
-			width: 100vw;
-			z-index: -1;
-		}
-
-		.instagram {
-			margin: 1em;
-			display: flex;
-			flex-direction: column;
-			align-items: flex-end;
-		}
-
-		.instalink {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		footer svg {
-			transition: fill .3s;
-		}
-
-		footer a:hover svg {
-			fill: var(--elara-font-hover);
-		}
-
-		footer a iron-image {
-			transition: transform .3s;
-		}
-
-		footer a:hover iron-image {
-			transform: scale(1.1);
-		}
-	`];
-	}
-	
 	public render() {
 		return html`
 			${this.waiting ? html`` : html``}

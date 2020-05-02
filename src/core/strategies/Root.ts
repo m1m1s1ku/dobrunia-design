@@ -15,21 +15,10 @@ import { load } from '../bootstrap/bootstrap';
  * @class Root
  * @extends {Page}
  */
-export default class Root extends Page {
-	public hasElaraRouting = true;
+export default class Root extends Page {	
 	@property({reflect: true, type: String})
 	public route: string;
 	
-	/**
-	 * Create the render root
-	 */
-	protected createRenderRoot(){
-		// @tool: make elara-app in light-dom
-		// return this;
-
-		return this.attachShadow({mode: 'open'});
-	}
-		
 	public async load(route: string){
 		this.route = route;
 		await load(route, this._content);
@@ -37,6 +26,6 @@ export default class Root extends Page {
 	}
 		
 	protected get _content(): HTMLElement {
-		return this.shadowRoot.querySelector('main');
+		return this.querySelector('main');
 	}
 }

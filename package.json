@@ -1,6 +1,6 @@
 {
   "name": "dobrunia-design",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,6 @@
     "ejs-loader": "^0.3.6",
     "eslint": "^6.8.0",
     "eslint-loader": "^4.0.2",
-    "eslint-plugin-import": "^2.20.2",
     "html-webpack-plugin": "^4.2.0",
     "ts-loader": "^7.0.1",
     "webpack": "^4.43.0",
