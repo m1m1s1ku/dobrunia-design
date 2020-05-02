@@ -334,7 +334,7 @@ export class ElaraApp extends Root {
 						<div class="pics">
 							${repeat(this.socialThumbs, thumb => html`
 							<a target="_blank" href="https://instagram.com/p/${thumb.shortcode}" rel="noopener">
-								<elara-image style="width: 90px; height: 90px;" src="${thumb.src}"></elara-image>
+								<elara-image src="${thumb.src}"></elara-image>
 							</a>	
 							`)}
 						</div>

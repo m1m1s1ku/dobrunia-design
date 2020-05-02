@@ -8,7 +8,7 @@ export class ElaraSpinner extends LitElement {
     public active = true;
 
     @property({type: String, reflect: false})
-    public text = 'Loading';
+    public text = '';
 
     public static get styles(){
         return css`

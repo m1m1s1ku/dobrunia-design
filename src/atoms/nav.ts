@@ -202,6 +202,19 @@ export default class Nav extends LitElement {
                 margin-left: 10px;
             }
 
+            .filters a {
+                cursor: pointer;
+            }
+
+            iron-icon {
+                cursor: pointer;
+            }
+
+            .hidden {
+                pointer-events: none;
+                cursor: default;
+            }
+
             .filters.hidden {
                 opacity: 0;
                 pointer-events: none;
@@ -214,6 +227,12 @@ export default class Nav extends LitElement {
             .header.has-no-filters {
                 margin-bottom: -4em;
             } 
+
+            elara-image img {
+                cursor: pointer;
+                width: 130px;
+                height: 92px;
+            }
             `
         ];
     }
@@ -240,7 +259,7 @@ export default class Nav extends LitElement {
         <nav class="main" role="navigation">
             <div class="header ${hasFilters ? '' : 'has-no-filters'}">
                 <div aria-hidden="true" tabindex="0" class="title" role="link">
-                    <elara-image @click=${() => navigate('home')} style="cursor: pointer; width: 130px; height: 92px;" sizing="cover" preload src="${this.logo}"></elara-image>
+                    <elara-image @click=${() => navigate('home')} sizing="cover" preload src="${this.logo}"></elara-image>
                 </div>
                 <div class="links">
                     ${this.items.length === 0 ? html`

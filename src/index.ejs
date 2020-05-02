@@ -300,8 +300,8 @@
 
 		canvas {
 			position: fixed;
-			height: 100vh;
-			width: 100vw;
+      height: 100%;
+      width: 100%;
 			z-index: -1;
 		}
 
@@ -326,11 +326,14 @@
 			fill: var(--elara-font-hover);
 		}
 
-		footer a elara-image {
+		footer a elara-image img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
 			transition: transform .3s;
 		}
 
-		footer a:hover elara-image {
+		footer a:hover elara-image img {
 			transform: scale(1.1);
 		}
 
@@ -351,14 +354,20 @@
         padding: 2em;
     }
 
+    .blog.single .image-container img {
+      width: 100vw;
+      height: 400px;
+      object-fit: contain;
+    }
+
     article {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: 1em;
+        padding: .5em;
         cursor: pointer;
-        margin: 1em;
+        margin: .5em;
         transition: all 0.3s cubic-bezier(.25,.8,.25,1);
         border-radius: 2px;
         background-color: rgba(255,255,255, .8);
@@ -399,7 +408,7 @@
         box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     }
 
-    elara-image {
+    elara-image img {
         margin: .5em;
     }
 
@@ -415,8 +424,12 @@
     
     .article-thumb {
         margin: 0 .5em;
-        width: 100px;
-        height: 100px;
+    }
+
+    .article-thumb img {
+      width: 100px;
+      object-fit: contain;
+      height: 100px;
     }
 
     /* Category */
@@ -482,8 +495,11 @@
 
     .card elara-image {
         margin: 1em 0 0 .5em;
-        width: 100%;
         height: 240px;
+    }
+
+    .card .text {
+      margin: .5em;
     }
 
     .card .text .title {
@@ -564,7 +580,7 @@
         z-index: 999;
     }
 
-    .image-container.opened elara-image {
+    .image-container.opened elara-image img {
         width: 100%;
         height: 100%;
     }
@@ -579,41 +595,42 @@
         list-style: initial;
     }
 
-    .content {
+    .page .content {
         padding: 1em;
         width: 100%;
         background-color: rgba(255, 255, 255, 0.8);
     }
 
-    .cols {
+    .page .cols {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }
 
-    elara-image {
+    .page .image-container elara-image img {
         width: 25vw; 
         height: 400px;
+        object-fit: cover;
     }
 
-    .image-container {
+    .page .image-container {
         padding: 1em;
     }
 
-    h3 {
+    .page h3 {
         margin: 0;
     }
 
     @media (max-width: 600px){
-        .cols {
+        .page .cols {
             flex-direction: column-reverse;
         }
 
-        .image-container {
+        .page .image-container {
             text-align: center;
         }
 
-        elara-image {
+        .page elara-image img {
             width: 250px;
         }
     }
@@ -624,15 +641,15 @@
         align-items: center;
         flex-direction: column;
         justify-content: center;
-        padding: 2em;
     }
 
-    .project elara-image {
+    .project elara-image img {
         width: 300px; 
         height: 240px;
+        object-fit: contain;
     }
 
-    .post-content {
+    .project .post-content {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -640,7 +657,7 @@
         padding: 1em;
     }
 
-    .gallery {
+    .project .gallery {
         display: grid;
         grid-auto-rows: minmax(80px, auto);
         grid-gap: 10px;
@@ -650,7 +667,7 @@
         justify-items: center;
     }            
 
-    .gallery.short {
+    .project .gallery.short {
         grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     }
     </style>
