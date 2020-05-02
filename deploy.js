@@ -67,6 +67,10 @@ try {
           $image = $response->image;
           $url = $response->url;
 
+          if(strpos($title, '404') !== false){
+            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+          }    
+
           if($response == null || $url == false){
             $title = 'Dobrunia Design';
             $description = '';
