@@ -54,7 +54,7 @@ function makeGenericHandler(error = null){
   }
   </style>
   <div class="dot"></div>
-  <div class="content">
+  <div class="handler-content">
     ${error !== null ? `
       <h4>Une erreur est survenue.</h4>
       ${error.message ? `<p>${error.message}</p>` : ''}

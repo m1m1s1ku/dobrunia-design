@@ -77,6 +77,10 @@ export class ElaraImage extends LitElement {
             if(previewed.complete){
                 const animation = fadeWith(300, true);
                 requestAnimationFrame(() => {
+                    if(!this._img){
+                        return;
+                    }
+                    
                     this._img.style.visibility = null;
                     this._img.animate(animation.effect, animation.options);
                     this._img.removeEventListener('load', this._listener);
