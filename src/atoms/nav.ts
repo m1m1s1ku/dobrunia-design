@@ -267,9 +267,9 @@ export default class Nav extends LitElement {
                     ` : html``}
                     <ul>
                         ${this.mobile ?
-                            html`<li><paper-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu" @click=${() => {
+                            html`<li><mwc-icon-button id="handle" tabindex="0" class="menu mobile-handle" icon="menu" aria-label="Menu" @click=${() => {
                                 this.shown = !this.shown;
-                            }}></paper-icon-button></li>` :
+                            }}></mwc-icon-button></li>` :
                             html`${repeat(this.items, this._item.bind(this))}`}
                     </ul>
                 </div>
