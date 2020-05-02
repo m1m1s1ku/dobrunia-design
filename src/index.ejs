@@ -197,6 +197,29 @@
       #s2 { animation: anim 1.8s linear infinite -.6s; }
       #s3 { animation: anim 1.8s linear infinite -1.2s; }
 
+      .flex-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      @media (min-width: 468px){
+        .flex-center {
+          flex-direction: row;
+        }
+
+        .flex-center > div {
+          margin: .5em;
+        }
+      }
+
+      @media (min-width: 768px){
+        .flex-center {
+          justify-content: flex-start;
+        }
+      }
 
     /* Root */
     .content {
