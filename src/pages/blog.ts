@@ -138,7 +138,7 @@ class Blog extends Page {
         return html`
         <div class="blog" role="main">
             <div class="title-search">
-                <h1>Actualités</h1>
+                <h2>Actualités</h2>
                 <mwc-textfield outlined type="search" label="Recherche ..." icon="search" @input=${(event: InputEvent) => {
                     this.search((event.currentTarget as TextField).value);
                 }}></mwc-textfield>
