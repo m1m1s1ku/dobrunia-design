@@ -120,9 +120,15 @@ export class ElaraApp extends Root {
 	private async _loadInstagram(){
 		try {
 			const instaThumbs = [];
-			const instagramR = await fetch('https://www.instagram.com/dobruniadesign/?__a=1');
+			// HACK ahead.
+			const instagramR = await fetch('https://www.instagram.com/graphql/query/?query_id=17888483320059182&query_hash=472f257a40c653c64c666ce877d59d2b&variables=%7B%22id%22:%228130742951%22,%22first%22:%2212%22%7D', {
+				headers: {
+					'User-Agent'       : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+					'referer'          : 'https://www.instagram.com/dobruniadesignatelier/',
+				}
+			});
 			const responseI = await instagramR.json();
-			const userData = responseI.graphql.user;
+			const userData = responseI.data.user;
 			const timeline = userData.edge_owner_to_timeline_media.edges.slice(0, 3);
 	
 			for(const latestPost of timeline){
