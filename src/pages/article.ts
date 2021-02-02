@@ -41,7 +41,7 @@ export class Single extends Page {
                 excerpt
                 featuredImage {
                     node {
-                        sourceUrl
+                        sourceUrl(size: MEDIUM_LARGE)
                     }
                 }
             }

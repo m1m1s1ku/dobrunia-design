@@ -175,7 +175,9 @@ export class ElaraApp extends Root {
 							id
 							name
 							taxonomy {
-							  name
+								node {
+									name
+								}
 							}
 						  }
 						}
@@ -210,7 +212,7 @@ export class ElaraApp extends Root {
 		let menuLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'menu');
 		menuLinks = menuLinks.node.menuItems.edges.map(edge => edge.node);
 
-		const legalLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'legal-links');
+		/*const legalLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'legal-links');
 		this.legalLinks = legalLinks.node.menuItems.edges.map(edge => edge.node).map(node => {
 			node.url = node.url.replace('https://dobruniadesign.com', '');
 			return node;
@@ -222,7 +224,7 @@ export class ElaraApp extends Root {
 			node.icon = this._iconsForProvider[node.label.toLowerCase()];
 
 			return node;
-		});
+		});*/
 
 		let idx = 0;
 		const links = [];
@@ -233,7 +235,7 @@ export class ElaraApp extends Root {
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
 			let isCategory = false;
-			if(link?.connectedObject?.taxonomy?.name){
+			if(link?.connectedObject?.taxonomy?.node?.name){
 				isCategory = true;
 			}
 			

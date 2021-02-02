@@ -48,10 +48,9 @@ export class Project extends Page {
             projet(id: "${this._toLoad}", idType: SLUG) {
                 title
                 content
-                excerpt
                 featuredImage {
                     node {
-                        sourceUrl
+                        sourceUrl(size: MEDIUM_LARGE)
                     }
                 }
             }

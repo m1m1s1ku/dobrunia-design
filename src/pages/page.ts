@@ -29,15 +29,20 @@ export class PageController extends Page {
     private async _load(uri: string){
         const pageQuery = `
         {
-            page(id: "${uri}", idType: SLUG) {
-                title
-                featuredImage {
-                    node {
-                        sourceUrl
+            pages(where: {name: "${uri}"}) {
+                edges {
+                  node {
+                    id
+                    title(format: RAW)
+                    featuredImage {
+                      node {
+                        sourceUrl(size: MEDIUM)
+                      }
                     }
+                    content(format: RENDERED)
+                  }
                 }
-                content(format: RENDERED)
-                }
+              }
         }              
         `;
 
@@ -49,7 +54,7 @@ export class PageController extends Page {
             body: JSON.stringify({
                 query: pageQuery
             })
-        }).then(res => res.json()).then(res => res.data.page).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+        }).then(res => res.json()).then(res => res.data.pages.edges[0].node).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
         this.loaded = true;
 
