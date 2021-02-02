@@ -36,7 +36,7 @@ export class PageController extends Page {
                     title
                     featuredImage {
                       node {
-                        sourceUrl(size: MEDIUM)
+                        sourceUrl(size: LARGE)
                       }
                     }
                     content(format: RENDERED)

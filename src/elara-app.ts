@@ -129,7 +129,7 @@ export class ElaraApp extends Root {
 			});
 			const responseI = await instagramR.json();
 			const userData = responseI.data.user;
-			const timeline = userData.edge_owner_to_timeline_media.edges.slice(0, 3);
+			const timeline = userData.edge_owner_to_timeline_media.edges.slice(0, 4);
 	
 			for(const latestPost of timeline){
 				const resources = latestPost.node.thumbnail_resources;

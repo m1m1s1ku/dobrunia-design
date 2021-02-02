@@ -68,7 +68,7 @@ class Blog extends Page {
                           slug
                           featuredImage {
                               node {
-                                sourceUrl(size: MEDIUM_LARGE)
+                                sourceUrl(size: LARGE)
                               }
                           }
                         }

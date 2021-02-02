@@ -50,7 +50,7 @@ export class Project extends Page {
                 content
                 featuredImage {
                     node {
-                        sourceUrl(size: MEDIUM_LARGE)
+                        sourceUrl(size: LARGE)
                     }
                 }
             }
