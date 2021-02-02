@@ -150,7 +150,8 @@ export class ElaraApp extends Root {
 	 * @memberof ElaraApp
 	 */
 	private async _setup(){
-		const menuQuery = `{
+		const menuQuery = `
+		{
 			terrazzo {
 			  terrazzofour
 			  terrazzoone
@@ -159,14 +160,12 @@ export class ElaraApp extends Root {
 			  logo
 			}
 			menus {
-			  edges {
-				node {
+			  nodes {
 				  id
 				  name
 				  slug
 				  menuItems {
-					edges {
-					  node {
+					  nodes {
 						id
 						url
 						label
@@ -175,16 +174,14 @@ export class ElaraApp extends Root {
 							id
 							name
 							taxonomy {
-								node {
-									name
-								}
+							  node {
+								name
+							  }
 							}
 						  }
 						}
 					  }
-					}
 				  }
-				}
 			  }
 			}
 		  }`;
@@ -209,8 +206,10 @@ export class ElaraApp extends Root {
 
 		terrazzo(this, this._terrazzoColors, false);
 
-		let menuLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'menu');
-		menuLinks = menuLinks.node.menuItems.edges.map(edge => edge.node);
+		let menuLinks = requestR.data.menus.nodes.find(node => node.slug === 'menu');
+		menuLinks = menuLinks.menuItems.nodes;
+
+		debugger;
 
 		/*const legalLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'legal-links');
 		this.legalLinks = legalLinks.node.menuItems.edges.map(edge => edge.node).map(node => {
