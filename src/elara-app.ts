@@ -209,21 +209,19 @@ export class ElaraApp extends Root {
 		let menuLinks = requestR.data.menus.nodes.find(node => node.slug === 'menu');
 		menuLinks = menuLinks.menuItems.nodes;
 
-		// debugger;
-
-		/*const legalLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'legal-links');
-		this.legalLinks = legalLinks.node.menuItems.edges.map(edge => edge.node).map(node => {
+		const legalLinks = requestR.data.menus.nodes.find(node => node.slug === 'legal-links');
+		this.legalLinks = legalLinks.menuItems.nodes.map(node => {
 			node.url = node.url.replace('https://dobruniadesign.com', '');
 			return node;
 		});
 
-		const socialLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'social-links');
-		this.socialLinks = socialLinks.node.menuItems.edges.map(edge => edge.node).map(node => {
+		const socialLinks = requestR.data.menus.nodes.find(node => node.slug === 'social-links');
+		this.socialLinks = socialLinks.menuItems.nodes.map(node => {
 			node.url = node.url.replace('https://dobruniadesign.com', '');
 			node.icon = this._iconsForProvider[node.label.toLowerCase()];
 
 			return node;
-		});*/
+		});
 
 		let idx = 0;
 		const links = [];
