@@ -1,5 +1,5 @@
 import { html, TemplateResult } from 'lit-html';
-import { CSSResult, css, property, LitElement } from 'lit-element';
+import { property, LitElement } from 'lit-element';
 
 import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
@@ -45,196 +45,8 @@ export default class Nav extends LitElement {
         this._resizeListener = this._onResize.bind(this);
     }
 
-    public static get styles(): CSSResult[] {
-        return [
-            css`
-            :host {
-                z-index: 3;
-            }
-
-            .title {
-                outline: none;
-                padding: 2em 0 0 3em;
-            }
-            
-            .main {
-                background: var(--elara-nav-background);
-            }
-
-            .mobile-handle {
-                position: absolute;
-                top: 2em;
-                right: 3em;
-                z-index: 999;
-            }
-
-            .item.active {
-                color: var(--elara-primary);
-            }
-
-            .links ul {
-                outline: none;
-                font-size: 0.9em;
-                font-family: 'Kotori Rose', serif;
-                text-transform: lowercase;
-            }
-
-            .links ul li {
-                display: inline-block;
-                cursor: pointer;
-                list-style: none;
-            }
-
-            li a {
-                margin: 0 0.5em;
-                outline: none;
-                user-select: none;
-            }
-
-            .menu {
-                position: absolute;
-                top: 30px;
-                right: 30px;
-                height: 45px;
-                width: 45px;
-                color: var(--elara-font-color);
-            }
-            
-            .menu-content {
-                position: fixed;
-                top: 0;
-                right: 0;
-                left: 0;
-                bottom: 0;
-                background-color: var(--elara-background-color);
-                color: var(--elara-font-color);
-                display: none;
-                transition: opacity .4s;
-            }
-    
-            .menu-content .item {
-                cursor: pointer;
-                position: relative;
-                font-size: 5vw;
-                color: var(--elara-font-color);
-                text-transform: lowercase;
-                margin: 0.5rem 0;
-                padding: 0 0.5rem;
-                transition: color 0.3s;
-                text-decoration: none;
-                user-select: none;
-                outline: none;
-            }
-    
-            @media (max-width: 600px){
-                .menu-content .item {
-                    font-size: 8vw;
-                }
-            }
-    
-            .menu-content .item::after {
-                content: '';
-                width: 100%;
-                top: 65%;
-                height: 6px;
-                background: var(--elara-primary);
-                position: absolute;
-                left: 0;
-                opacity: 0;
-                transform: scale3d(0,1,1);
-                transition: transform 0.3s, opacity 0.3s;
-                transform-origin: 100% 50%;
-            }
-    
-            .menu-content .item:hover, .menu-content .item.active {
-                color: var(--elara-font-hover);
-            }
-    
-            .menu-content .item:hover::after, .menu-content .item.active::after {
-                opacity: 1;
-                transform: scale3d(1,1,1);
-            }
-    
-            .menu.shown {
-                z-index: 999;
-            }
-            .menu-content.shown {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                z-index: 999;
-                background-color: rgba(255, 255, 255, .9);
-            }
-            li {
-                list-style: none;
-            }
-
-            .filters {
-                display: flex;
-                justify-content: flex-end;
-                flex-direction: row;
-                font-size: .9em;
-                margin-right: 1em;
-                opacity: 1;
-                transition: opacity .3s;
-            }
-
-            .filters mwc-icon-button {
-               opacity: 1;
-               margin-top: -3px;
-               transition: opacity .3s;
-            }
-
-            .filters ul {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin-right: 25px;
-            }
-
-            .filters mwc-icon-button.hidden {
-                opacity: 0;
-            }
-
-            .filters li, .filters a {
-                display: inline-block;
-                margin-left: 10px;
-            }
-
-            .filters a {
-                cursor: pointer;
-            }
-
-            mwc-icon-button {
-                cursor: pointer;
-            }
-
-            .hidden {
-                pointer-events: none;
-                cursor: default;
-            }
-
-            .filters.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            mwc-circular-progress {
-                margin: 0 4em;
-            }
-
-            .header.has-no-filters {
-                margin-bottom: -4em;
-            } 
-
-            elara-image img {
-                cursor: pointer;
-                width: 130px;
-                height: 92px;
-            }
-            `
-        ];
+    public createRenderRoot(): this {
+        return this;
     }
 
     public connectedCallback(): void {
@@ -258,9 +70,11 @@ export default class Nav extends LitElement {
         return html`
         <nav class="main" role="navigation">
             <div class="header ${hasFilters ? '' : 'has-no-filters'}">
+                ${this.logo ? html`
                 <div aria-hidden="true" tabindex="0" class="title" role="link">
                     <elara-image @click=${() => navigate('home')} sizing="cover" preload src="${this.logo}"></elara-image>
                 </div>
+                ` : html``}
                 <div class="links">
                     ${this.items.length === 0 ? html`
                         <mwc-circular-progress indeterminate></mwc-circular-progress>
