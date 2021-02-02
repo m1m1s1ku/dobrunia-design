@@ -55,6 +55,10 @@ export class ElaraImage extends LitElement {
     }
 
     private _onError(){
+        if(!this._img){
+            return;
+        }
+        
         this._img.style.visibility = null;
 
         if(this.catch){

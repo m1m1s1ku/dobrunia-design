@@ -83,7 +83,7 @@ export class Category extends Page implements ElementWithProjects {
         return html`
         ${!this.loaded ? html`
         <div class="loading">
-            <paper-spinner active></paper-spinner>
+            <mwc-circular-progress indeterminate></mwc-circular-progress>
         </div>
         ` : html``}
 

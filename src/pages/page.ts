@@ -73,7 +73,7 @@ export class PageController extends Page {
         <div id="page" class="page" role="main">
             ${!this.loaded ? html`
             <div class="loading">
-                <paper-spinner active></paper-spinner>
+                <mwc-circular-progress indeterminate></mwc-circular-progressr>
             </div>` : html``}
             ${this.article ? html`
             <div class="cols">

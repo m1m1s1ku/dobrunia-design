@@ -101,7 +101,7 @@ export class Project extends Page {
     public render(): void | TemplateResult {
         return html`
         <div id="project" class="project" role="main">
-        ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
+        ${!this.loaded ? html`<mwc-circular-progress indeterminate></mwc-circular-progress>` : html``}
 
         ${this.project ? html`
             <h1 class="title">${this.project.title}</h1>

@@ -299,7 +299,7 @@ export class ElaraApp extends Root {
 	public get bootstrap(): Promise<unknown> {		
 		return Promise.all([
 			this._setup(),
-			import('./polymer')
+			import('./material')
 		]);
 	}
 

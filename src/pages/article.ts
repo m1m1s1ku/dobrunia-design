@@ -75,7 +75,7 @@ export class Single extends Page {
         <div id="blog" class="blog single" role="main">
             ${!this.loaded ? html`
             <div class="loading">
-                <paper-spinner active></paper-spinner>
+                <mwc-circular-progress indeterminate></mwc-circular-progress>
             </div>` : html``}
             ${this.article ? html`
             <h1>${decodeHTML(this.article.title)}</h1>

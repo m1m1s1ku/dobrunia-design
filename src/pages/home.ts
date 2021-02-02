@@ -146,7 +146,7 @@ class Home extends Page implements ElementWithProjects {
 
     public render(): void | TemplateResult {
         return html`
-        ${!this.loaded ? html`<div class="loading"><paper-spinner active></paper-spinner></div>` : html``}
+        ${!this.loaded ? html`<div class="loading"><mwc-circular-progress indeterminate></mwc-circular-progress></div>` : html``}
         <div id="cards" class="animated cards">
         ${repeat(this.projects, (project) => {
             return projectCard(project);

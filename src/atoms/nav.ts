@@ -220,7 +220,7 @@ export default class Nav extends LitElement {
                 pointer-events: none;
             }
 
-            paper-spinner {
+            mwc-circular-progress {
                 margin: 0 4em;
             }
 
@@ -263,7 +263,7 @@ export default class Nav extends LitElement {
                 </div>
                 <div class="links">
                     ${this.items.length === 0 ? html`
-                        <paper-spinner active></paper-spinner>
+                        <mwc-circular-progress indeterminate></mwc-circular-progress>
                     ` : html``}
                     <ul>
                         ${this.mobile ?

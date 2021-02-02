@@ -10,6 +10,7 @@ import { Utils, decodeHTML } from '../core/ui/ui';
 
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
+import { TextField } from '@material/mwc-textfield';
 
 interface ArticleMinimal {
     id: string;
@@ -119,6 +120,11 @@ class Blog extends Page {
     }
 
     public search(value: string){
+        if(!value){
+            this.articles = this.ghost;
+            return;
+        }
+
         this.articles = this.ghost.filter(item => item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1);
     }
 
@@ -127,11 +133,11 @@ class Blog extends Page {
         <div class="blog" role="main">
             <div class="title-search">
                 <h1>Actualités</h1>
-                <paper-input autofocus type="search" label="Recherche ..." @value-changed=${(event: CustomEvent) => {
-                    this.search(event.detail.value);
-                }}></paper-input>
+                <mwc-textfield outlined type="search" label="Recherche ..." icon="search" @input=${(event: InputEvent) => {
+                    this.search((event.currentTarget as TextField).value);
+                }}></mwc-textfield>
             </div>
-            ${!this.loaded ? html`<paper-spinner active></paper-spinner>` : html``}
+            ${!this.loaded ? html`<mwc-circular-progress indeterminate></mwc-circular-progress>` : html``}
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('post/'+article.slug)}>
                 ${article.featuredImage ? html`
