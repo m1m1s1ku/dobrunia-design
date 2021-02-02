@@ -29,10 +29,12 @@ export class PageController extends Page {
     private async _load(uri: string){
         const pageQuery = `
         {
-            pageBy(uri: "${uri}") {
+            page(id: "${uri}", idType: SLUG) {
                 title
                 featuredImage {
-                    sourceUrl
+                    node {
+                        sourceUrl
+                    }
                 }
                 content(format: RENDERED)
                 }
@@ -47,15 +49,15 @@ export class PageController extends Page {
             body: JSON.stringify({
                 query: pageQuery
             })
-        }).then(res => res.json()).then(res => res.data.pageBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+        }).then(res => res.json()).then(res => res.data.page).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
         this.loaded = true;
 
         const post = first;
         document.title = post.title + ' | ' + Constants.title;
         this.article = post;
-        const hasSource = post?.featuredImage?.sourceUrl;
-        this.featured = hasSource ? post.featuredImage.sourceUrl : null;
+        const hasSource = post?.featuredImage?.node?.sourceUrl;
+        this.featured = hasSource ? post.featuredImage.node.sourceUrl : null;
 
         if(Utils.animationsReduced()){
             return;

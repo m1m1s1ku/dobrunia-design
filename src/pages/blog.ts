@@ -17,7 +17,9 @@ interface ArticleMinimal {
     title: string;
     slug: string;
     featuredImage: {
-        sourceUrl: string;
+        node: {
+            sourceUrl: string;
+        }
     };
 }
 
@@ -83,7 +85,7 @@ class Blog extends Page {
                 {
                     ...article.node, 
                     featuredImage: {
-                        sourceUrl: article?.node?.featuredImage?.sourceUrl ? article.node.featuredImage.sourceUrl : './assets/logo.png'
+                        sourceUrl: article?.node?.featuredImage?.node?.sourceUrl ? article.node.featuredImage.node.sourceUrl : './assets/logo.png'
                     }
             });
         }
@@ -140,8 +142,8 @@ class Blog extends Page {
             ${!this.loaded ? html`<mwc-circular-progress indeterminate></mwc-circular-progress>` : html``}
             ${repeat(this.articles, article => html`
             <article @click=${() => navigate('post/'+article.slug)}>
-                ${article.featuredImage ? html`
-                <elara-image .catch=${true} class="article-thumb" src=${article.featuredImage.sourceUrl}></elara-image>
+                ${article.featuredImage?.node ? html`
+                <elara-image .catch=${true} class="article-thumb" src=${article.featuredImage.node.sourceUrl}></elara-image>
                 ` : html``}
                 <h3>${decodeHTML(article.title)}</h3>
                 <a class="item-link">

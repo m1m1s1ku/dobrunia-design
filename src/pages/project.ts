@@ -16,7 +16,9 @@ export interface ProjectMinimal {
     content: string;
     excerpt: string;
     featuredImage: {
-        sourceUrl: string;
+        node: {
+            sourceUrl: string;
+        }
     };
 }
 
@@ -43,12 +45,14 @@ export class Project extends Page {
     public async firstUpdated(): Promise<void> {
         const projectQuery = `
         {
-            projetBy(slug: "${this._toLoad}") {
+            projet(id: "${this._toLoad}", idType: SLUG) {
                 title
                 content
                 excerpt
                 featuredImage {
-                sourceUrl
+                    node {
+                        sourceUrl
+                    }
                 }
             }
         }              
@@ -63,11 +67,11 @@ export class Project extends Page {
                 query: projectQuery
             })
         }).then(res => res.json())
-        .then(res => res.data.projetBy)
+        .then(res => res.data.projet)
         .catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
-        if(first && first.featuredImage && first.featuredImage.sourceUrl){
-            this.featured = first.featuredImage.sourceUrl;
+        if(first && first.featuredImage && first.featuredImage.node &&first.featuredImage.node.sourceUrl){
+            this.featured = first.featuredImage.node.sourceUrl;
         } else {
             this.featured = '/assets/logo.png';
         }

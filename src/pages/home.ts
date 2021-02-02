@@ -15,7 +15,9 @@ export interface ProjectMinimal {
             {categoryId: number; slug: string; name: string}[];
     };
     featuredImage: {
-        sourceUrl: string;
+        node: {
+            sourceUrl: string;
+        }
     };
     title: string;
     slug: string;
@@ -24,8 +26,8 @@ export interface ProjectMinimal {
 export function projectCard(project: ProjectMinimal): TemplateResult {
     return html`
     <article class="project card" @click=${() => navigate('projet'.concat('/'+ project.slug))}>
-        ${project.featuredImage ? html`
-            <elara-image preload src="${project.featuredImage.sourceUrl}"></elara-image>
+        ${project.featuredImage?.node ? html`
+            <elara-image preload src="${project.featuredImage.node.sourceUrl}"></elara-image>
         ` : ''}
         <div class="text">
             <h3 class="title">${decodeHTML(project.title)}</h3>

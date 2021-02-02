@@ -35,12 +35,14 @@ export class Single extends Page {
     private async _load(){
         const projectQuery = `
         {
-            postBy(slug: "${this._toLoad}") {
+            post(id: "${this._toLoad}", idType: SLUG) {
                 title
                 content
                 excerpt
                 featuredImage {
-                sourceUrl
+                    node {
+                        sourceUrl
+                    }
                 }
             }
         }              
@@ -54,14 +56,14 @@ export class Single extends Page {
             body: JSON.stringify({
                 query: projectQuery
             })
-        }).then(res => res.json()).then(res => res.data.postBy).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+        }).then(res => res.json()).then(res => res.data.post).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
         this.loaded = true;
 
         const post = first;
         document.title = post.title + ' | ' + Constants.title;
         this.article = post;
-        this.featured = post?.featuredImage?.sourceUrl ? post.featuredImage.sourceUrl : '/assets/logo.png';
+        this.featured = post?.featuredImage?.node?.sourceUrl ? post.featuredImage.node.sourceUrl : '/assets/logo.png';
 
         if(Utils.animationsReduced()){
             return;
