@@ -87,7 +87,9 @@ class Blog extends Page {
                 {
                     ...article.node, 
                     featuredImage: {
-                        sourceUrl: article?.node?.featuredImage?.node?.sourceUrl ? article.node.featuredImage.node.sourceUrl : './assets/logo.png'
+                        node: {
+                            sourceUrl: article?.node?.featuredImage?.node?.sourceUrl ? article.node.featuredImage.node.sourceUrl : './assets/logo.png'
+                        }
                     }
             });
         }
