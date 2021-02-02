@@ -343,7 +343,7 @@ export class ElaraApp extends Root {
 							</a>	
 							`)}
 						</div>
-						<a class="instalink" target="_blank" href="https://www.instagram.com/dobruniadesign/" rel="noopener">
+						<a class="instalink" target="_blank" href="https://www.instagram.com/dobruniadesignatelier/" rel="noopener">
 							Instagram ${this._iconsForProvider['instagram']}
 						</a>
 					` : html``}
