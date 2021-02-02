@@ -18,7 +18,7 @@ interface ArticleMinimal {
     featuredImage: {
         sourceUrl: string;
     };
-};
+}
 
 class Blog extends Page {
     public static readonly is: string = 'ui-blog';

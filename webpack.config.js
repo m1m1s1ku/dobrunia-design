@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const WebpackMerge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -20,7 +20,7 @@ const webanimationsjs = join(nodeModules, 'web-animations-js');
 const assets = [
   {
     from: resolve('./src/assets'),
-    to: resolve('dist/assets/')
+    to: resolve('dist/assets/'),
   }
 ];
 
@@ -28,43 +28,36 @@ const polyfills = [
   {
     from: resolve(`${webcomponentsjs}/webcomponents-*.js`),
     to: join(OUTPUT_PATH, 'vendor'),
-    flatten: true
   },
   {
     from: resolve(`${webcomponentsjs}/bundles/*.js`),
     to: join(OUTPUT_PATH, 'vendor', 'bundles'),
-    flatten: true
   },
   {
     from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
     to: join(OUTPUT_PATH, 'vendor'),
-    flatten: true
   },
   {
     from: resolve(`${webanimationsjs}/web-animations-next-lite.min.js`),
     to: join(OUTPUT_PATH, 'vendor'),
-    flatten: true
   },
   {
     from: resolve('./src/favicon.ico'),
     to: OUTPUT_PATH,
-    flatten: true
   },
   {
     from: resolve('./src/boot.js'),
     to: OUTPUT_PATH,
-    flatten: true
   },
   {
     from: resolve('./src/robots.txt'),
     to: OUTPUT_PATH,
-    flatten: true
   }
 ];
 
 const subDirectory = ENV === 'production' ? '' : '';
 
-const commonConfig = WebpackMerge([
+const commonConfig = merge([
   {
     entry: './src/elara-app.ts',
     output: {
@@ -112,18 +105,21 @@ const commonConfig = WebpackMerge([
         {
           test: /\.ejs/,
           loader: 'ejs-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          options: {
+            esModule: false
+          }
         }
       ]
     }
   }
 ]);
 
-const developmentConfig = WebpackMerge([
+const developmentConfig = merge([
   {
     devtool: 'cheap-module-source-map',
     plugins: [
-      new CopyWebpackPlugin(polyfills),
+      new CopyWebpackPlugin({patterns: polyfills}),
       new HtmlWebpackPlugin({
         template: INDEX_TEMPLATE
       })
@@ -141,12 +137,12 @@ const developmentConfig = WebpackMerge([
   }
 ]);
 
-const productionConfig = WebpackMerge([
+const productionConfig = merge([
   {
     devtool: 'eval',
     plugins: [
       new CleanWebpackPlugin(),
-      new CopyWebpackPlugin([...polyfills, ...assets]),
+      new CopyWebpackPlugin({patterns: [...polyfills, ...assets]}),
       new HtmlWebpackPlugin({
         pathname: `${subDirectory ? '/'+subDirectory : ''}`,
         template: INDEX_TEMPLATE,
@@ -163,10 +159,10 @@ const productionConfig = WebpackMerge([
 
 module.exports = mode => {
   if (mode === 'production') {
-    return WebpackMerge(commonConfig, productionConfig, { mode });
+    return merge(commonConfig, productionConfig, { mode });
   }
 
-  return WebpackMerge(commonConfig, developmentConfig, { mode });
+  return merge(commonConfig, developmentConfig, { mode });
 };
 
 

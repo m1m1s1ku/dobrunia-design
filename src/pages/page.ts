@@ -64,7 +64,7 @@ export class PageController extends Page {
         this._page.animate(fade.effect, fade.options);
     }
 
-    public async firstUpdated(){
+    public async firstUpdated(): Promise<void> {
         await this._load(this._toLoad);
     }
 

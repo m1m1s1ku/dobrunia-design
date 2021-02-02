@@ -40,7 +40,7 @@ export class Project extends Page {
         this._toLoad = slug;
     }
 
-    public async firstUpdated(){
+    public async firstUpdated(): Promise<void> {
         const projectQuery = `
         {
             projetBy(slug: "${this._toLoad}") {

@@ -17,7 +17,7 @@ export default class Page extends LitElement {
     @property({type: Boolean, reflect: true})
     public loaded = false;
 
-    protected createRenderRoot(){
+    protected createRenderRoot(): this {
         return this;
     }
 }

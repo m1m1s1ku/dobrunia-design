@@ -1,5 +1,5 @@
 import {
-    html, customElement, css, property, LitElement
+    html, customElement, css, property, LitElement, CSSResult, TemplateResult
 } from 'lit-element';
 
 @customElement('elara-spinner')
@@ -10,7 +10,7 @@ export class ElaraSpinner extends LitElement {
     @property({type: String, reflect: false})
     public text = '';
 
-    public static get styles(){
+    public static get styles(): CSSResult {
         return css`
         :host {
           height: auto;
@@ -61,7 +61,7 @@ export class ElaraSpinner extends LitElement {
         `;
     }
 
-    public render() {
+    public render(): TemplateResult {
         return this.active ? html`
         <div class="container">
           <span class="text">${this.text}</span>

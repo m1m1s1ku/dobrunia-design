@@ -13,7 +13,7 @@ export function pulseWith(duration: number): ElaraAnimation {
             duration
         }
     };
-};
+}
 
 export function fadeWith(duration: number, enter: boolean): ElaraAnimation {
     return {
@@ -24,7 +24,7 @@ export function fadeWith(duration: number, enter: boolean): ElaraAnimation {
             duration
         }
     };
-};
+}
 
 export default {
     pulseWith,

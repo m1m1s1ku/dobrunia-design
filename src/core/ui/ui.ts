@@ -1,6 +1,6 @@
 import { TemplateResult } from 'lit-element';
 
-export function decodeHTML(html: string){
+export function decodeHTML(html: string): string {
     const txt = document.createElement('textarea');
     txt.innerHTML = html;
     return txt.value;
@@ -59,7 +59,7 @@ export function normalize(str: string): string {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-export function slugify(str: string, separator: string){
+export function slugify(str: string, separator: string): string {
     str = str.trim();
     str = str.toLowerCase();
 
@@ -80,7 +80,7 @@ export function slugify(str: string, separator: string){
         .replace(/-/g, separator);
 }
 
-export function ifDefined(property: unknown, template: TemplateResult, initial: TemplateResult){
+export function ifDefined(property: unknown, template: TemplateResult, initial: TemplateResult): TemplateResult {
     if(!property) return initial;
 
     return template;
@@ -105,7 +105,7 @@ interface GalleryState {
     height: string;
     touchstartX: number;
     touchendX: number;
-};
+}
 
 let state: GalleryState = {
     container: null,
@@ -190,7 +190,7 @@ const clean = () => {
 };
 
 export function touchEvents(onRight: () => void, onLeft: () => void){
-    return (e: TouchEvent) => {
+    return (e: TouchEvent): void => {
         if(e.type === 'touchstart'){
             state.touchstartX = e.changedTouches[0].screenX;
             return;
@@ -267,9 +267,9 @@ function galleryListener(container: HTMLElement) {
             }
         }
     };
-};
+}
 
-export function onImageContainerClicked(e: KeyboardEvent) {
+export function onImageContainerClicked(e: KeyboardEvent): void {
     const container = e.currentTarget as HTMLElement;
     
     if(container.classList.contains('opened')){
@@ -284,7 +284,7 @@ export const Utils = {
     isMobile: (): boolean => {
         return window.innerWidth <= 570;
     },
-    isInViewport(elem: Element) {
+    isInViewport(elem: Element): boolean {
         const bounding = elem.getBoundingClientRect();
 
         return (

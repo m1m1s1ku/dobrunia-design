@@ -25,7 +25,7 @@ export class Category extends Page implements ElementWithProjects {
         this._toLoad = slug;
     }
 
-    public async firstUpdated(){
+    public async firstUpdated(): Promise<void> {
         if(this._toLoad){
             await this._loadRequested();
         } else {

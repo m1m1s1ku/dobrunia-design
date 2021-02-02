@@ -1,4 +1,4 @@
-import { html, property, svg, SVGTemplateResult } from 'lit-element';
+import { html, property, svg, SVGTemplateResult, TemplateResult } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 
 import crayon from 'crayon';
@@ -284,7 +284,7 @@ export class ElaraApp extends Root {
 		this._subscriptions.unsubscribe();
 	}
 
-	public terrazzo(idx: number, color: string){
+	public terrazzo(idx: number, color: string): void {
 		this._terrazzoColors[idx] = color;
 		terrazzo(this, this._terrazzoColors, false);
 	}
@@ -296,14 +296,14 @@ export class ElaraApp extends Root {
 	 * @readonly
 	 * @memberof ElaraApp
 	 */
-	public get bootstrap(){		
+	public get bootstrap(): Promise<unknown> {		
 		return Promise.all([
 			this._setup(),
 			import('./polymer')
 		]);
 	}
 
-	public render() {
+	public render(): TemplateResult {
 		return html`
 			${this.waiting ? html`` : html``}
 			<ui-nav .logo=${this._logo} .items=${this.links} .filters=${this.filters} .route=${this.route}></ui-nav>

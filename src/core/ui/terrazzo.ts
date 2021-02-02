@@ -122,7 +122,7 @@ if (debug) {
 }
 }
 
-export default function terrazzo(host: Element, colors: string[], isResize = false, debug = false){
+export default function terrazzo(host: Element, colors: string[], isResize = false, debug = false): void {
   const canvas = host.querySelector('canvas');
   const height = document.body.scrollHeight;
 

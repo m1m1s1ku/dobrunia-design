@@ -7,10 +7,10 @@ import { ElaraApp } from '../../elara-app';
  * @export
  * @param {string} route route without base prefix
  */
-export function navigate(route: string) {
+export function navigate(route: string): Promise<void> {
     if(route.indexOf('http') !== -1){
         window.open(route, '_blank');
-        return true;
+        return Promise.resolve();
     }
 
     const app = document.body.querySelector<ElaraApp>('elara-app');

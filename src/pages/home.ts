@@ -21,7 +21,7 @@ export interface ProjectMinimal {
     slug: string;
 }
 
-export function projectCard(project: ProjectMinimal){
+export function projectCard(project: ProjectMinimal): TemplateResult {
     return html`
     <article class="project card" @click=${() => navigate('projet'.concat('/'+ project.slug))}>
         ${project.featuredImage ? html`
@@ -40,7 +40,7 @@ export interface ElementWithProjects extends LitElement {
     loaded: boolean;
 }
 
-export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: number, observer?: IntersectionObserver){
+export async function projectLoad(host: ElementWithProjects, lastCardSelector: string, filterSlug?: number, observer?: IntersectionObserver): Promise<void> {
     const projR = await fetch(Constants.graphql, {
         method: 'POST',
         headers: {
@@ -108,7 +108,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
     host.loaded = true;
 }
 
-export function iObserverForCard(ratio: number){
+export function iObserverForCard(ratio: number): IntersectionObserver {
     return new IntersectionObserver((entries, observer) => {
         for(const entry of entries){
             if(entry.intersectionRatio > ratio){

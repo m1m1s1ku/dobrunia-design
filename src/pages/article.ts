@@ -28,7 +28,7 @@ export class Single extends Page {
         this._toLoad = toLoad;
     }
 
-    public firstUpdated(){
+    public firstUpdated(): Promise<void> {
         return this._load();
     }
     

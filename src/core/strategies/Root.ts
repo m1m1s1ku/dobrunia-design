@@ -19,7 +19,7 @@ export default class Root extends Page {
 	@property({reflect: true, type: String})
 	public route: string;
 	
-	public async load(route: string){
+	public async load(route: string): Promise<void> {
 		this.route = route;
 		await load(route, this._content);
 		return;
