@@ -24,7 +24,7 @@ try {
 
         const options = {
           files: htmlFile,
-          from: '<!-- {{SSRFunctions}} -->',
+          from: '<!-- SSRFunctions -->',
           to: `
           <?php
           function get(){
@@ -84,12 +84,12 @@ try {
         replace.sync(options);
         console.log('replaced functions');
     
-        options.from = '<!-- {{SSRHead}} -->';
+        options.from = '<!-- SSRHead -->';
         options.to = '<?= ogFor($title, $url, $description, $image); ?>';
         replace.sync(options);
         console.log('replaced head');
     
-        options.from = '<!-- {{SSRPayload}} -->';
+        options.from = '<!-- SSRPayload -->';
         options.to = '';
         replace.sync(options);
         console.log('replaced payload');

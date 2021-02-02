@@ -209,7 +209,7 @@ export class ElaraApp extends Root {
 		let menuLinks = requestR.data.menus.nodes.find(node => node.slug === 'menu');
 		menuLinks = menuLinks.menuItems.nodes;
 
-		debugger;
+		// debugger;
 
 		/*const legalLinks = requestR.data.menus.edges.find(edge => edge.node.slug === 'legal-links');
 		this.legalLinks = legalLinks.node.menuItems.edges.map(edge => edge.node).map(node => {

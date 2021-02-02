@@ -33,7 +33,7 @@ export class PageController extends Page {
                 edges {
                   node {
                     id
-                    title(format: RAW)
+                    title
                     featuredImage {
                       node {
                         sourceUrl(size: MEDIUM)
