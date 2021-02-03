@@ -146,10 +146,10 @@ export class ResellersController extends Page {
                                     </div>
                                     <div class="reseller-meta">
                                         <h3>${reseller.title}</h3>
-                                        <a href="${reseller.website}" rel="nofollow">${reseller.website}</a>
-                                        <a href="mailto:${reseller.mail}">${reseller.mail}</a>
-                                        <a href="https://maps.google.com/?q=${reseller.address}">${reseller.address}</span>
-                                        <a href="tel:${reseller.phone}">${reseller.phone}</span>
+                                        ${reseller.website ? html`<a href="${reseller.website}" rel="nofollow">${reseller.website}</a>` : ''}
+                                        ${reseller.mail ? html`<a href="mailto:${reseller.mail}">${reseller.mail}</a>` : ''}
+                                        ${reseller.address ? html`<a href="https://maps.google.com/?q=${reseller.address}">${reseller.address}</span>` : ''}
+                                        ${reseller.phone ? html`<a href="tel:${reseller.phone}">${reseller.phone}</span>` : ''}
                                     </div>
                                 </div>
                                 `;
