@@ -100,6 +100,7 @@ export class PageController extends Page {
                 ` : html``}
             </div>
             ` : html`
+            ${this.loaded && this.article ? html`
             <div class="cols">
                 <div class="content page-not-found">
                     <h2>Page non trouvée</h2>
@@ -107,6 +108,7 @@ export class PageController extends Page {
                     <a @click=${() => navigate(Constants.defaults.route)}><mwc-icon-button icon="home"></mwc-icon-button> Retourner à l'accueil</a>
                 </div>
             </div>
+            ` : ''}
             `}
         </div>
         `;
