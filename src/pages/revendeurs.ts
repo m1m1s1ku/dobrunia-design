@@ -141,12 +141,12 @@ export class ResellersController extends Page {
                                 <div class="reseller-block">
                                     <div class="reseller-image">
                                         ${reseller.featuredImage?.node?.sourceUrl ? html`
-                                            <elara-image .catch=${true} src="${reseller.featuredImage?.node?.sourceUrl}"></elara-image>
+                                            <a href="${reseller.website}"><elara-image .catch=${true} src="${reseller.featuredImage?.node?.sourceUrl}"></elara-image></a>
                                         ` : html``}
                                     </div>
                                     <div class="reseller-meta">
                                         <h3>${reseller.title}</h3>
-                                        ${reseller.website ? html`<a href="${reseller.website}" rel="nofollow">${reseller.website}</a>` : ''}
+                                        ${reseller.website ? html`<a href="${reseller.website}" rel="nofollow">${new URL(reseller.website).origin}</a>` : ''}
                                         ${reseller.mail ? html`<a href="mailto:${reseller.mail}">${reseller.mail}</a>` : ''}
                                         ${reseller.address ? html`<a href="https://maps.google.com/?q=${reseller.address}">${reseller.address}</span>` : ''}
                                         ${reseller.phone ? html`<a href="tel:${reseller.phone}">${reseller.phone}</span>` : ''}
