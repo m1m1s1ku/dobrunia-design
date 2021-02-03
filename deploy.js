@@ -36,7 +36,7 @@ try {
 
             $request = rtrim($request, '/');
 
-            if(strpos($request, '/page') !== false){
+            if(strpos($request, '/page') !== false || strpos($request, '/projet') !== false){
               $request .= '/';
             }
 
