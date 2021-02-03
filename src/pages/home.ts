@@ -56,7 +56,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
                     slug
                     featuredImage {
                         node {
-                            sourceUrl(size: LARGE)
+                            sourceUrl(size: MEDIUM)
                         }
                     }
                     categories {

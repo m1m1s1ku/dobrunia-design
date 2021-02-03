@@ -21,7 +21,7 @@
     <meta name="msapplication-config" content="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://base.dobruniadesign.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com/css?family=Material+Icons&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
     <custom-style>
         <style>
@@ -946,7 +946,6 @@
     <noscript>JavaScript is needed to use this website.</noscript>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/boot.js"></script>
     <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/webcomponents-loader.js"></script>
-    <script src="<%= htmlWebpackPlugin.options.pathname %>/vendor/web-animations-next-lite.min.js"></script>
   </head>
   <body>
     <elara-app></elara-app>

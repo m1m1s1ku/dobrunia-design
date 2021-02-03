@@ -38,10 +38,6 @@ const polyfills = [
     to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
   },
   {
-    from: resolve(`${webanimationsjs}/web-animations-next-lite.min.js`),
-    to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
-  },
-  {
     from: resolve('./src/favicon.ico'),
     to: OUTPUT_PATH,
   },
