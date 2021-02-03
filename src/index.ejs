@@ -437,9 +437,13 @@
     }
 
     elara-image,
-    mwc-textfield, 
+    mwc-textfield,
+    mwc-tab-bar,
+    mwc-list,
+    mwc-tab,
     mwc-circular-progress {
       --mdc-theme-primary: var(--elara-primary);
+      --mdc-typography-button-text-transform: capitalize;
     }
     
     .article-thumb {
@@ -864,6 +868,37 @@
           cursor: pointer;
           width: 130px;
           height: 92px;
+    }
+
+    .resellers-types {
+      padding-top: 1em;
+    }
+
+    .reseller-block {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+      flex-direction: row;
+      grid-gap: 30px;
+    }
+
+    .reseller-block .reseller-image img {
+      margin: 0;
+      width: 300px;
+    }
+
+    .reseller-block .reseller-meta {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+    }
+
+    @media (min-width: 450px){
+      .resellers-types {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: .2fr 1fr;
       }
     }
     </style>
