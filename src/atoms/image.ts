@@ -109,7 +109,11 @@ export class ElaraImage extends LitElement {
     }
 
 	public render(): TemplateResult {
-        return html`<img class="elara-image" .src=${this.src} .alt="${this.alt}" .sizing="${this.sizing}" .width="${this.width}" .height="${this.height}"  />`;
+        if(this.width && this.height){
+            return html`<img class="elara-image" .src=${this.src} .alt="${this.alt}" .sizing="${this.sizing}" .width="${this.width}" .height="${this.height}" />`;
+        }
+
+        return html`<img class="elara-image" .src=${this.src} .alt="${this.alt}" .sizing="${this.sizing}" />`;
     }
 }
 
