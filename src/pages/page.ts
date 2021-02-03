@@ -9,6 +9,7 @@ import { Utils, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
 import { wrap } from '../core/errors/errors';
+import { navigate } from '../core/routing/routing';
 
 @customElement('ui-page')
 export class PageController extends Page {
@@ -54,7 +55,12 @@ export class PageController extends Page {
             body: JSON.stringify({
                 query: pageQuery
             })
-        }).then(res => res.json()).then(res => res.data.pages.edges[0].node).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+        }).then(res => res.json()).then(res => res.data.pages?.edges[0]?.node).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
+
+        if(!first){
+            this.loaded = true;
+            return;
+        }
 
         this.loaded = true;
 
@@ -93,7 +99,15 @@ export class PageController extends Page {
                 </div>
                 ` : html``}
             </div>
-            ` : html``}
+            ` : html`
+            <div class="cols">
+                <div class="content page-not-found">
+                    <h2>Page non trouvée</h2>
+                    <p>Nous n'avons trouvé aucune page nommée ainsi, elle a peut-être été déplacée.</p>
+                    <a @click=${() => navigate(Constants.defaults.route)}><mwc-icon-button icon="home"></mwc-icon-button> Retourner à l'accueil</a>
+                </div>
+            </div>
+            `}
         </div>
         `;
     }
