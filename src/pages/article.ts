@@ -9,6 +9,7 @@ import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
 import { wrap } from '../core/errors/errors';
+import { navigate } from '../core/routing/routing';
 
 @customElement('ui-post')
 export class Single extends Page {
@@ -57,8 +58,11 @@ export class Single extends Page {
                 query: projectQuery
             })
         }).then(res => res.json()).then(res => res.data.post).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
-
         this.loaded = true;
+
+        if(!first){
+            return;
+        }
 
         const post = first;
         document.title = post.title + ' | ' + Constants.title;
@@ -90,6 +94,15 @@ export class Single extends Page {
                 ${unsafeHTML(this.article.content)}
             </div>
             ` : html``}
+            ${this.loaded && !this.article ? html`
+            <div class="cols">
+                <div class="content page-not-found">
+                    <h2>Article non trouvé</h2>
+                    <p>Nous n'avons trouvé aucun article nommée ainsi, elle a peut-être été déplacée.</p>
+                    <a @click=${() => navigate(Constants.defaults.route)}><mwc-icon-button icon="home"></mwc-icon-button> Retourner à l'accueil</a>
+                </div>
+            </div>
+            ` : ''}
         </div>
         `;
     }

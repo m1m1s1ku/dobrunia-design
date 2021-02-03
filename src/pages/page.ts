@@ -16,7 +16,7 @@ export class PageController extends Page {
     public static readonly hasRouting: boolean = true;
 
     @property({type: Object, reflect: false})
-    public article: ProjectMinimal;
+    public page: ProjectMinimal;
     @property({type: String, reflect: false})
     public featured: string;
     private _toLoad: string;
@@ -57,18 +57,18 @@ export class PageController extends Page {
             })
         }).then(res => res.json()).then(res => res.data.pages?.edges[0]?.node).catch(_ => this.dispatchEvent(wrap(_))) as ProjectMinimal;
 
-        if(!first){
-            this.loaded = true;
-            return;
-        }
-
         this.loaded = true;
 
-        const post = first;
-        document.title = post.title + ' | ' + Constants.title;
-        this.article = post;
-        const hasSource = post?.featuredImage?.node?.sourceUrl;
-        this.featured = hasSource ? post.featuredImage.node.sourceUrl : null;
+        if(!first){
+            return;
+        }
+        
+        const page = first;
+        document.title = page.title + ' | ' + Constants.title;
+
+        this.page = page;
+        const hasSource = page?.featuredImage?.node?.sourceUrl;
+        this.featured = hasSource ? page.featuredImage.node.sourceUrl : null;
 
         if(Utils.animationsReduced()){
             return;
@@ -88,10 +88,10 @@ export class PageController extends Page {
             <div class="loading">
                 <mwc-circular-progress indeterminate></mwc-circular-progressr>
             </div>` : html``}
-            ${this.article ? html`
+            ${this.page ? html`
             <div class="cols">
                 <div class="content">
-                    ${unsafeHTML(this.article.content)}
+                    ${unsafeHTML(this.page.content)}
                 </div>
                 ${this.featured ? html`
                 <div class="image-container" @click=${onImageContainerClicked}>
@@ -100,7 +100,7 @@ export class PageController extends Page {
                 ` : html``}
             </div>
             ` : html`
-            ${this.loaded && this.article ? html`
+            ${this.loaded && !this.page ? html`
             <div class="cols">
                 <div class="content page-not-found">
                     <h2>Page non trouvée</h2>
