@@ -131,7 +131,7 @@ export class ElaraApp extends Root {
 					'referer'          : 'https://www.instagram.com/dobruniadesignatelier/',
 				}
 			});
-			
+
 			const responseI = await instagramR.json();
 			const userData = responseI.data.user;
 			const timeline = userData.edge_owner_to_timeline_media.edges.slice(0, 4);
@@ -150,7 +150,7 @@ export class ElaraApp extends Root {
 			this.socialThumbs = instaThumbs;
 			await this.performUpdate();
 		} catch (err) {
-			console.error('Error while loading instagram feed', err);
+			// console.error('Error while loading instagram feed', err);
 		}
 	}
 
