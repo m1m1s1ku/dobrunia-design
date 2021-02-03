@@ -27,19 +27,19 @@ const assets = [
 const polyfills = [
   {
     from: resolve(`${webcomponentsjs}/webcomponents-*.js`),
-    to: join(OUTPUT_PATH, 'vendor'),
+    to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
   },
   {
     from: resolve(`${webcomponentsjs}/bundles/*.js`),
-    to: join(OUTPUT_PATH, 'vendor', 'bundles'),
+    to: join(OUTPUT_PATH, 'vendor', 'bundles', '[name].[ext]'),
   },
   {
     from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
-    to: join(OUTPUT_PATH, 'vendor'),
+    to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
   },
   {
     from: resolve(`${webanimationsjs}/web-animations-next-lite.min.js`),
-    to: join(OUTPUT_PATH, 'vendor'),
+    to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
   },
   {
     from: resolve('./src/favicon.ico'),
