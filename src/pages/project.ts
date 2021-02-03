@@ -20,6 +20,9 @@ export interface ProjectMinimal {
             sourceUrl: string;
         }
     };
+    gallery: {
+        sourceUrl: string
+    }[]
 }
 
 @customElement('ui-projet')
@@ -53,6 +56,9 @@ export class Project extends Page {
                         sourceUrl(size: LARGE)
                     }
                 }
+                gallery {
+                    sourceUrl
+                }
             }
         }              
         `;
@@ -78,12 +84,18 @@ export class Project extends Page {
         const testing = document.createElement('div');
         testing.innerHTML = first.content;
 
-        const postImages = testing.querySelectorAll('img');
-        const links = [];
-        
-        for(const image of Array.from(postImages)){
-            links.push(image.src);
-            image.parentElement.removeChild(image);
+        if(first.gallery && first.gallery.length > 0){
+            this.gallery = first.gallery.map(item => item.sourceUrl);
+        } else {
+            const postImages = testing.querySelectorAll('img');
+            const links = [];
+            
+            for(const image of Array.from(postImages)){
+                links.push(image.src);
+                image.parentElement.removeChild(image);
+            }
+    
+            this.gallery = links;
         }
 
         first.content = testing.innerText;
@@ -91,7 +103,6 @@ export class Project extends Page {
         first.title = decodeHTML(first.title);
 
         this.project = first;
-        this.gallery = links;
         this.loaded = true;
         document.title = this.project.title + ' | ' + Constants.title;
         if(Utils.animationsReduced()){
