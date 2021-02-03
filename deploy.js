@@ -36,6 +36,10 @@ try {
 
             $request = rtrim($request, '/');
 
+            if(strpos($request, '/page') !== false){
+              $request .= '/';
+            }
+
             $url = "https://base.dobruniadesign.com" . $request;
             $ch = curl_init();
         
