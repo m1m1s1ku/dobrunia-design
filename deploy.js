@@ -75,7 +75,7 @@ try {
 
           if($response == null || $url == false){
             $title = 'Dobrunia Design';
-            $description = 'Décoration d\'intérieur, création d\'objet - les créations de Dobromila Golowacz';
+            $description = "Décoration d'intérieur, création d'objet - les créations de Dobromila Golowacz";
             $image = 'https://base.dobruniadesign.com/wp-content/uploads/2019/10/cropped-logo-fasada-bis.jpg';
             $url = 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
           }
