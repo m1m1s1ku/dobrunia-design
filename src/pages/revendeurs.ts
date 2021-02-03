@@ -31,7 +31,7 @@ interface ResellerMinimal {
     }
 }
 
-@customElement('ui-resellers')
+@customElement('ui-revendeurs')
 export class ResellersController extends Page {
     public static readonly hasRouting: boolean = true;
 

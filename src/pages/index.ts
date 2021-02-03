@@ -4,4 +4,4 @@ import './article';
 import './blog';
 import './project';
 import './category';
-import './resellers';
+import './revendeurs';

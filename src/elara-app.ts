@@ -77,7 +77,7 @@ export class ElaraApp extends Root {
 		});
 
 		this.router.path('/revendeurs', () => {
-			return this.load('resellers');
+			return this.load('revendeurs');
 		});
 
 		this.router.path('/page/:page', (req) => {
