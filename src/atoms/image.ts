@@ -18,6 +18,12 @@ export class ElaraImage extends LitElement {
     @property({type: Boolean, reflect: true})
     public catch = false;
 
+    @property({type: String, reflect: true})
+    public width: string;
+
+    @property({type: String, reflect: true})
+    public height: string;
+
     private _listener: (ev: Event) => void;   
     private _errorListener: (ev: Event) => void = this._onError.bind(this);   
     private _handle: number;
@@ -103,7 +109,7 @@ export class ElaraImage extends LitElement {
     }
 
 	public render(): TemplateResult {
-        return html`<img class="elara-image" .src=${this.src} .alt="${this.alt}" .sizing="${this.sizing}" />`;
+        return html`<img class="elara-image" .src=${this.src} .alt="${this.alt}" .sizing="${this.sizing}" .width="${this.width}" .height="${this.height}"  />`;
     }
 }
 

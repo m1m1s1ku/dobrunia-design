@@ -24,13 +24,15 @@ export interface ProjectMinimal {
 }
 
 export function projectCard(project: ProjectMinimal): TemplateResult {
+    const title = decodeHTML(project.title);
+
     return html`
     <article class="project card" @click=${() => navigate('projet'.concat('/'+ project.slug))}>
         ${project.featuredImage?.node ? html`
-            <elara-image preload src="${project.featuredImage.node.sourceUrl}"></elara-image>
+            <elara-image preload src="${project.featuredImage.node.sourceUrl}" width="300" height="240" alt="${title}"></elara-image>
         ` : ''}
         <div class="text">
-            <h3 class="title">${decodeHTML(project.title)}</h3>
+            <h3 class="title">${title}</h3>
             <span>${project.categories.nodes[0].name}</span>
         </div>
     </article>
