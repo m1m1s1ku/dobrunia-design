@@ -9,7 +9,7 @@ import { Utils } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { wrap } from '../core/errors/errors';
 import { from } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { map, reduce, tap } from 'rxjs/operators';
 import { ListItem } from '@material/mwc-list/mwc-list-item';
 
 interface ResellerMinimal {
@@ -84,8 +84,8 @@ export class ResellersController extends Page {
         this._ghostResellers = resellersR;
 
         from(this.resellers).pipe(
-            first(),
             map(reseller => reseller.tags.nodes.map(node => node.name)),
+            reduce((acc, val) => [...acc, ...val], []),
             map(tags => new Set(tags)),
             tap(tags => this.tags = tags),
         ).subscribe();
