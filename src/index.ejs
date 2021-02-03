@@ -21,8 +21,13 @@
     <meta name="msapplication-config" content="<%= htmlWebpackPlugin.options.pathname %>/assets/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://base.dobruniadesign.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com/css?family=Material+Icons&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap" />
+    </noscript>
+    
     <custom-style>
         <style>
           html {
