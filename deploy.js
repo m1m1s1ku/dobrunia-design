@@ -34,9 +34,7 @@ try {
               $request = '/';
             }
 
-            if($request[-1] !== '/'){
-              $request .= '/';
-            }
+            $request = rtrim($request, '/');
 
             $url = "https://base.dobruniadesign.com" . $request;
             $ch = curl_init();
