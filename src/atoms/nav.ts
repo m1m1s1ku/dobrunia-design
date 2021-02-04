@@ -75,7 +75,7 @@ export default class Nav extends LitElement {
         <div class="header ${hasFilters ? '' : 'has-no-filters'}">
           ${this.logo
             ? html`
-                <div aria-hidden="true" tabindex="0" class="title" role="link">
+                <div tabindex="0" class="title" role="link">
                   <elara-image
                     @click=${() => navigate('home')}
                     sizing="cover"
