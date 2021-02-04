@@ -67,6 +67,98 @@ export class ElaraApp extends Root {
 		), animationFrameScheduler);
 	}
 
+	/**
+	 * Bootstrap is launched by boot.js
+	 * Could contains any kind of promise who will be handled by global promise loader
+	 *
+	 * @readonly
+	 * @memberof ElaraApp
+	 */
+	public get bootstrap(): Promise<unknown> {		
+		return Promise.all([
+			this._setup(),
+			import('./material'),
+		]);
+	}
+
+	public connectedCallback(): void {
+		super.connectedCallback();
+
+		this._subscriptions.add(instaLoad$().pipe(
+			tap((instaThumbs) => {
+				this.socialThumbs = instaThumbs;
+			}),
+			switchMap(() => {
+				return this.requestUpdate();
+			})
+		).subscribe());
+		this._subscriptions.add(this._resize$.subscribe());
+	}
+
+	public disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._subscriptions.unsubscribe();
+	}
+
+	public firstUpdated(_changedProperties:  Map<string | number | symbol, unknown>): void {
+		super.firstUpdated(_changedProperties);
+
+		this.router = bindCrayon(this);
+		this._subscriptions.add(this.router.events.subscribe(event => {
+			if (event.type === crayon.RouterEventType.SameRouteAbort) {
+				this.load(event.data.replace('/', ''));
+			}
+		 }));
+
+		this.router.load();
+	}
+
+	public render(): TemplateResult {
+		return html`
+			<ui-nav .logo=${this._logo} .items=${this.links} .filters=${this.filters} .route=${this.route}></ui-nav>
+			<canvas></canvas>
+			<main id="main" class="content"></main>
+			${this._footer}
+		`;
+	}
+
+	/**
+	 * Setup bootstrap for website
+	 *
+	 * @private
+	 * @memberof ElaraApp
+	 */
+	private async _setup(){
+		return fromFetch(Constants.graphql, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({query: BootstrapQuery})
+		}).pipe(
+			switchMap((response) => response.json()),
+			tap(response => {
+				const data = response.data as WPBootstrap;
+				const colors = data.terrazzo;
+
+				this._logo = colors.logo;
+
+				this._buildTerrazzo(colors);
+				this._buildMenu(data.menus);
+			}),
+			switchMap(() => {
+				return this.requestUpdate();
+			}),
+			switchMap(() => {
+				return this.updateComplete;
+			}),
+			catchError((err) => {
+				this.dispatchEvent(wrap(err));
+				return EMPTY;
+			}),
+		).toPromise();
+	}
+
 	private _buildTerrazzo(colors: WPTerrazzo){
 		this._terrazzoColors = [];
 		for(const key of Object.keys(colors)){
@@ -144,98 +236,6 @@ export class ElaraApp extends Root {
 
 		this.links = links;
 		this.filters = filters;
-	}
-
-	/**
-	 * Setup bootstrap for website
-	 *
-	 * @private
-	 * @memberof ElaraApp
-	 */
-	private async _setup(){
-		return fromFetch(Constants.graphql, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({query: BootstrapQuery})
-		}).pipe(
-			switchMap((response) => response.json()),
-			tap(response => {
-				const data = response.data as WPBootstrap;
-				const colors = data.terrazzo;
-
-				this._logo = colors.logo;
-
-				this._buildTerrazzo(colors);
-				this._buildMenu(data.menus);
-			}),
-			switchMap(() => {
-				return this.requestUpdate();
-			}),
-			switchMap(() => {
-				return this.updateComplete;
-			}),
-			catchError((err) => {
-				this.dispatchEvent(wrap(err));
-				return EMPTY;
-			}),
-		).toPromise();
-	}
-
-	public connectedCallback(): void {
-		super.connectedCallback();
-
-		this._subscriptions.add(instaLoad$().pipe(
-			tap((instaThumbs) => {
-				this.socialThumbs = instaThumbs;
-			}),
-			switchMap(() => {
-				return this.requestUpdate();
-			})
-		).subscribe());
-		this._subscriptions.add(this._resize$.subscribe());
-	}
-
-	public disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this._subscriptions.unsubscribe();
-	}
-
-	public firstUpdated(_changedProperties:  Map<string | number | symbol, unknown>): void {
-		super.firstUpdated(_changedProperties);
-
-		this.router = bindCrayon(this);
-		this._subscriptions.add(this.router.events.subscribe(event => {
-			if (event.type === crayon.RouterEventType.SameRouteAbort) {
-				this.load(event.data.replace('/', ''));
-			}
-		 }));
-
-		this.router.load();
-	}
-	
-	/**
-	 * Bootstrap is launched by boot.js
-	 * Could contains any kind of promise who will be handled by global promise loader
-	 *
-	 * @readonly
-	 * @memberof ElaraApp
-	 */
-	public get bootstrap(): Promise<unknown> {		
-		return Promise.all([
-			this._setup(),
-			import('./material'),
-		]);
-	}
-
-	public render(): TemplateResult {
-		return html`
-			<ui-nav .logo=${this._logo} .items=${this.links} .filters=${this.filters} .route=${this.route}></ui-nav>
-			<canvas></canvas>
-			<main id="main" class="content"></main>
-			${this._footer}
-		`;
 	}
 
 	private get _footer(): TemplateResult {
