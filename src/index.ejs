@@ -730,47 +730,43 @@
       
     ui-nav .main {
           background: var(--elara-nav-background);
-      }
+    }
+
+    ui-nav .links.mobile {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      height: 45px;
+      color: var(--elara-font-color);
+    }
 
     ui-nav .mobile-handle {
-          position: absolute;
-          top: 2em;
-          right: 3em;
-          z-index: 999;
-      }
+      z-index: 999;
+    }
 
     ui-nav .item.active {
-          color: var(--elara-primary);
-          pointer-events: none;
-      }
+        color: var(--elara-primary);
+        pointer-events: none;
+    }
 
     ui-nav .links ul {
-          outline: none;
-          font-size: 0.9em;
-          font-family: 'Kotori Rose', serif;
-          text-transform: lowercase;
-      }
+      outline: none;
+      font-size: 0.9em;
+      font-family: 'Kotori Rose', serif;
+      text-transform: lowercase;
+    }
 
     ui-nav .links ul li {
-          display: inline-block;
-          cursor: pointer;
-          list-style: none;
-      }
+      display: inline-block;
+      cursor: pointer;
+      list-style: none;
+    }
 
     ui-nav li a {
-          margin: 0 0.5em;
-          outline: none;
-          user-select: none;
-      }
-
-    ui-nav .menu {
-          position: absolute;
-          top: 30px;
-          right: 30px;
-          height: 45px;
-          width: 45px;
-          color: var(--elara-font-color);
-      }
+      margin: 0 0.5em;
+      outline: none;
+      user-select: none;
+    }
       
     ui-nav .menu-content {
           position: fixed;

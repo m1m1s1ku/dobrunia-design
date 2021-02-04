@@ -37,7 +37,7 @@ export default class Nav extends LitElement {
     public logo = '';
 
     private _resizeListener: (e: Event) => void;
-    
+
     private _elara!: ElaraApp;
 
     public constructor(){
@@ -76,7 +76,7 @@ export default class Nav extends LitElement {
                     <elara-image @click=${() => navigate('home')} sizing="cover" preload src="${this.logo}" width="130" height="97.2"></elara-image>
                 </div>
                 ` : html``}
-                <div class="links">
+                <div class="links ${this.mobile ? 'mobile' : ''}">
                     ${this.items.length === 0 ? html`
                         <mwc-circular-progress indeterminate></mwc-circular-progress>
                     ` : html``}
