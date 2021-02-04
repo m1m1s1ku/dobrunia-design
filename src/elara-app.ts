@@ -19,18 +19,26 @@ import { Item } from './atoms/nav';
 import terrazzo from './core/ui/terrazzo';
 import { wrap } from './core/errors/errors';
 
-import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable, EMPTY } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 import IconsForProvider from './icons';
 
 import BootstrapQuery from './queries/bootstrap.graphql';
 import { InstagramThumbs, instaLoad$ } from './instagram';
 import { bindCrayon } from './router';
+import { fromFetch } from 'rxjs/fetch';
 
 interface WPLink {
 	id: string; label: string; url: string;
 	icon?: SVGTemplateResult;
+	connectedObject?: {
+		taxonomy: {
+			node: {
+				name: string;
+			}
+		}
+	}
 }
 
 export class ElaraApp extends Root {
@@ -72,24 +80,10 @@ export class ElaraApp extends Root {
 		), animationFrameScheduler);
 	}
 
-	/**
-	 * Setup bootstrap for website
-	 *
-	 * @private
-	 * @memberof ElaraApp
-	 */
-	private async _setup(){
-		const requestR = await fetch(Constants.graphql, {
-			method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                query: BootstrapQuery
-            })
-		}).then(res => res.json()).catch(_ => this.dispatchEvent(wrap(_)));
-
-		const colors = requestR.data.terrazzo;
+	private _buildTerrazzo(colors: {
+		logo: string;
+		[color: string]: string
+	}){
 		this._terrazzoColors = [];
 		for(const key of Object.keys(colors)){
 			if(key === 'logo') continue;
@@ -98,19 +92,28 @@ export class ElaraApp extends Root {
 		this._logo = colors.logo;
 
 		terrazzo(this, this._terrazzoColors, false);
+	}
 
-		let menuLinks = requestR.data.menus.nodes.find(node => node.slug === 'menu');
-		menuLinks = menuLinks.menuItems.nodes;
+	private _buildMenu(data: {
+		menus: {
+			nodes: {
+				slug: string;
+				menuItems: {nodes: WPLink[]},
+			}[],
+		}
+	}){
+		const menuLinks = data.menus.nodes.find(node => node.slug === 'menu');
+		const mainMenuLinks = menuLinks.menuItems.nodes;
 
 		const siteURL = 'https://dobruniadesign.com';
 
-		const legalLinks = requestR.data.menus.nodes.find(node => node.slug === 'legal-links');
+		const legalLinks = data.menus.nodes.find(node => node.slug === 'legal-links');
 		this.legalLinks = legalLinks.menuItems.nodes.map(node => {
 			node.url = node.url.replace(siteURL, '');
 			return node;
 		});
 
-		const socialLinks = requestR.data.menus.nodes.find(node => node.slug === 'social-links');
+		const socialLinks = data.menus.nodes.find(node => node.slug === 'social-links');
 		this.socialLinks = socialLinks.menuItems.nodes.map(node => {
 			node.url = node.url.replace(siteURL, '');
 			node.icon = IconsForProvider[node.label.toLowerCase()];
@@ -124,7 +127,7 @@ export class ElaraApp extends Root {
 
 		const menuLinksURL = 'https://www.dobruniadesign.com';
 		
-		for(const link of menuLinks){
+		for(const link of mainMenuLinks){
 			const isHome = link.url.replace(menuLinksURL, '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
@@ -165,10 +168,39 @@ export class ElaraApp extends Root {
 
 		this.links = links;
 		this.filters = filters;
+	}
 
-		await this.requestUpdate();
-
-		return this.updateComplete;
+	/**
+	 * Setup bootstrap for website
+	 *
+	 * @private
+	 * @memberof ElaraApp
+	 */
+	private async _setup(){
+		return fromFetch(Constants.graphql, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({query: BootstrapQuery})
+		}).pipe(
+			switchMap((response) => response.json()),
+			tap(response => {
+				const data = response.data;
+				this._buildTerrazzo(data.terrazzo);
+				this._buildMenu(data);
+			}),
+			switchMap(() => {
+				return this.requestUpdate();
+			}),
+			switchMap(() => {
+				return this.updateComplete;
+			}),
+			catchError((err) => {
+				this.dispatchEvent(wrap(err));
+				return EMPTY;
+			}),
+		).toPromise();
 	}
 
 	public connectedCallback(): void {
