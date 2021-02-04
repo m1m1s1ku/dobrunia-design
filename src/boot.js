@@ -129,17 +129,15 @@ function _onDomLoaded(){
       
       if(debug) return;
 
-      setTimeout(() => {
-        if(spinner){
-          spinner.parentElement.removeChild(spinner);
-        }
-        if(handler){
-          handler.classList.add('hidden');
-          handler.parentElement.removeChild(handler);
-        }
-  
-        document.body.classList.remove('scrolling-disabled');
-      }, 500);
+      if(spinner){
+        spinner.parentElement.removeChild(spinner);
+      }
+      if(handler){
+        handler.classList.add('hidden');
+        handler.parentElement.removeChild(handler);
+      }
+
+      document.body.classList.remove('scrolling-disabled');
     });
   });
 }

@@ -64,10 +64,11 @@ export class ElaraApp extends Root {
 	 * @readonly
 	 * @memberof ElaraApp
 	 */
-	public get bootstrap(): Promise<unknown> {		
+	public get bootstrap(): Promise<unknown> {
 		return Promise.all([
 			this._setup(),
 			import('./material'),
+			document.fonts.ready
 		]);
 	}
 
