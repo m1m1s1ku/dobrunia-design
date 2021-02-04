@@ -209,7 +209,9 @@ export class ElaraApp extends Root {
 		this._subscriptions.add(instaLoad$().pipe(
 			tap((instaThumbs) => {
 				this.socialThumbs = instaThumbs;
-				this.requestUpdate();
+			}),
+			switchMap(() => {
+				return this.requestUpdate();
 			})
 		).subscribe());
 		this._subscriptions.add(this._resize$.subscribe());
