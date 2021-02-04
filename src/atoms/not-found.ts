@@ -1,8 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import { property, css, CSSResult, LitElement, customElement } from 'lit-element';
 
-import './tree';
-
 import Constants from '../constants';
 import { navigate } from '../core/routing/routing';
 
@@ -40,7 +38,6 @@ export class NotFound extends LitElement {
             <h1>You are lost !</h1>
             <p>You asked for : ${this.asked}.</p>
             <a @click=${() => navigate(Constants.defaults.route)}><mwc-icon-button icon="home"></mwc-icon-button> Homepage</a>
-            <ui-tree .width=${1366} .height=${768}></ui-tree>
         </div>
         `;
     }

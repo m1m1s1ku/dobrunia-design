@@ -1,45 +1,32 @@
-import { html, property, SVGTemplateResult, TemplateResult } from 'lit-element';
+import { html, property, TemplateResult } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
-
-import crayon from 'crayon';
-
-import Root from './core/strategies/Root';
-
-import './pages/index';
-import './atoms/nav';
-import './atoms/not-found';
-import './atoms/image';
-import './atoms/tree';
-import './atoms/spinner';
-
-
-import Constants from './constants';
-import { Item } from './atoms/nav';
-
-import terrazzo from './core/ui/terrazzo';
-import { wrap } from './core/errors/errors';
 
 import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable, EMPTY } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { fromFetch } from 'rxjs/fetch';
 
-import IconsForProvider from './icons';
+import Root from './core/strategies/Root';
+import { wrap } from './core/errors/errors';
+import terrazzo from './core/ui/terrazzo';
 
-import BootstrapQuery from './queries/bootstrap.graphql';
-import { InstagramThumbs, instaLoad$ } from './instagram';
+import Constants from './constants';
+
+import crayon from 'crayon';
 import { bindCrayon } from './router';
 
-interface WPLink {
-	id: string; label: string; url: string;
-	icon?: SVGTemplateResult;
-	connectedObject?: {
-		taxonomy: {
-			node: {
-				name: string;
-			}
-		}
-	}
-}
+import IconsForProvider from './icons';
+import { InstagramThumbs, instaLoad$ } from './instagram';
+import { WPBootstrap, WPLink, WPMenus, WPTerrazzo } from './wordpress';
+
+import { Item } from './atoms/nav';
+
+import BootstrapQuery from './queries/bootstrap.graphql';
+
+import './pages/index';
+import './atoms/not-found';
+import './atoms/nav';
+import './atoms/image';
+import './atoms/spinner';
 
 export class ElaraApp extends Root {
 	public static readonly is: string = 'elara-app';
@@ -80,40 +67,29 @@ export class ElaraApp extends Root {
 		), animationFrameScheduler);
 	}
 
-	private _buildTerrazzo(colors: {
-		logo: string;
-		[color: string]: string
-	}){
+	private _buildTerrazzo(colors: WPTerrazzo){
 		this._terrazzoColors = [];
 		for(const key of Object.keys(colors)){
 			if(key === 'logo') continue;
 			this._terrazzoColors.push(colors[key]);
 		}
-		this._logo = colors.logo;
 
 		terrazzo(this, this._terrazzoColors, false);
 	}
 
-	private _buildMenu(data: {
-		menus: {
-			nodes: {
-				slug: string;
-				menuItems: {nodes: WPLink[]},
-			}[],
-		}
-	}){
-		const menuLinks = data.menus.nodes.find(node => node.slug === 'menu');
+	private _buildMenu(data: WPMenus){
+		const menuLinks = data.nodes.find(node => node.slug === 'menu');
 		const mainMenuLinks = menuLinks.menuItems.nodes;
 
 		const siteURL = 'https://dobruniadesign.com';
 
-		const legalLinks = data.menus.nodes.find(node => node.slug === 'legal-links');
+		const legalLinks = data.nodes.find(node => node.slug === 'legal-links');
 		this.legalLinks = legalLinks.menuItems.nodes.map(node => {
 			node.url = node.url.replace(siteURL, '');
 			return node;
 		});
 
-		const socialLinks = data.menus.nodes.find(node => node.slug === 'social-links');
+		const socialLinks = data.nodes.find(node => node.slug === 'social-links');
 		this.socialLinks = socialLinks.menuItems.nodes.map(node => {
 			node.url = node.url.replace(siteURL, '');
 			node.icon = IconsForProvider[node.label.toLowerCase()];
@@ -186,9 +162,13 @@ export class ElaraApp extends Root {
 		}).pipe(
 			switchMap((response) => response.json()),
 			tap(response => {
-				const data = response.data;
-				this._buildTerrazzo(data.terrazzo);
-				this._buildMenu(data);
+				const data = response.data as WPBootstrap;
+				const colors = data.terrazzo;
+
+				this._logo = colors.logo;
+
+				this._buildTerrazzo(colors);
+				this._buildMenu(data.menus);
 			}),
 			switchMap(() => {
 				return this.requestUpdate();
@@ -217,6 +197,11 @@ export class ElaraApp extends Root {
 		this._subscriptions.add(this._resize$.subscribe());
 	}
 
+	public disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._subscriptions.unsubscribe();
+	}
+
 	public firstUpdated(_changedProperties:  Map<string | number | symbol, unknown>): void {
 		super.firstUpdated(_changedProperties);
 
@@ -229,16 +214,6 @@ export class ElaraApp extends Root {
 
 		this.router.load();
 	}
-
-	public disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this._subscriptions.unsubscribe();
-	}
-
-	public terrazzo(idx: number, color: string): void {
-		this._terrazzoColors[idx] = color;
-		terrazzo(this, this._terrazzoColors, false);
-	}
 	
 	/**
 	 * Bootstrap is launched by boot.js
@@ -249,8 +224,8 @@ export class ElaraApp extends Root {
 	 */
 	public get bootstrap(): Promise<unknown> {		
 		return Promise.all([
-			import('./material'),
 			this._setup(),
+			import('./material'),
 		]);
 	}
 
