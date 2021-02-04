@@ -4,15 +4,15 @@
   --elara-link: #2c3d00;
   --elara-nav-background: #fff;
   --elara-primary: #b47e71;
-  --elara-secondary: #5E595D;
+  --elara-secondary: #5e595d;
   --elara-cta: #e8e8d4;
-  --elara-color: rgba(134, 156, 39, .8);
+  --elara-color: rgba(134, 156, 39, 0.8);
   --elara-input-container: rgb(98, 110, 52);
   --elara-input-focus: rgba(98, 110, 52, 0.7);
-  --elara-loader-background: rgba(255, 255, 255, .8);
+  --elara-loader-background: rgba(255, 255, 255, 0.8);
   --elara-light-background: rgba(255, 255, 255, 0.9);
   --elara-highlight: #b47e71;
-  --elara-complementary: #5E595D;
+  --elara-complementary: #5e595d;
 
   --elara-background-color: #fff;
   --elara-footer-color: #f5f5f5;
@@ -110,20 +110,20 @@ body.scrolling-disabled {
   bottom: 30px;
   left: 27px;
   transform-origin: center bottom;
-  animation: dot .6s ease-in-out infinite;
+  animation: dot 0.6s ease-in-out infinite;
 }
 
 @keyframes dot {
   0% {
-    transform: scale(1, .7)
+    transform: scale(1, 0.7);
   }
 
   20% {
-    transform: scale(.7, 1.2)
+    transform: scale(0.7, 1.2);
   }
 
   40% {
-    transform: scale(1, 1)
+    transform: scale(1, 1);
   }
 
   50% {
@@ -131,19 +131,19 @@ body.scrolling-disabled {
   }
 
   46% {
-    transform: scale(1, 1)
+    transform: scale(1, 1);
   }
 
   80% {
-    transform: scale(.7, 1.2)
+    transform: scale(0.7, 1.2);
   }
 
   90% {
-    transform: scale(.7, 1.2)
+    transform: scale(0.7, 1.2);
   }
 
   100% {
-    transform: scale(1, .7)
+    transform: scale(1, 0.7);
   }
 }
 
@@ -179,7 +179,7 @@ body.scrolling-disabled {
 }
 
 #s2 {
-  animation: anim 1.8s linear infinite -.6s;
+  animation: anim 1.8s linear infinite -0.6s;
 }
 
 #s3 {
@@ -199,8 +199,8 @@ body.scrolling-disabled {
     flex-direction: row;
   }
 
-  .flex-center>div {
-    margin: .5em;
+  .flex-center > div {
+    margin: 0.5em;
   }
 }
 
@@ -267,7 +267,7 @@ footer .left {
 }
 
 .middle-type {
-  margin-top: .7em;
+  margin-top: 0.7em;
 }
 
 .low-type {
@@ -305,7 +305,7 @@ footer .icons {
 }
 
 canvas {
-  opacity: .6;
+  opacity: 0.6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -326,7 +326,7 @@ canvas {
 }
 
 footer svg {
-  transition: fill .3s;
+  transition: fill 0.3s;
 }
 
 footer a:hover svg {
@@ -337,7 +337,7 @@ footer a elara-image img {
   width: 90px;
   height: 90px;
   object-fit: contain;
-  transition: transform .3s;
+  transition: transform 0.3s;
 }
 
 footer a:hover elara-image img {
@@ -362,12 +362,16 @@ footer a:hover elara-image img {
   padding-right: 3em;
   padding-left: 3em;
   padding-bottom: 1em;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, .6));
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(249, 249, 249, 0.6)
+  );
 }
 
 .blog article {
-  margin-top: .5em;
-  margin-bottom: .5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .blog.single .image-container {
@@ -397,7 +401,7 @@ article {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 2px;
 }
 
@@ -434,7 +438,7 @@ article.reveal {
 
 article.revealed {
   opacity: 1;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 svg {
@@ -457,7 +461,7 @@ mwc-circular-progress {
 }
 
 .article-thumb {
-  margin: 0 .5em;
+  margin: 0 0.5em;
 }
 
 .article-thumb img {
@@ -508,12 +512,16 @@ mwc-circular-progress {
 
 .card.revealed {
   opacity: 1;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .card .card-inner {
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.8));
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(249, 249, 249, 0.8)
+  );
   display: flex;
   flex-direction: column;
   padding: 1em;
@@ -524,7 +532,8 @@ mwc-circular-progress {
 }
 
 .card .card-inner:hover {
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12),
+    0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .card elara-image {
@@ -533,7 +542,7 @@ mwc-circular-progress {
 
 .card .text .title {
   font-size: 1.3em;
-  margin: 0 0 .5em 0;
+  margin: 0 0 0.5em 0;
 }
 
 .card .text span {
@@ -545,31 +554,29 @@ mwc-circular-progress {
   flex-wrap: wrap;
 }
 
-.grid>div {
+.grid > div {
   flex: 1 0 5em;
 }
 
 button:focus,
 button:hover {
   outline: 1px solid var(--elara-primary);
-  background-color: var(--elara-secondary)
+  background-color: var(--elara-secondary);
 }
 
-;
-
 li {
-  list-style: none
+  list-style: none;
 }
 
 a {
   cursor: pointer;
   color: var(--elara-font-color);
   text-decoration: none;
-  transition: color .3s;
+  transition: color 0.3s;
 }
 
 a:hover {
-  color: var(--elara-font-hover)
+  color: var(--elara-font-hover);
 }
 
 h1,
@@ -584,7 +591,7 @@ h1::first-letter {
 }
 
 h2::first-letter {
-  font-size: 1.2em
+  font-size: 1.2em;
 }
 
 .elara_row {
@@ -610,7 +617,7 @@ h2::first-letter {
 
 .elara_column {
   float: left;
-  margin: .5em;
+  margin: 0.5em;
 }
 
 .elara_column:first-of-type .elara_inner {
@@ -670,7 +677,7 @@ h2::first-letter {
 }
 
 .image-container.opened {
-  transition: .3s;
+  transition: 0.3s;
   position: fixed;
   top: 0;
   right: 0;
@@ -681,7 +688,7 @@ h2::first-letter {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(255, 255, 255, 0.8);
   overflow: hidden;
   z-index: 999;
 }
@@ -695,7 +702,11 @@ h2::first-letter {
 .page {
   padding: 2em;
   padding-top: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(249, 249, 249, 0.6));
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(249, 249, 249, 0.6)
+  );
 }
 
 li {
@@ -778,7 +789,7 @@ li {
 }
 
 ui-projet .project {
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(255, 255, 255, 0.8);
   padding-bottom: 2em;
 }
 
@@ -836,7 +847,7 @@ ui-nav .menu-content {
   background-color: var(--elara-background-color);
   color: var(--elara-font-color);
   display: none;
-  transition: opacity .4s;
+  transition: opacity 0.4s;
 }
 
 ui-nav .menu-content .item {
@@ -894,7 +905,7 @@ ui-nav .menu-content.shown {
   align-items: center;
   justify-content: center;
   z-index: 999;
-  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 ui-nav li {
@@ -905,16 +916,16 @@ ui-nav .filters {
   display: flex;
   justify-content: flex-end;
   flex-direction: row;
-  font-size: .9em;
+  font-size: 0.9em;
   margin-right: 1em;
   opacity: 1;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 ui-nav .filters mwc-icon-button {
   opacity: 1;
   margin-top: -3px;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 ui-nav .filters ul {
@@ -998,7 +1009,7 @@ ui-nav .links {
   .resellers-types {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: .2fr 1fr;
+    grid-template-columns: 0.2fr 1fr;
   }
 }
 
