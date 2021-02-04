@@ -1,8 +1,8 @@
 import { html, property, TemplateResult } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 
-import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable, EMPTY } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { fromEvent, scheduled, animationFrameScheduler, Subscription, EMPTY } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, ignoreElements, switchMap, tap } from 'rxjs/operators';
 import { fromFetch } from 'rxjs/fetch';
 
 import Root from './core/strategies/Root';
@@ -50,21 +50,11 @@ export class ElaraApp extends Root {
 	private _terrazzoColors = ['#edcfd0', '#df899b', '#8e8685', '#a08583'];
 
 	private _subscriptions: Subscription;
-	private _resize$: Observable<Event>;
 
 	public router: crayon.Router;
 
 	public constructor(){
 		super();
-		this._subscriptions = new Subscription();
-		
-		this._resize$ = scheduled(fromEvent(window, 'resize').pipe(
-			distinctUntilChanged(),
-			debounceTime(500),
-			tap(() => {
-				terrazzo(this, this._terrazzoColors, true);
-			})
-		), animationFrameScheduler);
 	}
 
 	/**
@@ -83,16 +73,27 @@ export class ElaraApp extends Root {
 
 	public connectedCallback(): void {
 		super.connectedCallback();
+		this._subscriptions = new Subscription();
 
-		this._subscriptions.add(instaLoad$().pipe(
-			tap((instaThumbs) => {
-				this.socialThumbs = instaThumbs;
-			}),
-			switchMap(() => {
-				return this.requestUpdate();
-			})
-		).subscribe());
-		this._subscriptions.add(this._resize$.subscribe());
+		this._subscriptions.add(
+			instaLoad$().pipe(
+				tap((instaThumbs) => {
+					this.socialThumbs = instaThumbs;
+				}),
+				switchMap(() => {
+					return this.requestUpdate();
+				})
+			).subscribe()
+		);
+		this._subscriptions.add(
+			scheduled(fromEvent(window, 'resize').pipe(
+				distinctUntilChanged(),
+				debounceTime(500),
+				tap(() => {
+					terrazzo(this, this._terrazzoColors, true);
+				})
+			), animationFrameScheduler).subscribe()
+		);
 	}
 
 	public disconnectedCallback(): void {
@@ -128,7 +129,7 @@ export class ElaraApp extends Root {
 	 * @private
 	 * @memberof ElaraApp
 	 */
-	private async _setup(){
+	private async _setup(): Promise<void> {
 		return fromFetch(Constants.graphql, {
 			method: 'POST',
 			headers: {
@@ -152,6 +153,7 @@ export class ElaraApp extends Root {
 			switchMap(() => {
 				return this.updateComplete;
 			}),
+			ignoreElements(),
 			catchError((err) => {
 				this.dispatchEvent(wrap(err));
 				return EMPTY;
@@ -159,7 +161,7 @@ export class ElaraApp extends Root {
 		).toPromise();
 	}
 
-	private _buildTerrazzo(colors: WPTerrazzo){
+	private _buildTerrazzo(colors: WPTerrazzo): void {
 		this._terrazzoColors = [];
 		for(const key of Object.keys(colors)){
 			if(key === 'logo') continue;
@@ -169,7 +171,7 @@ export class ElaraApp extends Root {
 		terrazzo(this, this._terrazzoColors, false);
 	}
 
-	private _buildMenu(data: WPMenus){
+	private _buildMenu(data: WPMenus): void {
 		const menuLinks = data.nodes.find(node => node.slug === 'menu');
 		const mainMenuLinks = menuLinks.menuItems.nodes;
 
