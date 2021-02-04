@@ -15,7 +15,6 @@ const INDEX_TEMPLATE = resolve('./src/index.ejs');
 const nodeModules = './node_modules/';
 
 const webcomponentsjs = join(nodeModules, '@webcomponents/webcomponentsjs');
-const webanimationsjs = join(nodeModules, 'web-animations-js');
 
 const assets = [
   {
@@ -105,7 +104,12 @@ const commonConfig = merge([
           options: {
             esModule: false
           }
-        }
+        },
+        {
+          test: /\.(graphql)$/,
+          exclude: /node_modules/,
+          loader: 'raw-loader'
+        },
       ]
     }
   }

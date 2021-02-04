@@ -12,6 +12,8 @@ import { from } from 'rxjs';
 import { map, reduce, tap } from 'rxjs/operators';
 import { ListItem } from '@material/mwc-list/mwc-list-item';
 
+import ResellersQuery from '../queries/resellers.graphql';
+
 interface ResellerMinimal {
     title: string;
     content: string;
@@ -44,39 +46,13 @@ export class ResellersController extends Page {
     public dataType = 'all';
 
     private async _load(){
-        const pageQuery = `
-        {
-            revendeurs {
-              nodes {
-                title(format: RENDERED)
-                content(format: RENDERED)
-                featuredImage {
-                  node {
-                    sourceUrl(size: MEDIUM_LARGE)
-                  }
-                }
-                address
-                website
-                phone
-                mail
-                tags {
-                    nodes {
-                        name
-                        description
-                    }
-                }
-              }
-            }
-        }                      
-        `;
-
         const resellersR = await fetch(Constants.graphql, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                query: pageQuery
+                query: ResellersQuery
             })
         }).then(res => res.json()).then(res => res.data.revendeurs.nodes).catch(_ => this.dispatchEvent(wrap(_))) as ResellerMinimal[];
 

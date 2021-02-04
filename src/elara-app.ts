@@ -12,6 +12,7 @@ import './atoms/image';
 import './atoms/tree';
 import './atoms/spinner';
 
+
 import Constants from './constants';
 import { Item } from './atoms/nav';
 
@@ -20,6 +21,8 @@ import { wrap } from './core/errors/errors';
 
 import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+
+import BootstrapQuery from './queries/bootstrap.graphql';
 
 interface WPLink {
 	id: string; label: string; url: string;
@@ -161,49 +164,13 @@ export class ElaraApp extends Root {
 	 * @memberof ElaraApp
 	 */
 	private async _setup(){
-		const menuQuery = `
-		{
-			terrazzo {
-			  terrazzofour
-			  terrazzoone
-			  terrazzothree
-			  terrazzotwo
-			  logo
-			}
-			menus {
-			  nodes {
-				  id
-				  name
-				  slug
-				  menuItems {
-					  nodes {
-						id
-						url
-						label
-						connectedObject {
-						  ... on Category {
-							id
-							name
-							taxonomy {
-							  node {
-								name
-							  }
-							}
-						  }
-						}
-					  }
-				  }
-			  }
-			}
-		  }`;
-
 		const requestR = await fetch(Constants.graphql, {
 			method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                query: menuQuery
+                query: BootstrapQuery
             })
 		}).then(res => res.json()).catch(_ => this.dispatchEvent(wrap(_)));
 

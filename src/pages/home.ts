@@ -9,6 +9,9 @@ import { pulseWith } from '../core/animations';
 import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
 
+import ProjectsQuery from '../queries/projects.graphql';
+
+
 export interface ProjectMinimal {
     categories: {
         nodes: 
@@ -51,27 +54,7 @@ export async function projectLoad(host: ElementWithProjects, lastCardSelector: s
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            query: `{
-                projets(first: 100) {
-                  nodes {
-                    title
-                    slug
-                    featuredImage {
-                        node {
-                            sourceUrl(size: MEDIUM)
-                        }
-                    }
-                    categories {
-                      nodes {
-                        categoryId,
-                        slug,
-                        name
-                      }
-                    }
-                  }
-                }
-              }
-            `,
+            query: ProjectsQuery,
         }),
     }).then(res => res.json()).then(res => res.data).catch(_ => this.dispatchEvent(wrap(_)));
 

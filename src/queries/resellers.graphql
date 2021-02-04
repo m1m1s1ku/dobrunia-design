@@ -1,0 +1,23 @@
+query Resellers {
+    revendeurs {
+        nodes {
+        title(format: RENDERED)
+        content(format: RENDERED)
+        featuredImage {
+            node {
+            sourceUrl(size: MEDIUM_LARGE)
+            }
+        }
+        address
+        website
+        phone
+        mail
+        tags {
+            nodes {
+                name
+                description
+            }
+        }
+        }
+    }
+}

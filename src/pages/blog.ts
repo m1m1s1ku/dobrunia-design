@@ -12,6 +12,8 @@ import Constants from '../constants';
 import { wrap } from '../core/errors/errors';
 import { TextField } from '@material/mwc-textfield';
 
+import BlogQuery from '../queries/blog.graphql';
+
 interface ArticleMinimal {
     id: string;
     title: string;
@@ -59,22 +61,7 @@ class Blog extends Page {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                query: `{
-                    posts(first: 100) {
-                      edges {
-                        node {
-                          id
-                          title
-                          slug
-                          featuredImage {
-                              node {
-                                sourceUrl(size: LARGE)
-                              }
-                          }
-                        }
-                      }
-                    }
-                  }`
+                query: BlogQuery
             })
         }).then(res => res.json()).then(res => res.data.posts.edges).catch(_ => this.dispatchEvent(wrap(_)));
 
