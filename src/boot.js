@@ -1,4 +1,5 @@
 // @ts-check
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 window.polymerSkipLoadingFontRoboto = true;
 
@@ -107,6 +108,7 @@ function _onDomLoaded(){
     // if we do that while lit-component is ready dom mutations will lead to browser computing time, useless cause it's needed to first paint
     customElements.whenDefined('elara-app').then(() => {
       const elara = document.querySelector('elara-app');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return elara.bootstrap;
     })
