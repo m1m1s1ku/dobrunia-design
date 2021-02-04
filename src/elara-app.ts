@@ -187,15 +187,17 @@ export class ElaraApp extends Root {
 		let menuLinks = requestR.data.menus.nodes.find(node => node.slug === 'menu');
 		menuLinks = menuLinks.menuItems.nodes;
 
+		const siteURL = 'https://dobruniadesign.com';
+
 		const legalLinks = requestR.data.menus.nodes.find(node => node.slug === 'legal-links');
 		this.legalLinks = legalLinks.menuItems.nodes.map(node => {
-			node.url = node.url.replace('https://dobruniadesign.com', '');
+			node.url = node.url.replace(siteURL, '');
 			return node;
 		});
 
 		const socialLinks = requestR.data.menus.nodes.find(node => node.slug === 'social-links');
 		this.socialLinks = socialLinks.menuItems.nodes.map(node => {
-			node.url = node.url.replace('https://dobruniadesign.com', '');
+			node.url = node.url.replace(siteURL, '');
 			node.icon = this._iconsForProvider[node.label.toLowerCase()];
 
 			return node;
@@ -204,9 +206,11 @@ export class ElaraApp extends Root {
 		let idx = 0;
 		const links = [];
 		const filters = [];
+
+		const menuLinksURL = 'https://www.dobruniadesign.com';
 		
 		for(const link of menuLinks){
-			const isHome = link.url.replace('https://www.dobruniadesign.com', '') === '';
+			const isHome = link.url.replace(menuLinksURL, '') === '';
 			const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
 			let isCategory = false;

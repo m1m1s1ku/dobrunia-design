@@ -37,7 +37,8 @@ export default class Nav extends LitElement {
     public logo = '';
 
     private _resizeListener: (e: Event) => void;
-    _elara: ElaraApp;
+    
+    private _elara!: ElaraApp;
 
     public constructor(){
         super();
