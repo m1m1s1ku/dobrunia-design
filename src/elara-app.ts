@@ -25,6 +25,8 @@ import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import IconsForProvider from './icons';
 
 import BootstrapQuery from './queries/bootstrap.graphql';
+import { InstagramThumbs, instaLoad$ } from './instagram';
+import { bindCrayon } from './router';
 
 interface WPLink {
 	id: string; label: string; url: string;
@@ -46,10 +48,7 @@ export class ElaraApp extends Root {
 	@property({type: Array, reflect: false, noAccessor: true})
 	public filters: Item[] = [];
 	@property({type: Array, reflect: false, noAccessor: true})
-	public socialThumbs: {
-		src: string;
-		shortcode: string;
-	}[];
+	public socialThumbs: ReadonlyArray<InstagramThumbs>;
 	@property({type: String, reflect: false, noAccessor: true})
 	private _logo: string;
 
@@ -63,44 +62,6 @@ export class ElaraApp extends Root {
 	public constructor(){
 		super();
 		this._subscriptions = new Subscription();
-
-		this.router = crayon.create();
-		this.router.path('/', () => {
-			return this.load('home');
-		});
-		this.router.path('/home', () => {
-			return this.load('home');
-		});
-
-		this.router.path('/revendeurs', () => {
-			return this.load('revendeurs');
-		});
-
-		this.router.path('/page/:page', (req) => {
-			return this.load('page/'+req.params.page);
-		});
-
-		this.router.path('/blog', () => {
-			return this.load('blog');
-		});
-
-		this.router.path('/projet/:slug', req => {
-			return this.load('projet/'+req.params.slug);
-		});
-
-		this.router.path('/post/:slug', (req) => {
-			return this.load('post/'+req.params.slug);
-		});
-
-		this.router.path('/**', (req) => {
-			return this.load(req.pathname.replace('/', ''));
-		});
-
-		this._subscriptions.add(this.router.events.subscribe(event => {
-			if (event.type === crayon.RouterEventType.SameRouteAbort) {
-				this.load(event.data.replace('/', ''));
-			}
-		 }));
 		
 		this._resize$ = scheduled(fromEvent(window, 'resize').pipe(
 			distinctUntilChanged(),
@@ -109,44 +70,6 @@ export class ElaraApp extends Root {
 				terrazzo(this, this._terrazzoColors, true);
 			})
 		), animationFrameScheduler);
-	}
-
-	/**
-	 * Load instagram feed using partially public api
-	 *
-	 * @private
-	 * @memberof ElaraApp
-	 */
-	private async _loadInstagram(){
-		try {
-			const instaThumbs = [];
-			// NOTE : HACK ahead. Using a now "private" API
-			const instagramR = await fetch('https://www.instagram.com/graphql/query/?query_id=17888483320059182&query_hash=472f257a40c653c64c666ce877d59d2b&variables=%7B%22id%22:%228130742951%22,%22first%22:%2212%22%7D', {
-				headers: {
-					'User-Agent'       : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-					'referer'          : 'https://www.instagram.com/dobruniadesignatelier/',
-				}
-			});
-
-			const responseI = await instagramR.json();
-			const userData = responseI.data.user;
-			const timeline = userData.edge_owner_to_timeline_media.edges.slice(0, 4);
-	
-			for(const latestPost of timeline){
-				const resources = latestPost.node.thumbnail_resources;
-				const thumbnail = resources.find(resource => resource.config_height === 240);
-				if(thumbnail){
-					instaThumbs.push({
-						shortcode: latestPost.node.shortcode,
-						src: thumbnail.src
-					});
-				}
-			}
-
-			this.socialThumbs = instaThumbs;
-		} catch (err) {
-			// console.error('Error while loading instagram feed', err);
-		}
 	}
 
 	/**
@@ -248,14 +171,32 @@ export class ElaraApp extends Root {
 		return this.updateComplete;
 	}
 
-	public async connectedCallback(): Promise<void> {
+	public connectedCallback(): void {
 		super.connectedCallback();
+
+		this._subscriptions.add(instaLoad$().pipe(
+			tap((instaThumbs) => {
+				this.socialThumbs = instaThumbs;
+				this.requestUpdate();
+			})
+		).subscribe());
 		this._subscriptions.add(this._resize$.subscribe());
-		await this._loadInstagram();
+	}
+
+	public firstUpdated(_changedProperties:  Map<string | number | symbol, unknown>): void {
+		super.firstUpdated(_changedProperties);
+
+		this.router = bindCrayon(this);
+		this._subscriptions.add(this.router.events.subscribe(event => {
+			if (event.type === crayon.RouterEventType.SameRouteAbort) {
+				this.load(event.data.replace('/', ''));
+			}
+		 }));
+
 		this.router.load();
 	}
 
-	public async disconnectedCallback(): Promise<void> {
+	public disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this._subscriptions.unsubscribe();
 	}
