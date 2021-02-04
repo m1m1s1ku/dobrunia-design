@@ -21,13 +21,13 @@ import { wrap } from './core/errors/errors';
 
 import { fromEvent, scheduled, animationFrameScheduler, Subscription, Observable, EMPTY } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { fromFetch } from 'rxjs/fetch';
 
 import IconsForProvider from './icons';
 
 import BootstrapQuery from './queries/bootstrap.graphql';
 import { InstagramThumbs, instaLoad$ } from './instagram';
 import { bindCrayon } from './router';
-import { fromFetch } from 'rxjs/fetch';
 
 interface WPLink {
 	id: string; label: string; url: string;
@@ -294,10 +294,10 @@ export class ElaraApp extends Root {
 						</a>	
 						`)}
 					</div>
-					<a class="instalink" target="_blank" href="https://www.instagram.com/dobruniadesignatelier/" rel="noopener">
-						Instagram ${IconsForProvider['instagram']}
-					</a>
 				` : html``}
+				<a class="instalink" target="_blank" href="https://www.instagram.com/dobruniadesignatelier/" rel="noopener">
+					Instagram ${IconsForProvider['instagram']}
+				</a>
 			</div>
 		</footer>
 		`;
