@@ -1,7 +1,7 @@
 // @ts-check
 const replace = require('replace-in-file');
-const {join} = require('path');
-const {renameSync, writeFileSync} = require('fs');
+const { join } = require('path');
+const { renameSync, writeFileSync } = require('fs');
 const { exec } = require('child_process');
 
 console.warn('deploying php into html');
@@ -13,19 +13,26 @@ const htmlFile = join(distFolder, 'index.html');
 const htaccessFile = join(distFolder, '.htaccess');
 
 try {
-    exec('git rev-parse --short HEAD', (_err, stdout) => {
-        const rev = stdout.replace('\n', '');
-        writeFileSync(configFile, JSON.stringify({
+  exec('git rev-parse --short HEAD', (_err, stdout) => {
+    const rev = stdout.replace('\n', '');
+    writeFileSync(
+      configFile,
+      JSON.stringify(
+        {
           name: 'Dobrunia Design',
           revision: 'dobrunia-' + rev,
-          domain: 'dobruniadesign.com'
-        }, null, 2));
-        console.log('config ok');
+          domain: 'dobruniadesign.com',
+        },
+        null,
+        2
+      )
+    );
+    console.log('config ok');
 
-        const options = {
-          files: htmlFile,
-          from: '<!-- SSRFunctions -->',
-          to: `
+    const options = {
+      files: htmlFile,
+      from: '<!-- SSRFunctions -->',
+      to: `
           <?php
           function get(){
             $request = $_SERVER['REQUEST_URI'];
@@ -80,28 +87,30 @@ try {
             $url = 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
           }
           ?>
-          `
-        };
+          `,
+    };
 
-        replace.sync(options);
-        console.log('replaced functions');
-    
-        options.from = '<!-- SSRHead -->';
-        options.to = '<?= ogFor($title, $url, $description, $image); ?>';
-        replace.sync(options);
-        console.log('replaced head');
-    
-        options.from = '<!-- SSRPayload -->';
-        options.to = '';
-        replace.sync(options);
-        console.log('replaced payload');
+    replace.sync(options);
+    console.log('replaced functions');
 
-        const newFile = htmlFile.replace('.html', '.php');
-        renameSync(htmlFile, newFile);
-        console.log('Rename ok');    
-    });
+    options.from = '<!-- SSRHead -->';
+    options.to = '<?= ogFor($title, $url, $description, $image); ?>';
+    replace.sync(options);
+    console.log('replaced head');
 
-    writeFileSync(htaccessFile, `
+    options.from = '<!-- SSRPayload -->';
+    options.to = '';
+    replace.sync(options);
+    console.log('replaced payload');
+
+    const newFile = htmlFile.replace('.html', '.php');
+    renameSync(htmlFile, newFile);
+    console.log('Rename ok');
+  });
+
+  writeFileSync(
+    htaccessFile,
+    `
     RewriteEngine On
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
@@ -127,8 +136,9 @@ try {
     ExpiresDefault "access 2 days"
 
     ## EXPIRES HEADER CACHING ##
-    `);
-    console.log('htaccess ok');
+    `
+  );
+  console.log('htaccess ok');
 } catch (err) {
-    throw new Error('error during deploy' + err ? err.message : err);
+  throw new Error('error during deploy' + err ? err.message : err);
 }

@@ -1,34 +1,34 @@
 query Bootstrap {
-    terrazzo {
-        terrazzofour
-        terrazzoone
-        terrazzothree
-        terrazzotwo
-        logo
-    }
-    menus {
+  terrazzo {
+    terrazzofour
+    terrazzoone
+    terrazzothree
+    terrazzotwo
+    logo
+  }
+  menus {
+    nodes {
+      id
+      name
+      slug
+      menuItems {
         nodes {
-            id
-            name
-            slug
-            menuItems {
-                nodes {
-                id
-                url
-                label
-                connectedObject {
-                    ... on Category {
-                    id
-                    name
-                    taxonomy {
-                        node {
-                        name
-                        }
-                    }
-                    }
+          id
+          url
+          label
+          connectedObject {
+            ... on Category {
+              id
+              name
+              taxonomy {
+                node {
+                  name
                 }
-                }
+              }
             }
+          }
         }
+      }
     }
+  }
 }

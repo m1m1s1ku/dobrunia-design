@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode production --env production",
     "lint": "eslint ./src/**/*.ts",
+    "pretty": "npx prettier --single-quote --write .",
     "postinstall": "npm run build",
     "start": "webpack serve --mode=development",
     "postbuild": "node ./deploy.js"
@@ -37,6 +38,7 @@
     "eslint": "^7.19.0",
     "eslint-loader": "^4.0.2",
     "html-webpack-plugin": "^4.5.1",
+    "prettier": "2.2.1",
     "raw-loader": "^4.0.2",
     "ts-loader": "^8.0.14",
     "webpack": "^5.19.0",

@@ -5,19 +5,19 @@ window.polymerSkipLoadingFontRoboto = true;
 
 const neededElements = [];
 
-function dismiss(){
+function dismiss() {
   const handler = document.querySelector('#handler');
   handler.parentElement.removeChild(handler);
 }
 
-function reload(){
+function reload() {
   location.reload();
 }
 
-function makeGenericHandler(error = null){
+function makeGenericHandler(error = null) {
   const handler = document.createElement('div');
   handler.id = handler.className = 'handler';
-  if(error){
+  if (error) {
     handler.classList.add('in-error');
   }
   handler.innerHTML = `
@@ -56,24 +56,32 @@ function makeGenericHandler(error = null){
   </style>
   <div class="dot"></div>
   <div class="handler-content">
-    ${error !== null ? `
+    ${
+      error !== null
+        ? `
       <h4>Une erreur est survenue.</h4>
       ${error.message ? `<p>${error.message}</p>` : ''}
       <div class="actions">
-        ${error.continue == true ? '<button class="button-box continue" onclick="dismiss()">Continuer</button>' : ''}
+        ${
+          error.continue == true
+            ? '<button class="button-box continue" onclick="dismiss()">Continuer</button>'
+            : ''
+        }
         <button class="reload" onclick="reload()" raised toggles>Réessayer</button>
       </div>
-    ` : `
+    `
+        : `
     <div id="loader">
       <div id="dot"></div>
       <div class="step" id="s1"></div>
       <div class="step" id="s2"></div>
       <div class="step" id="s3"></div>
     </div>
-    `}
+    `
+    }
   </div>
   `;
-  
+
   handler.querySelector('.dot').addEventListener('click', () => {
     handler.parentElement.removeChild(handler);
   });
@@ -81,15 +89,15 @@ function makeGenericHandler(error = null){
   return handler;
 }
 
-function _onDomLoaded(){
+function _onDomLoaded() {
   let willRemove = false;
   let handler = null;
 
   document.body.classList.add('scrolling-disabled');
 
-  if(location.hash.indexOf('redirect') !== -1){
+  if (location.hash.indexOf('redirect') !== -1) {
     handler = document.querySelector('#handler');
-    if(handler){
+    if (handler) {
       willRemove = true;
     }
   } else {
@@ -97,7 +105,7 @@ function _onDomLoaded(){
     document.body.appendChild(makeGenericHandler());
   }
 
-  if(willRemove && handler){
+  if (willRemove && handler) {
     // Remove load handler immediatly on redirect
     handler.parentElement.removeChild(handler);
   }
@@ -111,28 +119,28 @@ function _onDomLoaded(){
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return elara.bootstrap;
-    })
+    }),
   ];
 
-  for(const elementName of neededElements){
+  for (const elementName of neededElements) {
     loadingPromises.push(customElements.whenDefined(elementName));
   }
 
   return Promise.all(loadingPromises).then(() => {
-    if(!handler){
+    if (!handler) {
       handler = document.querySelector('#handler');
     }
-    
+
     window.requestAnimationFrame(() => {
       const spinner = document.querySelector('#spinner');
       const debug = false;
-      
-      if(debug) return;
 
-      if(spinner){
+      if (debug) return;
+
+      if (spinner) {
         spinner.parentElement.removeChild(spinner);
       }
-      if(handler){
+      if (handler) {
         handler.classList.add('hidden');
         handler.parentElement.removeChild(handler);
       }
@@ -150,7 +158,7 @@ function _onDomLoaded(){
  */
 function _onGenericError(event) {
   let willThrow = null;
-  if(event instanceof ErrorEvent){
+  if (event instanceof ErrorEvent) {
     willThrow = event.error;
   } else {
     willThrow = event.detail;
@@ -159,12 +167,14 @@ function _onGenericError(event) {
   document.body.appendChild(makeGenericHandler(willThrow));
 }
 
-function _onUnload(){
+function _onUnload() {
   window.removeEventListener('error', _onGenericError);
 }
 
 (() => {
-  document.addEventListener('DOMContentLoaded', _onDomLoaded, {passive: true});
-  document.addEventListener('unload', _onUnload, {passive: true});
-  window.addEventListener('error', _onGenericError, {passive: true});
+  document.addEventListener('DOMContentLoaded', _onDomLoaded, {
+    passive: true,
+  });
+  document.addEventListener('unload', _onUnload, { passive: true });
+  window.addEventListener('error', _onGenericError, { passive: true });
 })();

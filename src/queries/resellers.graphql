@@ -1,23 +1,23 @@
 query Resellers {
-    revendeurs {
+  revendeurs {
+    nodes {
+      title(format: RENDERED)
+      content(format: RENDERED)
+      featuredImage {
+        node {
+          sourceUrl(size: MEDIUM_LARGE)
+        }
+      }
+      address
+      website
+      phone
+      mail
+      tags {
         nodes {
-        title(format: RENDERED)
-        content(format: RENDERED)
-        featuredImage {
-            node {
-            sourceUrl(size: MEDIUM_LARGE)
-            }
+          name
+          description
         }
-        address
-        website
-        phone
-        mail
-        tags {
-            nodes {
-                name
-                description
-            }
-        }
-        }
+      }
     }
+  }
 }
