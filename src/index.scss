@@ -721,7 +721,7 @@ ui-nav {
     justify-content: flex-end;
     flex-direction: row;
     font-size: 0.9em;
-    margin-right: 1em;
+    margin-right: 2em;
     opacity: 1;
     transition: opacity 0.3s;
 
@@ -793,6 +793,7 @@ ui-nav {
       font-size: 0.9em;
       font-family: 'Kotori Rose', serif;
       text-transform: lowercase;
+      padding-inline-start: 2em;
 
       li {
         display: inline-block;
