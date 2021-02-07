@@ -601,6 +601,23 @@ mwc-circular-progress {
     rgba(249, 249, 249, 0.6)
   );
 
+  .featured {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    padding: 2em;
+
+    elara-image {
+      img {
+        height: 400px;
+        object-fit: contain;
+      }
+    }
+  }
+
   h3 {
     margin: 0;
   }
@@ -911,16 +928,17 @@ ui-nav {
 }
 
 @media (max-width: 600px) {
-  .page .cols {
-    flex-direction: column;
-  }
+  .page {
+    .cols {
+      flex-direction: column;
+    }
+    .image-container {
+      text-align: center;
+    }
 
-  .page .image-container {
-    text-align: center;
-  }
-
-  .page elara-image img {
-    width: 250px;
+    elara-image img {
+      width: 250px;
+    }
   }
 
   footer {

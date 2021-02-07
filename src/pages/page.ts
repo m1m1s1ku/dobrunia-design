@@ -5,7 +5,7 @@ import { property, customElement } from 'lit-element';
 import Page from '../core/strategies/Page';
 import Constants from '../constants';
 
-import { Utils, onImageContainerClicked } from '../core/ui/ui';
+import { Utils } from '../core/ui/ui';
 import { fadeWith } from '../core/animations';
 import { ProjectMinimal } from './project';
 import { wrap } from '../core/errors/errors';
@@ -99,10 +99,7 @@ export class PageController extends Page {
                 <div class="content">${unsafeHTML(this.page.content)}</div>
                 ${this.featured
                   ? html`
-                      <div
-                        class="image-container"
-                        @click=${onImageContainerClicked}
-                      >
+                      <div class="featured">
                         <elara-image
                           .catch=${true}
                           src="${this.featured}"
