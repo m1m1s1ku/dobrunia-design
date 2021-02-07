@@ -145,24 +145,14 @@ export class Project extends Page {
               </main>
               ${this.gallery && this.gallery.length > 0
                 ? html`
-                    <div
-                      class="gallery ${this.gallery.length < 3 ? 'short' : ''}"
-                    >
+                    <masonry-layout gap="20" maxcolwidth="300" cols="${this.gallery.length <= 2 ? '2' : 'auto'}">
                       ${repeat(
                         this.gallery,
                         (link) => html`
-                          <div
-                            class="image-container"
-                            @click=${onImageContainerClicked}
-                          >
-                            <elara-image
-                              .catch=${true}
-                              src=${link}
-                            ></elara-image>
-                          </div>
+                            <img alt="${link}" src=${link}></img>
                         `
                       )}
-                    </div>
+                    </masonry-layout>
                   `
                 : html``}
             `

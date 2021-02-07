@@ -761,31 +761,38 @@ li {
   justify-content: center;
 }
 
-.project elara-image img {
-  width: 300px;
-  height: 240px;
-  object-fit: cover;
-}
-
 .project .post-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1em;
+  padding: 4em;
+  text-align: justify;
+  font-size: 16px;
 }
 
-.project .gallery {
-  display: grid;
-  grid-auto-rows: minmax(80px, auto);
-  grid-gap: 10px;
-  grid-auto-flow: dense;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  width: 100%;
-  justify-items: center;
+.project > .title {
+  margin-left: .5em;
 }
 
-.project .gallery.short {
-  grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+.project masonry-layout {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.project > .image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.project > .image-container:not(.opened) elara-image {
+  display: contents;
+}
+
+.project > .image-container:not(.opened) img {
+  max-width: 90%;
+  max-height: 500px;
 }
 
 ui-projet .project {

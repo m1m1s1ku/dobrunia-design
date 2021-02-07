@@ -3,3 +3,4 @@ import '@material/mwc-textfield/mwc-textfield';
 import '@material/mwc-circular-progress/mwc-circular-progress';
 import '@material/mwc-list/mwc-list';
 import '@material/mwc-list/mwc-list-item';
+import '@appnest/masonry-layout';

@@ -12,6 +12,7 @@
     "postbuild": "node ./deploy.js"
   },
   "dependencies": {
+    "@appnest/masonry-layout": "^2.0.8",
     "@material/mwc-circular-progress": "^0.20.0",
     "@material/mwc-icon-button": "0.20.0",
     "@material/mwc-list": "^0.20.0",
