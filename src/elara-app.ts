@@ -41,6 +41,8 @@ import './atoms/nav';
 import './atoms/image';
 import './atoms/spinner';
 
+import './index.scss';
+
 export class ElaraApp extends Root {
   public static readonly is: string = 'elara-app';
 

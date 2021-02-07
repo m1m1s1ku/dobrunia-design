@@ -68,6 +68,7 @@ const commonConfig = merge([
         {
           test: /\.css$/,
           use: ['css-loader'],
+          exclude: /node_modules/,
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,
@@ -106,6 +107,11 @@ const commonConfig = merge([
           test: /\.(graphql)$/,
           exclude: /node_modules/,
           loader: 'raw-loader',
+        },
+        { 
+          test: /\.scss?$/,
+          use: ['style-loader', 'css-loader', 'sass-loader'],
+          exclude: /node_modules/,
         },
       ],
     },
