@@ -516,8 +516,6 @@ mwc-circular-progress {
     }
 
     .text {
-      margin-top: 1em;
-
       .title {
         font-size: 1.3em;
         margin: 0 0 0.5em 0;
@@ -530,6 +528,7 @@ mwc-circular-progress {
 
     elara-image {
       height: 240px;
+      margin-bottom: 1em;
 
       img {
         object-fit: contain;
