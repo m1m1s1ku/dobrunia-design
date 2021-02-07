@@ -108,7 +108,7 @@ const commonConfig = merge([
           exclude: /node_modules/,
           loader: 'raw-loader',
         },
-        { 
+        {
           test: /\.scss?$/,
           use: ['style-loader', 'css-loader', 'sass-loader'],
           exclude: /node_modules/,

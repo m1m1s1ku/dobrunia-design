@@ -145,7 +145,11 @@ export class Project extends Page {
               </main>
               ${this.gallery && this.gallery.length > 0
                 ? html`
-                    <masonry-layout gap="20" maxcolwidth="300" cols="${this.gallery.length <= 2 ? '2' : 'auto'}">
+                    <masonry-layout
+                      gap="20"
+                      maxcolwidth="300"
+                      cols="${this.gallery.length <= 2 ? '2' : 'auto'}"
+                    >
                       ${repeat(
                         this.gallery,
                         (link) => html`

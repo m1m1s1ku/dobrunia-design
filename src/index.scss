@@ -3,7 +3,7 @@
   --elara-lightgray: #f2f2f2;
   --elara-link: #2c3d00;
   --elara-nav-background: #fff;
-  --elara-primary: #7C4C41;
+  --elara-primary: #7c4c41;
   --elara-secondary: #5e595d;
   --elara-cta: #e8e8d4;
   --elara-color: rgba(134, 156, 39, 0.8);
@@ -35,7 +35,6 @@ a {
   color: var(--elara-primary);
   cursor: pointer;
 }
-
 
 button:focus,
 button:hover {
@@ -227,11 +226,11 @@ body {
   #s1 {
     animation: anim 1.8s linear infinite;
   }
-  
+
   #s2 {
     animation: anim 1.8s linear infinite -0.6s;
   }
-  
+
   #s3 {
     animation: anim 1.8s linear infinite -1.2s;
   }
@@ -270,7 +269,7 @@ footer {
     cursor: pointer;
     color: #3c3c3b;
     text-decoration: none;
-    &:hover {
+    &:hover  {
       color: var(--elara-font-hover);
 
       elara-image img {
@@ -321,13 +320,13 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-  
+
     .instalink {
       display: flex;
       align-items: center;
       justify-content: center;
     }
-  }  
+  }
 }
 
 .logotype::first-letter {
@@ -511,8 +510,8 @@ mwc-circular-progress {
       padding: 1em;
 
       &:hover {
-        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12),
-          0 1px 3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14),
+          0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -622,7 +621,7 @@ mwc-circular-progress {
       min-width: 250px;
       height: 400px;
       object-fit: cover;
-    }    
+    }
   }
 }
 
@@ -642,7 +641,7 @@ mwc-circular-progress {
   }
 
   > .title {
-    margin-left: .5em;
+    margin-left: 0.5em;
   }
 
   masonry-layout {
@@ -721,11 +720,13 @@ ui-nav {
       }
     }
 
-    a, mwc-icon-button {
+    a,
+    mwc-icon-button {
       cursor: pointer;
     }
 
-    li, a {
+    li,
+    a {
       display: inline-block;
       margin-left: 10px;
       outline: none;
@@ -772,12 +773,12 @@ ui-nav {
       font-size: 0.9em;
       font-family: 'Kotori Rose', serif;
       text-transform: lowercase;
-  
+
       li {
         display: inline-block;
         cursor: pointer;
         list-style: none;
-  
+
         a {
           margin: 0 0.5em;
           outline: none;
@@ -824,7 +825,8 @@ ui-nav {
       user-select: none;
       outline: none;
 
-      &:hover, &.active {
+      &:hover,
+      &.active {
         color: var(--elara-font-hover);
 
         &::after {
