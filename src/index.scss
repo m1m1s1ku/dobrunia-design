@@ -530,6 +530,10 @@ mwc-circular-progress {
 
     elara-image {
       height: 240px;
+
+      img {
+        object-fit: contain;
+      }
     }
 
     &.reveal {
