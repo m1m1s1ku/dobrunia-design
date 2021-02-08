@@ -756,7 +756,7 @@ ui-nav {
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin-right: 25px;
+      margin-right: 2em;
     }
   }
 
@@ -887,7 +887,9 @@ ui-nav {
 
   .reseller-image img {
     margin: 0;
+    height: 300px;
     width: 300px;
+    object-fit: contain;
   }
 
   .reseller-meta {
