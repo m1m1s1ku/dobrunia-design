@@ -1,5 +1,8 @@
 # Dobrunia Design
 
+![Status](https://status.mimisiku.network/api/badge/24/status)
+![Uptime](https://status.mimisiku.network/api/badge/24/uptime)
+
 [Website](https://dobruniadesign.com)
 
 ## Meta
