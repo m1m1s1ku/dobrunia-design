@@ -731,6 +731,14 @@ ui-projet .project {
   padding-bottom: 2em;
 }
 
+mdui-circular-progress {
+  stroke: #7c4c41
+}
+
+mdui-button {
+  background-color: var(--elara-primary);
+}
+
 ui-nav {
   mdui-circular-progress {
     margin: 0 4em;
