@@ -1,4 +1,4 @@
-@import "mdui/mdui.css";
+@import 'mdui/mdui.css';
 
 :root {
   --elara-darkgray: #2f2f2f;
@@ -369,7 +369,9 @@ article {
   }
 
   &:hover:not(.card) {
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    box-shadow:
+      rgba(0, 0, 0, 0.12) 0px 1px 3px,
+      rgba(0, 0, 0, 0.24) 0px 1px 2px;
   }
 }
 
@@ -436,8 +438,10 @@ svg {
       padding: 1em;
 
       &:hover {
-        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14),
-          0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow:
+          0 0 2px 0 rgba(0, 0, 0, 0.14),
+          0 2px 2px 0 rgba(0, 0, 0, 0.12),
+          0 1px 3px 0 rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -674,12 +678,14 @@ svg {
     padding: 0 !important;
   }
 
-  ul, ol {
+  ul,
+  ol {
     padding-left: 1.5em;
     margin-right: 0;
   }
 
-  p, div {
+  p,
+  div {
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
@@ -732,7 +738,7 @@ ui-projet .project {
 }
 
 mdui-circular-progress {
-  stroke: #7c4c41
+  stroke: #7c4c41;
 }
 
 mdui-button {
@@ -914,7 +920,9 @@ ui-nav {
         left: 0;
         opacity: 0;
         transform: scale3d(0, 1, 1);
-        transition: transform 0.3s, opacity 0.3s;
+        transition:
+          transform 0.3s,
+          opacity 0.3s;
         transform-origin: 100% 50%;
       }
     }

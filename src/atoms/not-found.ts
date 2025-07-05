@@ -1,10 +1,10 @@
-import { html, TemplateResult, css, CSSResult, LitElement } from "lit";
-import { property, customElement } from "lit/decorators.js";
+import { html, TemplateResult, css, CSSResult, LitElement } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
 
-import Constants from "../constants";
-import { navigate } from "../core/routing/routing";
+import Constants from '../constants';
+import { navigate } from '../core/routing/routing';
 
-@customElement("ui-not-found")
+@customElement('ui-not-found')
 export class NotFound extends LitElement {
   @property({ type: String, reflect: true })
   public asked: string;

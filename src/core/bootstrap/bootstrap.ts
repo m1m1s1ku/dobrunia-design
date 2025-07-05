@@ -1,5 +1,5 @@
-import { fadeWith } from "../animations";
-import { Utils } from "../ui/ui";
+import { fadeWith } from '../animations';
+import { Utils } from '../ui/ui';
 
 /**
  * Load a route with animations
@@ -11,13 +11,13 @@ export async function load(
   route: string,
   content: HTMLElement,
 ): Promise<HTMLElement> {
-  const split = route.split("/");
+  const split = route.split('/');
   const isDeep = split.length > 1;
 
-  const Component = customElements.get("ui-" + split[0]);
-  content.classList.remove("full-width");
+  const Component = customElements.get('ui-' + split[0]);
+  content.classList.remove('full-width');
 
-  const NotFound = customElements.get("ui-not-found");
+  const NotFound = customElements.get('ui-not-found');
 
   // @tool : disable shadow-root on pages
   /* Component.prototype.createRenderRoot = function() {
@@ -47,7 +47,7 @@ export async function load(
       return;
     }
 
-    const pageContent = loaded.querySelector(".animated");
+    const pageContent = loaded.querySelector('.animated');
     if (!pageContent) {
       cancelAnimationFrame(handle);
       return;

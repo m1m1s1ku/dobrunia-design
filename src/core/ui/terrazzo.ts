@@ -13,7 +13,7 @@ function generate(colors: string[], canvas: HTMLCanvasElement, debug: boolean) {
   let radius = 20;
   let center = [canvas.width / 2, canvas.height];
 
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   center = [
     randomValue(canvas.width * 0.05, canvas.width * 0.95),
     randomValue(canvas.height * 0.05, canvas.height * 0.95),
@@ -97,7 +97,7 @@ function generate(colors: string[], canvas: HTMLCanvasElement, debug: boolean) {
     ctx.beginPath();
     for (let i = 0; i < points.length; i++) {
       ctx.beginPath();
-      ctx.fillStyle = "#FF0000";
+      ctx.fillStyle = '#FF0000';
       ctx.arc(points[i].x, points[i].y, 5, 0, 2 * Math.PI);
       ctx.fill();
     }
@@ -112,7 +112,7 @@ function generate(colors: string[], canvas: HTMLCanvasElement, debug: boolean) {
           (currentPoint.angle - prevPoint.angle) / 2 + prevPoint.angle;
 
         ctx.beginPath();
-        ctx.fillStyle = "#0000FF";
+        ctx.fillStyle = '#0000FF';
         ctx.arc(
           center[0] +
             radius * Math.cos(middlePoint * -1) * currentPoint.multiplicator,
@@ -134,16 +134,16 @@ export default function terrazzo(
   isResize = false,
   debug = false,
 ): void {
-  const canvas = host.querySelector("canvas");
+  const canvas = host.querySelector('canvas');
   const height = document.body.scrollHeight;
 
   canvas.width = window.innerWidth;
   canvas.height = isResize ? canvas.height : height;
 
   const nb = randomValue(20, 100);
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   let drawn = 0;

@@ -1,17 +1,17 @@
-import { html, TemplateResult } from "lit";
-import { repeat } from "lit/directives/repeat.js";
-import { property, customElement } from "lit/decorators.js";
+import { html, TemplateResult } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
+import { property, customElement } from 'lit/decorators.js';
 
-import Page from "../core/strategies/Page";
-import Constants from "../constants";
+import Page from '../core/strategies/Page';
+import Constants from '../constants';
 
-import { Utils } from "../core/ui/ui";
-import { fadeWith } from "../core/animations";
-import { wrap } from "../core/errors/errors";
-import { from } from "rxjs";
-import { map, reduce, tap } from "rxjs/operators";
+import { Utils } from '../core/ui/ui';
+import { fadeWith } from '../core/animations';
+import { wrap } from '../core/errors/errors';
+import { from } from 'rxjs';
+import { map, reduce, tap } from 'rxjs/operators';
 
-import ResellersQuery from "../queries/resellers.graphql";
+import ResellersQuery from '../queries/resellers.graphql';
 
 interface ResellerMinimal {
   title: string;
@@ -32,7 +32,7 @@ interface ResellerMinimal {
   };
 }
 
-@customElement("ui-revendeurs")
+@customElement('ui-revendeurs')
 export class ResellersController extends Page {
   public static readonly hasRouting: boolean = true;
 
@@ -42,13 +42,13 @@ export class ResellersController extends Page {
   private tags: Set<string> = new Set();
   private _ghostResellers: ResellerMinimal[] = [];
   @property({ type: String, reflect: false })
-  public dataType = "all";
+  public dataType = 'all';
 
   private async _load() {
     const resellersR = (await fetch(Constants.graphql, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         query: ResellersQuery,
@@ -72,7 +72,7 @@ export class ResellersController extends Page {
 
     this.loaded = true;
 
-    document.title = "Revendeurs | " + Constants.title;
+    document.title = 'Revendeurs | ' + Constants.title;
 
     if (Utils.animationsReduced()) {
       return;
@@ -106,7 +106,7 @@ export class ResellersController extends Page {
                         }
 
                         this.dataType = listItem.dataset.type;
-                        if (this.dataType === "all") {
+                        if (this.dataType === 'all') {
                           this.resellers = this._ghostResellers;
                         } else {
                           this.resellers = this._ghostResellers.filter(
@@ -119,8 +119,8 @@ export class ResellersController extends Page {
                       }}
                     >
                       <mdui-list-item
-                        .active=${"all" === this.dataType}
-                        data-type=${"all"}
+                        .active=${'all' === this.dataType}
+                        data-type=${'all'}
                         >Tous</mdui-list-item
                       >
                       ${repeat(this.tags, (tag) => {
@@ -159,18 +159,18 @@ export class ResellersController extends Page {
                                     rel="nofollow"
                                     >${new URL(reseller.website).origin}</a
                                   >`
-                                : ""}
+                                : ''}
                               ${reseller.mail
                                 ? html`<a href="mailto:${reseller.mail}"
                                     >${reseller.mail}</a
                                   >`
-                                : ""}
+                                : ''}
                               ${reseller.address
                                 ? html`<a target="_blank" href="https://maps.google.com/?q=${reseller.address}">${reseller.address}</span>`
-                                : ""}
+                                : ''}
                               ${reseller.phone
                                 ? html`<a href="tel:${reseller.phone}">${reseller.phone}</span>`
-                                : ""}
+                                : ''}
                             </div>
                           </div>
                         `;
@@ -185,6 +185,6 @@ export class ResellersController extends Page {
   }
 
   private get _page() {
-    return this.querySelector("#page");
+    return this.querySelector('#page');
   }
 }

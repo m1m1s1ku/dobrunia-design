@@ -1,19 +1,19 @@
-import { html, TemplateResult } from "lit";
-import { property } from "lit/decorators.js";
-import { repeat } from "lit/directives/repeat.js";
+import { html, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
-import Page from "../core/strategies/Page";
-import { navigate } from "../core/routing/routing";
+import Page from '../core/strategies/Page';
+import { navigate } from '../core/routing/routing';
 
-import { pulseWith } from "../core/animations";
-import { Utils, decodeHTML } from "../core/ui/ui";
+import { pulseWith } from '../core/animations';
+import { Utils, decodeHTML } from '../core/ui/ui';
 
-import Constants from "../constants";
-import { wrap } from "../core/errors/errors";
+import Constants from '../constants';
+import { wrap } from '../core/errors/errors';
 
-import BlogQuery from "../queries/blog.graphql";
+import BlogQuery from '../queries/blog.graphql';
 
-import type { TextField } from "mdui/components/text-field.js";
+import type { TextField } from 'mdui/components/text-field.js';
 
 interface ArticleMinimal {
   id: string;
@@ -27,7 +27,7 @@ interface ArticleMinimal {
 }
 
 class Blog extends Page {
-  public static readonly is: string = "ui-blog";
+  public static readonly is: string = 'ui-blog';
 
   @property({ type: Array, reflect: false })
   public articles: ReadonlyArray<ArticleMinimal> = [];
@@ -40,29 +40,29 @@ class Blog extends Page {
     (entries, observer) => {
       for (const entry of entries) {
         if (entry.intersectionRatio > this._ratio) {
-          entry.target.classList.remove("reveal");
-          entry.target.classList.add("revealed");
+          entry.target.classList.remove('reveal');
+          entry.target.classList.add('revealed');
           observer.unobserve(entry.target);
         }
       }
     },
     {
       root: null,
-      rootMargin: "0px",
+      rootMargin: '0px',
       threshold: this._ratio,
     },
   );
 
   public async firstUpdated() {
     this._load();
-    document.title = "Blog" + " | " + Constants.title;
+    document.title = 'Blog' + ' | ' + Constants.title;
   }
 
   private async _load() {
     const articlesR = await fetch(Constants.graphql, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         query: BlogQuery,
@@ -83,7 +83,7 @@ class Blog extends Page {
           node: {
             sourceUrl: article?.node?.featuredImage?.node?.sourceUrl
               ? article.node.featuredImage.node.sourceUrl
-              : "./assets/logo.png",
+              : './assets/logo.png',
           },
         },
       });
@@ -95,16 +95,16 @@ class Blog extends Page {
       this.articles = [...this.articles, chunk];
       await this.updateComplete;
 
-      const article = this.querySelector(".blog article:last-child");
+      const article = this.querySelector('.blog article:last-child');
       if (cancelAnimations) {
-        article.classList.add("reveal");
+        article.classList.add('reveal');
         this._observer.observe(article);
         continue;
       }
 
       if (!Utils.isInViewport(article)) {
         cancelAnimations = true;
-        article.classList.add("reveal");
+        article.classList.add('reveal');
         this._observer.observe(article);
         continue;
       }
@@ -152,7 +152,7 @@ class Blog extends Page {
         ${repeat(
           this.articles,
           (article) => html`
-            <article @click=${() => navigate("post/" + article.slug)}>
+            <article @click=${() => navigate('post/' + article.slug)}>
               ${article.featuredImage?.node
                 ? html`
                     <elara-image

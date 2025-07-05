@@ -1,17 +1,17 @@
-import { html, TemplateResult } from "lit";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { property, customElement } from "lit/decorators.js";
+import { html, TemplateResult } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { property, customElement } from 'lit/decorators.js';
 
-import Page from "../core/strategies/Page";
-import Constants from "../constants";
+import Page from '../core/strategies/Page';
+import Constants from '../constants';
 
-import { Utils } from "../core/ui/ui";
-import { fadeWith } from "../core/animations";
-import { ProjectMinimal } from "./project";
-import { wrap } from "../core/errors/errors";
-import { navigate } from "../core/routing/routing";
+import { Utils } from '../core/ui/ui';
+import { fadeWith } from '../core/animations';
+import { ProjectMinimal } from './project';
+import { wrap } from '../core/errors/errors';
+import { navigate } from '../core/routing/routing';
 
-@customElement("ui-page")
+@customElement('ui-page')
 export class PageController extends Page {
   public static readonly hasRouting: boolean = true;
 
@@ -48,9 +48,9 @@ export class PageController extends Page {
         `;
 
     const first = (await fetch(Constants.graphql, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         query: pageQuery,
@@ -67,7 +67,7 @@ export class PageController extends Page {
     }
 
     const page = first;
-    document.title = page.title + " | " + Constants.title;
+    document.title = page.title + ' | ' + Constants.title;
 
     this.page = page;
     const hasSource = page?.featuredImage?.node?.sourceUrl;
@@ -127,13 +127,13 @@ export class PageController extends Page {
                       </div>
                     </div>
                   `
-                : ""}
+                : ''}
             `}
       </div>
     `;
   }
 
   private get _page() {
-    return this.querySelector("#page");
+    return this.querySelector('#page');
   }
 }

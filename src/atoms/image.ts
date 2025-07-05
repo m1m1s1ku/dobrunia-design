@@ -1,8 +1,8 @@
-import { LitElement, html, PropertyValues, TemplateResult } from "lit";
-import { property, customElement, query } from "lit/decorators.js";
-import { fadeWith } from "../core/animations";
+import { LitElement, html, PropertyValues, TemplateResult } from 'lit';
+import { property, customElement, query } from 'lit/decorators.js';
+import { fadeWith } from '../core/animations';
 
-@customElement("elara-image")
+@customElement('elara-image')
 export class ElaraImage extends LitElement {
   @property({ type: String, reflect: true })
   public src: string;
@@ -11,10 +11,10 @@ export class ElaraImage extends LitElement {
   public alt: string;
 
   @property({ type: String, reflect: true })
-  public sizing: "cover" | "contain" = "contain";
+  public sizing: 'cover' | 'contain' = 'contain';
 
   @property({ type: String, reflect: true })
-  public placeholder = "";
+  public placeholder = '';
 
   @property({ type: Boolean, reflect: true })
   public catch = false;
@@ -29,7 +29,7 @@ export class ElaraImage extends LitElement {
   private _errorListener: (ev: Event) => void = this._onError.bind(this);
   private _handle: number;
 
-  @query(".elara-image") private _img!: HTMLImageElement;
+  @query('.elara-image') private _img!: HTMLImageElement;
 
   protected createRenderRoot(): this {
     return this;
@@ -37,15 +37,15 @@ export class ElaraImage extends LitElement {
 
   protected update(_changedProperties: PropertyValues): void {
     super.update(_changedProperties);
-    if (_changedProperties.has("src")) {
+    if (_changedProperties.has('src')) {
       if (this._img) {
-        this._img.style.visibility = "hidden";
+        this._img.style.visibility = 'hidden';
       }
 
       this._handle = null;
-      if (!this.querySelector("elara-spinner")) {
+      if (!this.querySelector('elara-spinner')) {
         this._handle = setTimeout(() => {
-          const spinner = document.createElement("elara-spinner");
+          const spinner = document.createElement('elara-spinner');
           spinner.text = this.placeholder;
           this.prepend(spinner);
         }, 300) as unknown as number;
@@ -56,8 +56,8 @@ export class ElaraImage extends LitElement {
   public updated(): void {
     this._listener = this._previewLoadListener(this._handle);
     if (this._img) {
-      this._img.addEventListener("load", this._listener);
-      this._img.addEventListener("error", this._errorListener);
+      this._img.addEventListener('load', this._listener);
+      this._img.addEventListener('error', this._errorListener);
     }
   }
 
@@ -72,7 +72,7 @@ export class ElaraImage extends LitElement {
       this._img.parentElement.removeChild(this._img);
     }
 
-    const spin = this.querySelector("elara-spinner");
+    const spin = this.querySelector('elara-spinner');
     if (spin) {
       this.removeChild(spin);
     }
@@ -94,8 +94,8 @@ export class ElaraImage extends LitElement {
 
           this._img.style.visibility = null;
           this._img.animate(animation.effect, animation.options);
-          this._img.removeEventListener("load", this._listener);
-          const spin = this.querySelector("elara-spinner");
+          this._img.removeEventListener('load', this._listener);
+          const spin = this.querySelector('elara-spinner');
           if (spin) {
             this.removeChild(spin);
           }
@@ -132,6 +132,6 @@ export class ElaraImage extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "elara-image": ElaraImage;
+    'elara-image': ElaraImage;
   }
 }

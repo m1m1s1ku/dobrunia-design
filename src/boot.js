@@ -11,9 +11,9 @@ function reload() {
 }
 
 /**
- * 
- * @param {Error & {continue: boolean} | null} error 
- * @returns 
+ *
+ * @param {Error & {continue: boolean} | null} error
+ * @returns
  */
 function makeGenericHandler(error = null) {
   const handler = document.createElement('div');

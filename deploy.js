@@ -24,8 +24,8 @@ try {
           domain: 'dobruniadesign.com',
         },
         null,
-        2
-      )
+        2,
+      ),
     );
     console.log('config ok');
 
@@ -135,7 +135,7 @@ try {
     ExpiresDefault "access 2 days"
 
     ## EXPIRES HEADER CACHING ##
-    `
+    `,
   );
   console.log('htaccess ok');
 } catch (err) {
