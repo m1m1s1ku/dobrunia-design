@@ -1,8 +1,8 @@
-import { html, TemplateResult } from 'lit-html';
-import { repeat } from 'lit-html/directives/repeat';
+import { html, TemplateResult } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { property, customElement } from 'lit-element';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { property, customElement } from 'lit/decorators.js';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';

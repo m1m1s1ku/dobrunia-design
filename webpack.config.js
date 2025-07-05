@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const { resolve, join } = require('path');
 
@@ -14,8 +15,6 @@ const INDEX_TEMPLATE = resolve('./src/index.ejs');
 
 const nodeModules = './node_modules/';
 
-const webcomponentsjs = join(nodeModules, '@webcomponents/webcomponentsjs');
-
 const assets = [
   {
     from: resolve('./src/assets'),
@@ -24,18 +23,6 @@ const assets = [
 ];
 
 const polyfills = [
-  {
-    from: resolve(`${webcomponentsjs}/webcomponents-*.js`),
-    to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
-  },
-  {
-    from: resolve(`${webcomponentsjs}/bundles/*.js`),
-    to: join(OUTPUT_PATH, 'vendor', 'bundles', '[name].[ext]'),
-  },
-  {
-    from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
-    to: join(OUTPUT_PATH, 'vendor', '[name].[ext]'),
-  },
   {
     from: resolve('./src/favicon.ico'),
     to: OUTPUT_PATH,
@@ -79,18 +66,6 @@ const commonConfig = merge([
           loader: 'svg-inline-loader',
         },
         {
-          enforce: 'pre',
-          test: /\.tsx?$/,
-          loader: 'eslint-loader',
-          exclude: /node_modules/,
-          options: {
-            fix: true,
-            emitWarning: ENV === 'development',
-            failOnWarning: ENV === 'development',
-            failOnError: false,
-          },
-        },
-        {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           exclude: /node_modules/,
@@ -126,16 +101,15 @@ const developmentConfig = merge([
       new HtmlWebpackPlugin({
         template: INDEX_TEMPLATE,
       }),
+      new ESLintPlugin(),
     ],
 
     devServer: {
-      contentBase: OUTPUT_PATH,
+      static: OUTPUT_PATH,
       compress: true,
-      overlay: true,
       port: 3000,
       historyApiFallback: true,
       host: '0.0.0.0',
-      disableHostCheck: true,
     },
   },
 ]);

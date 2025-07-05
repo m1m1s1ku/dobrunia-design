@@ -1,5 +1,6 @@
-import { html, property, TemplateResult } from 'lit-element';
-import { repeat } from 'lit-html/directives/repeat';
+import { html, TemplateResult } from "lit";
+import { repeat } from "lit/directives/repeat.js";
+import { property } from "lit/decorators.js";
 
 import {
   fromEvent,
@@ -7,46 +8,45 @@ import {
   animationFrameScheduler,
   Subscription,
   EMPTY,
-} from 'rxjs';
+  firstValueFrom,
+} from "rxjs";
 import {
   catchError,
   debounceTime,
   distinctUntilChanged,
-  ignoreElements,
   switchMap,
   tap,
-} from 'rxjs/operators';
-import { fromFetch } from 'rxjs/fetch';
+} from "rxjs/operators";
+import { fromFetch } from "rxjs/fetch";
 
-import Root from './core/strategies/Root';
-import { wrap } from './core/errors/errors';
-import terrazzo from './core/ui/terrazzo';
+import Root from "./core/strategies/Root";
+import { wrap } from "./core/errors/errors";
+import terrazzo from "./core/ui/terrazzo";
 
-import Constants from './constants';
+import Constants from "./constants";
 
-import crayon from 'crayon';
-import { bindCrayon } from './router';
+import crayon from "crayon";
+import { bindCrayon } from "./router";
 
-import IconsForProvider from './icons';
-import { InstagramThumbs, instaLoad$ } from './instagram';
-import { WPBootstrap, WPLink, WPMenus, WPTerrazzo } from './wordpress';
+import IconsForProvider from "./icons";
+import { WPBootstrap, WPLink, WPMenus, WPTerrazzo } from "./wordpress";
 
-import { Item } from './atoms/nav';
+import { Item } from "./atoms/nav";
 
-import BootstrapQuery from './queries/bootstrap.graphql';
+import BootstrapQuery from "./queries/bootstrap.graphql";
 
-import './pages/index';
-import './atoms/not-found';
-import './atoms/nav';
-import './atoms/image';
-import './atoms/spinner';
+import "./pages/index";
+import "./atoms/not-found";
+import "./atoms/nav";
+import "./atoms/image";
+import "./atoms/spinner";
 
-import './index.scss';
+import "./index.scss";
 
 export class ElaraApp extends Root {
-  public static readonly is: string = 'elara-app';
+  public static readonly is: string = "elara-app";
 
-  public default = 'home';
+  public default = "home";
 
   @property({ type: Array, reflect: false, noAccessor: true })
   public links: Item[] = [];
@@ -57,12 +57,10 @@ export class ElaraApp extends Root {
 
   @property({ type: Array, reflect: false, noAccessor: true })
   public filters: Item[] = [];
-  @property({ type: Array, reflect: false, noAccessor: true })
-  public socialThumbs: ReadonlyArray<InstagramThumbs>;
   @property({ type: String, reflect: false, noAccessor: true })
   private _logo: string;
 
-  private _terrazzoColors = ['#edcfd0', '#df899b', '#8e8685', '#a08583'];
+  private _terrazzoColors = ["#edcfd0", "#df899b", "#8e8685", "#a08583"];
 
   private _subscriptions: Subscription;
 
@@ -82,7 +80,7 @@ export class ElaraApp extends Root {
   public get bootstrap(): Promise<unknown> {
     return Promise.all([
       this._setup(),
-      import('./material'),
+      import("./material"),
       document.fonts.ready,
     ]);
   }
@@ -92,28 +90,16 @@ export class ElaraApp extends Root {
     this._subscriptions = new Subscription();
 
     this._subscriptions.add(
-      instaLoad$()
-        .pipe(
-          tap((instaThumbs) => {
-            this.socialThumbs = instaThumbs;
-          }),
-          switchMap(() => {
-            return this.requestUpdate();
-          })
-        )
-        .subscribe()
-    );
-    this._subscriptions.add(
       scheduled(
-        fromEvent(window, 'resize').pipe(
+        fromEvent(window, "resize").pipe(
           distinctUntilChanged(),
           debounceTime(500),
           tap(() => {
             terrazzo(this, this._terrazzoColors, true);
-          })
+          }),
         ),
-        animationFrameScheduler
-      ).subscribe()
+        animationFrameScheduler,
+      ).subscribe(),
     );
   }
 
@@ -123,7 +109,7 @@ export class ElaraApp extends Root {
   }
 
   public firstUpdated(
-    _changedProperties: Map<string | number | symbol, unknown>
+    _changedProperties: Map<string | number | symbol, unknown>,
   ): void {
     super.firstUpdated(_changedProperties);
 
@@ -131,9 +117,9 @@ export class ElaraApp extends Root {
     this._subscriptions.add(
       this.router.events.subscribe((event) => {
         if (event.type === crayon.RouterEventType.SameRouteAbort) {
-          this.load(event.data.replace('/', ''));
+          this.load(event.data.replace("/", ""));
         }
-      })
+      }),
     );
 
     this.router.load();
@@ -159,15 +145,15 @@ export class ElaraApp extends Root {
    * @private
    * @memberof ElaraApp
    */
-  private async _setup(): Promise<void> {
-    return fromFetch(Constants.graphql, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query: BootstrapQuery }),
-    })
-      .pipe(
+  private async _setup(): Promise<boolean> {
+    return firstValueFrom(
+      fromFetch(Constants.graphql, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: BootstrapQuery }),
+      }).pipe(
         switchMap((response) => response.json()),
         tap((response) => {
           const data = response.data as WPBootstrap;
@@ -177,26 +163,23 @@ export class ElaraApp extends Root {
 
           this._buildTerrazzo(colors);
           this._buildMenu(data.menus);
-        }),
-        switchMap(() => {
-          return this.requestUpdate();
+          this.requestUpdate();
         }),
         switchMap(() => {
           return this.updateComplete;
         }),
-        ignoreElements(),
         catchError((err) => {
           this.dispatchEvent(wrap(err));
           return EMPTY;
-        })
-      )
-      .toPromise();
+        }),
+      ),
+    );
   }
 
   private _buildTerrazzo(colors: WPTerrazzo): void {
     this._terrazzoColors = [];
     for (const key of Object.keys(colors)) {
-      if (key === 'logo') continue;
+      if (key === "logo") continue;
       this._terrazzoColors.push(colors[key]);
     }
 
@@ -204,20 +187,20 @@ export class ElaraApp extends Root {
   }
 
   private _buildMenu(data: WPMenus): void {
-    const menuLinks = data.nodes.find((node) => node.slug === 'menu');
+    const menuLinks = data.nodes.find((node) => node.slug === "menu");
     const mainMenuLinks = menuLinks.menuItems.nodes;
 
-    const siteURL = 'https://dobruniadesign.com';
+    const siteURL = "https://dobruniadesign.com";
 
-    const legalLinks = data.nodes.find((node) => node.slug === 'legal-links');
+    const legalLinks = data.nodes.find((node) => node.slug === "legal-links");
     this.legalLinks = legalLinks.menuItems.nodes.map((node) => {
-      node.url = node.url.replace(siteURL, '');
+      node.url = node.url.replace(siteURL, "");
       return node;
     });
 
-    const socialLinks = data.nodes.find((node) => node.slug === 'social-links');
+    const socialLinks = data.nodes.find((node) => node.slug === "social-links");
     this.socialLinks = socialLinks.menuItems.nodes.map((node) => {
-      node.url = node.url.replace(siteURL, '');
+      node.url = node.url.replace(siteURL, "");
       node.icon = IconsForProvider[node.label.toLowerCase()];
 
       return node;
@@ -227,10 +210,10 @@ export class ElaraApp extends Root {
     const links = [];
     const filters = [];
 
-    const menuLinksURL = 'https://www.dobruniadesign.com';
+    const menuLinksURL = "https://www.dobruniadesign.com";
 
     for (const link of mainMenuLinks) {
-      const isHome = link.url.replace(menuLinksURL, '') === '';
+      const isHome = link.url.replace(menuLinksURL, "") === "";
       const lastComponent = link.url.split(/[\\/]/).filter(Boolean).pop();
 
       let isCategory = false;
@@ -238,27 +221,27 @@ export class ElaraApp extends Root {
         isCategory = true;
       }
 
-      let nextURL = isCategory ? 'category/' + lastComponent : lastComponent;
+      let nextURL = isCategory ? "category/" + lastComponent : lastComponent;
       // Does redirect to another endpoint, just throw it back like it is
       if (link.url.indexOf(Constants.domain) === -1) {
         nextURL = link.url;
       }
 
-      if (link.url.indexOf('page') !== -1) {
+      if (link.url.indexOf("page") !== -1) {
         nextURL = link.url
-          .replace('https://', '')
-          .replace('dobruniadesign.com', '')
-          .split('/')
+          .replace("https://", "")
+          .replace("dobruniadesign.com", "")
+          .split("/")
           .filter(Boolean)
-          .join('/');
+          .join("/");
       }
 
-      if (link.url.indexOf('#') !== -1) {
-        nextURL = link.url.replace('#', '');
+      if (link.url.indexOf("#") !== -1) {
+        nextURL = link.url.replace("#", "");
       }
 
       const parsed = {
-        route: isHome ? 'home' : nextURL,
+        route: isHome ? "home" : nextURL,
         name: link.label,
         idx: idx++,
         filter: !!isCategory,
@@ -319,31 +302,13 @@ export class ElaraApp extends Root {
           </div>
         </div>
         <div class="instagram">
-          ${this.socialThumbs && this.socialThumbs.length > 0
-            ? html`
-                <div class="pics">
-                  ${repeat(
-                    this.socialThumbs,
-                    (thumb) => html`
-                      <a
-                        target="_blank"
-                        href="https://instagram.com/p/${thumb.shortcode}"
-                        rel="noopener"
-                      >
-                        <elara-image src="${thumb.src}"></elara-image>
-                      </a>
-                    `
-                  )}
-                </div>
-              `
-            : html``}
           <a
             class="instalink"
             target="_blank"
             href="https://www.instagram.com/dobruniadesignatelier/"
             rel="noopener"
           >
-            Instagram ${IconsForProvider['instagram']}
+            Instagram ${IconsForProvider["instagram"]}
           </a>
         </div>
       </footer>
@@ -355,6 +320,6 @@ customElements.define(ElaraApp.is, ElaraApp);
 
 declare global {
   interface HTMLElementTagNameMap {
-    'elara-app': ElaraApp;
+    "elara-app": ElaraApp;
   }
 }

@@ -1,6 +1,6 @@
-import { html, TemplateResult } from 'lit-html';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { property, customElement } from 'lit-element';
+import { html, TemplateResult } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import Page from '../core/strategies/Page';
 import Constants from '../constants';

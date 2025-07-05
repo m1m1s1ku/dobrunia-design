@@ -1,7 +1,7 @@
-import { html, TemplateResult } from 'lit-html';
-import { property, LitElement } from 'lit-element';
+import { html, TemplateResult, LitElement } from 'lit';
+import { property  } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
-import { repeat } from 'lit-html/directives/repeat';
 import { navigate } from '../core/routing/routing';
 import { Utils } from '../core/ui/ui';
 import Constants from '../constants';

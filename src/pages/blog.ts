@@ -1,6 +1,6 @@
-import { html, TemplateResult } from 'lit-html';
-import { repeat } from 'lit-html/directives/repeat';
-import { property } from 'lit-element';
+import { html, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 import Page from '../core/strategies/Page';
 import { navigate } from '../core/routing/routing';

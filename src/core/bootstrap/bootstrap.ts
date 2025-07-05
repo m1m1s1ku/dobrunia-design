@@ -1,6 +1,5 @@
-import { fadeWith } from '../animations';
-import { Utils } from '../ui/ui';
-import Constants from '../../constants';
+import { fadeWith } from "../animations";
+import { Utils } from "../ui/ui";
 
 /**
  * Load a route with animations
@@ -10,17 +9,15 @@ import Constants from '../../constants';
  */
 export async function load(
   route: string,
-  content: HTMLElement
+  content: HTMLElement,
 ): Promise<HTMLElement> {
-  const titleTemplate = '%s | ' + Constants.title;
-
-  const split = route.split('/');
+  const split = route.split("/");
   const isDeep = split.length > 1;
 
-  const Component = customElements.get('ui-' + split[0]);
-  content.classList.remove('full-width');
+  const Component = customElements.get("ui-" + split[0]);
+  content.classList.remove("full-width");
 
-  const NotFound = customElements.get('ui-not-found');
+  const NotFound = customElements.get("ui-not-found");
 
   // @tool : disable shadow-root on pages
   /* Component.prototype.createRenderRoot = function() {
@@ -34,23 +31,6 @@ export async function load(
   const loaded = Component
     ? new Component(isDeep ? split[1] : undefined)
     : new NotFound(route);
-
-  if (loaded.head && loaded.head.title && !loaded.customTitle) {
-    document.title = titleTemplate.replace('%s', loaded.head.title);
-  }
-
-  if (loaded.customTitle) {
-    document.title = loaded.customTitle;
-  }
-
-  if (
-    loaded.isFullWidth === true &&
-    !content.classList.contains('full-width')
-  ) {
-    content.classList.add('full-width');
-  } else if (!loaded.isFullWidth) {
-    content.classList.remove('full-width');
-  }
 
   content.appendChild(loaded);
 
@@ -67,7 +47,7 @@ export async function load(
       return;
     }
 
-    const pageContent = loaded.querySelector('.animated');
+    const pageContent = loaded.querySelector(".animated");
     if (!pageContent) {
       cancelAnimationFrame(handle);
       return;

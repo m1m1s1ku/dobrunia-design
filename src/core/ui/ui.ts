@@ -1,4 +1,4 @@
-import { TemplateResult } from 'lit-element';
+import { TemplateResult } from 'lit';
 
 export function decodeHTML(html: string): string {
   const txt = document.createElement('textarea');

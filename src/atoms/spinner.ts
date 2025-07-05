@@ -1,20 +1,14 @@
-import {
-  html,
-  customElement,
-  css,
-  property,
-  LitElement,
-  CSSResult,
-  TemplateResult,
-} from 'lit-element';
+import { html, css, LitElement, CSSResult, TemplateResult } from "lit";
 
-@customElement('elara-spinner')
+import { customElement, property } from "lit/decorators.js";
+
+@customElement("elara-spinner")
 export class ElaraSpinner extends LitElement {
   @property({ type: Boolean, reflect: false })
   public active = true;
 
   @property({ type: String, reflect: false })
-  public text = '';
+  public text = "";
 
   public static get styles(): CSSResult {
     return css`
@@ -83,6 +77,6 @@ export class ElaraSpinner extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'elara-spinner': ElaraSpinner;
+    "elara-spinner": ElaraSpinner;
   }
 }

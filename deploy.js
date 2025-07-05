@@ -89,18 +89,17 @@ try {
           ?>
           `,
     };
-
-    replace.sync(options);
+    replace.replaceInFileSync(options);
     console.log('replaced functions');
 
     options.from = '<!-- SSRHead -->';
     options.to = '<?= ogFor($title, $url, $description, $image); ?>';
-    replace.sync(options);
+    replace.replaceInFileSync(options);
     console.log('replaced head');
 
     options.from = '<!-- SSRPayload -->';
     options.to = '';
-    replace.sync(options);
+    replace.replaceInFileSync(options);
     console.log('replaced payload');
 
     const newFile = htmlFile.replace('.html', '.php');

@@ -1,4 +1,4 @@
-import { SVGTemplateResult } from 'lit-element';
+import { SVGTemplateResult } from "lit";
 
 export interface WPLink {
   id: string;
