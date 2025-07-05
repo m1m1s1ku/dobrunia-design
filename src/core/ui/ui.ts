@@ -1,7 +1,7 @@
-import { TemplateResult } from 'lit';
+import { TemplateResult } from "lit";
 
 export function decodeHTML(html: string): string {
-  const txt = document.createElement('textarea');
+  const txt = document.createElement("textarea");
   txt.innerHTML = html;
   return txt.value;
 }
@@ -15,15 +15,15 @@ export const Processing = {
   toDataURL(src: string, quality = 1): Promise<string> {
     return new Promise((resolve, reject) => {
       const image = new Image();
-      image.crossOrigin = 'Anonymous';
+      image.crossOrigin = "Anonymous";
 
       image.onload = () => {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
         canvas.height = image.naturalHeight;
         canvas.width = image.naturalWidth;
         context.drawImage(image, 0, 0);
-        resolve(canvas.toDataURL('image/jpeg', quality));
+        resolve(canvas.toDataURL("image/jpeg", quality));
       };
 
       image.onerror = image.onabort = () => {
@@ -38,7 +38,7 @@ export const Processing = {
       const blob = await Processing.retrieveAsBlob(url, proxy);
       return new File(
         [blob],
-        url.replace(/[\#\?].*$/, '').substring(url.lastIndexOf('/') + 1)
+        url.replace(/[\#\?].*$/, "").substring(url.lastIndexOf("/") + 1),
       );
     } catch {
       return null;
@@ -59,7 +59,7 @@ export const Processing = {
  * @return {string} "Creme au chocolat"
  */
 export function normalize(str: string): string {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 export function slugify(str: string, separator: string): string {
@@ -67,26 +67,26 @@ export function slugify(str: string, separator: string): string {
   str = str.toLowerCase();
 
   // remove accents, swap ñ for n, etc
-  const from = 'åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;';
-  const to = 'aaaaaaeeeeiiiioooouuuunc------';
+  const from = "åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;";
+  const to = "aaaaaaeeeeiiiioooouuuunc------";
 
   for (let i = 0, l = from.length; i < l; i++) {
-    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
   }
 
   return str
-    .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-    .replace(/\s+/g, '-') // collapse whitespace and replace by -
-    .replace(/-+/g, '-') // collapse dashes
-    .replace(/^-+/, '') // trim - from start of text
-    .replace(/-+$/, '') // trim - from end of text
+    .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+    .replace(/\s+/g, "-") // collapse whitespace and replace by -
+    .replace(/-+/g, "-") // collapse dashes
+    .replace(/^-+/, "") // trim - from start of text
+    .replace(/-+$/, "") // trim - from end of text
     .replace(/-/g, separator);
 }
 
 export function ifDefined(
   property: unknown,
   template: TemplateResult,
-  initial: TemplateResult
+  initial: TemplateResult,
 ): TemplateResult {
   if (!property) return initial;
 
@@ -95,9 +95,9 @@ export function ifDefined(
 
 export const CSS = {
   queries: {
-    DARK: '(prefers-color-scheme: dark)',
-    LIGHT: '(prefers-color-scheme: light)',
-    ANIMATIONS: '(prefers-reduced-motion: reduce)',
+    DARK: "(prefers-color-scheme: dark)",
+    LIGHT: "(prefers-color-scheme: light)",
+    ANIMATIONS: "(prefers-reduced-motion: reduce)",
   },
 };
 
@@ -132,56 +132,56 @@ export interface IronImageCompatibleElement extends HTMLImageElement {
 }
 
 const show = (container: HTMLElement) => {
-  const image = container.querySelector('elara-image');
+  const image = container.querySelector("elara-image");
 
   state.container = container;
   state.touchstartX = 0;
   state.touchendX = 0;
 
-  document.body.className = 'scrolling-disabled';
+  document.body.className = "scrolling-disabled";
   state.sizing = image.sizing;
   state.width = image.style.width;
   state.height = image.style.height;
 
-  image.style.width = '80%';
-  image.style.height = '80%';
+  image.style.width = "80%";
+  image.style.height = "80%";
 
-  state.container.classList.add('opened');
+  state.container.classList.add("opened");
   state.container.focus();
 
-  window.removeEventListener('keydown', state.listeners.keyboard);
+  window.removeEventListener("keydown", state.listeners.keyboard);
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   state.listeners.keyboard = galleryListener(state.container);
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   state.listeners.touch = touchListener(state.container);
 
-  state.container.addEventListener('touchstart', state.listeners.touch);
-  state.container.addEventListener('touchend', state.listeners.touch);
-  window.addEventListener('keydown', state.listeners.keyboard);
+  state.container.addEventListener("touchstart", state.listeners.touch);
+  state.container.addEventListener("touchend", state.listeners.touch);
+  window.addEventListener("keydown", state.listeners.keyboard);
 };
 
 const hide = (container: HTMLElement) => {
-  const image = container.querySelector('elara-image');
+  const image = container.querySelector("elara-image");
 
-  document.body.className = '';
+  document.body.className = "";
 
   image.style.width = state.width;
   image.style.height = state.height;
 
-  container.removeEventListener('touchstart', state.listeners.touch);
-  container.removeEventListener('touchend', state.listeners.touch);
+  container.removeEventListener("touchstart", state.listeners.touch);
+  container.removeEventListener("touchend", state.listeners.touch);
 
-  container.classList.remove('opened');
+  container.classList.remove("opened");
 };
 
 const clean = () => {
   if (state.listeners.keyboard) {
-    window.removeEventListener('keydown', state.listeners.keyboard);
+    window.removeEventListener("keydown", state.listeners.keyboard);
   }
   if (state.listeners.touch) {
-    state.container.removeEventListener('touchstart', state.listeners.touch);
-    state.container.removeEventListener('touchend', state.listeners.touch);
+    state.container.removeEventListener("touchstart", state.listeners.touch);
+    state.container.removeEventListener("touchend", state.listeners.touch);
   }
 
   state = {
@@ -200,7 +200,7 @@ const clean = () => {
 
 export function touchEvents(onRight: () => void, onLeft: () => void) {
   return (e: TouchEvent): void => {
-    if (e.type === 'touchstart') {
+    if (e.type === "touchstart") {
       state.touchstartX = e.changedTouches[0].screenX;
       return;
     } else {
@@ -220,7 +220,7 @@ const touchListener = (container: HTMLElement) => {
   return touchEvents(
     () => {
       const next = container.nextElementSibling as HTMLElement;
-      const hasNext = next && next.classList.contains('image-container');
+      const hasNext = next && next.classList.contains("image-container");
 
       if (!hasNext) {
         hide(container);
@@ -233,7 +233,7 @@ const touchListener = (container: HTMLElement) => {
     },
     () => {
       const prev = container.previousElementSibling as HTMLElement;
-      const hasPrev = prev && prev.classList.contains('image-container');
+      const hasPrev = prev && prev.classList.contains("image-container");
       if (!hasPrev) {
         hide(container);
         clean();
@@ -242,7 +242,7 @@ const touchListener = (container: HTMLElement) => {
 
       hide(container);
       show(prev);
-    }
+    },
   );
 };
 
@@ -251,8 +251,8 @@ function galleryListener(container: HTMLElement) {
     const prev = container.previousElementSibling as HTMLElement;
     const next = container.nextElementSibling as HTMLElement;
 
-    const hasPrev = prev && prev.classList.contains('image-container');
-    const hasNext = next && next.classList.contains('image-container');
+    const hasPrev = prev && prev.classList.contains("image-container");
+    const hasNext = next && next.classList.contains("image-container");
 
     const willDismiss =
       (e.keyCode === 37 && !hasPrev) ||
@@ -288,7 +288,7 @@ function galleryListener(container: HTMLElement) {
 export function onImageContainerClicked(e: KeyboardEvent): void {
   const container = e.currentTarget as HTMLElement;
 
-  if (container.classList.contains('opened')) {
+  if (container.classList.contains("opened")) {
     hide(container);
     clean();
   } else {
@@ -314,8 +314,6 @@ export const Utils = {
   },
   animationsReduced(): boolean {
     if (!window.matchMedia) {
-      console.warn('Elara:: MatchMedia not supported.');
-
       return false;
     }
 

@@ -78,74 +78,6 @@ li {
   list-style: initial;
 }
 
-.elara_row {
-  overflow: auto;
-  margin-bottom: 20px;
-}
-
-.elara_cfull {
-  width: 100%;
-}
-
-.elara_chalf {
-  width: 50%;
-}
-
-.elara_cthird {
-  width: 33.3%;
-}
-
-.elara_ctwo-thirds {
-  width: 66.6%;
-}
-
-.elara_column {
-  float: left;
-  margin: 0.5em;
-}
-
-.elara_column:first-of-type .elara_inner {
-  padding-left: 0;
-}
-
-.elara_column:last-of-type .elara_inner {
-  padding-right: 0;
-}
-
-@media only screen and (max-width: 40em) {
-  .elara_cfull {
-    width: 100%;
-  }
-
-  .elara_chalf {
-    width: 100%;
-  }
-
-  .elara_cthird {
-    width: 100%;
-  }
-
-  .elara_ctwo-thirds {
-    width: 100%;
-  }
-
-  .elara_cquarter {
-    width: 100%;
-  }
-
-  .elara_cthree-quarters {
-    width: 100%;
-  }
-
-  .elara_column .elara_inner {
-    padding: 0 !important;
-  }
-
-  .elara_column {
-    margin-bottom: 20px;
-  }
-}
-
 body {
   padding: 0;
   margin: 0;
@@ -596,12 +528,9 @@ svg {
   );
 
   .featured {
-    width: 100%;
-
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-
     padding: 2em;
 
     elara-image {
@@ -636,6 +565,123 @@ svg {
       height: 400px;
       object-fit: cover;
     }
+  }
+}
+
+.elara_row {
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.elara_cfull {
+  width: 100%;
+}
+
+.elara_chalf {
+  width: 50%;
+}
+
+.elara_cthird {
+  width: 33.3%;
+}
+
+.elara_ctwo-thirds {
+  width: 66.6%;
+}
+
+.elara_column {
+  float: left;
+  margin: 0.5em;
+  box-sizing: border-box;
+}
+
+.elara_column:first-of-type .elara_inner {
+  padding-left: 0;
+}
+
+.elara_column:last-of-type .elara_inner {
+  padding-right: 0;
+}
+
+@media only screen and (max-width: 40em) {
+  .page {
+    padding: 1em;
+    padding-top: 0;
+  }
+
+  .page .featured {
+    padding: 1em;
+  }
+
+  .page .cols {
+    flex-direction: column;
+  }
+
+  .page .content {
+    padding: 0.5em;
+  }
+
+  .page .image-container {
+    padding: 0.5em;
+  }
+
+  .page .image-container elara-image img {
+    min-width: 100%;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .page .featured elara-image img {
+    height: auto;
+    max-height: 300px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .elara_cfull {
+    width: 100%;
+  }
+
+  .elara_chalf {
+    width: 100%;
+  }
+
+  .elara_cthird {
+    width: 100%;
+  }
+
+  .elara_ctwo-thirds {
+    width: 100%;
+  }
+
+  .elara_cquarter {
+    width: 100%;
+  }
+
+  .elara_cthree-quarters {
+    width: 100%;
+  }
+
+  .elara_column {
+    margin: 0;
+    margin-bottom: 20px;
+    width: 100% !important;
+    float: none;
+  }
+
+  .elara_column .elara_inner {
+    padding: 0 !important;
+  }
+
+  ul, ol {
+    padding-left: 1.5em;
+    margin-right: 0;
+  }
+
+  p, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 }
 
