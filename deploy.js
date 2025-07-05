@@ -107,7 +107,7 @@ try {
     console.log('Rename ok');
   });
 
- 0/*writeFileSync(
+ /*writeFileSync(
     htaccessFile,
     `
     RewriteEngine On
