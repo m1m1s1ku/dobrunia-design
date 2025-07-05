@@ -107,7 +107,7 @@ try {
     console.log('Rename ok');
   });
 
-  writeFileSync(
+ 0/*writeFileSync(
     htaccessFile,
     `
     RewriteEngine On
@@ -137,7 +137,7 @@ try {
     ## EXPIRES HEADER CACHING ##
     `,
   );
-  console.log('htaccess ok');
+  console.log('htaccess ok');*/
 } catch (err) {
   throw new Error('error during deploy' + err ? err.message : err);
 }
