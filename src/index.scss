@@ -1,3 +1,5 @@
+@import "mdui/mdui.css";
+
 :root {
   --elara-darkgray: #2f2f2f;
   --elara-lightgray: #f2f2f2;
@@ -444,24 +446,16 @@ article {
   justify-content: space-between;
   flex-direction: row;
 
-  mwc-textfield {
+  mdui-text-field {
     display: none;
+    width: auto;
+    height: 55px;
   }
 }
 
 svg {
   height: 30px;
   width: 30px;
-}
-
-elara-image,
-mwc-textfield,
-mwc-tab-bar,
-mwc-list,
-mwc-tab,
-mwc-circular-progress {
-  --mdc-theme-primary: var(--elara-primary);
-  --mdc-typography-button-text-transform: capitalize;
 }
 
 .article-thumb {
@@ -692,7 +686,7 @@ ui-projet .project {
 }
 
 ui-nav {
-  mwc-circular-progress {
+  mdui-circular-progress {
     margin: 0 4em;
   }
 
@@ -730,9 +724,9 @@ ui-nav {
       pointer-events: none;
     }
 
-    mwc-icon-button {
+    mdui-button-icon {
       opacity: 1;
-      margin-top: -3px;
+      margin-top: 6px;
       transition: opacity 0.3s;
 
       &.hidden {
@@ -741,7 +735,7 @@ ui-nav {
     }
 
     a,
-    mwc-icon-button {
+    mdui-button-icon {
       cursor: pointer;
     }
 
@@ -921,7 +915,7 @@ ui-nav {
 }
 
 @media (min-width: 480px) {
-  .title-search mwc-textfield {
+  .title-search mdui-text-field {
     display: block;
   }
 

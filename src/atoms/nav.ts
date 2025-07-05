@@ -1,11 +1,11 @@
-import { html, TemplateResult, LitElement } from 'lit';
-import { property  } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js';
+import { html, TemplateResult, LitElement } from "lit";
+import { property } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 
-import { navigate } from '../core/routing/routing';
-import { Utils } from '../core/ui/ui';
-import Constants from '../constants';
-import { ElaraApp } from '../elara-app';
+import { navigate } from "../core/routing/routing";
+import { Utils } from "../core/ui/ui";
+import Constants from "../constants";
+import { ElaraApp } from "../elara-app";
 
 export interface Item {
   route: string;
@@ -16,7 +16,7 @@ export interface Item {
 }
 
 export default class Nav extends LitElement {
-  public static readonly is: string = 'ui-nav';
+  public static readonly is: string = "ui-nav";
 
   @property({ type: Array, reflect: false })
   public items: Item[] = [];
@@ -34,7 +34,7 @@ export default class Nav extends LitElement {
   public shown = false;
 
   @property({ type: String, reflect: true })
-  public logo = '';
+  public logo = "";
 
   private _resizeListener: (e: Event) => void;
 
@@ -52,13 +52,13 @@ export default class Nav extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
-    this._elara = document.querySelector<ElaraApp>('elara-app');
-    window.addEventListener('resize', this._resizeListener);
+    this._elara = document.querySelector<ElaraApp>("elara-app");
+    window.addEventListener("resize", this._resizeListener);
   }
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this._resizeListener);
+    window.removeEventListener("resize", this._resizeListener);
   }
 
   private _onResize(_: Event) {
@@ -67,17 +67,17 @@ export default class Nav extends LitElement {
 
   public render(): void | TemplateResult {
     const hasFilters =
-      (this.route && this.route.indexOf('home') !== -1) ||
-      (this.route && this.route.indexOf('category') !== -1);
+      (this.route && this.route.indexOf("home") !== -1) ||
+      (this.route && this.route.indexOf("category") !== -1);
 
     return html`
       <nav class="main" role="navigation">
-        <div class="header ${hasFilters ? '' : 'has-no-filters'}">
+        <div class="header ${hasFilters ? "" : "has-no-filters"}">
           ${this.logo
             ? html`
                 <div tabindex="0" class="title" role="link">
                   <elara-image
-                    @click=${() => navigate('home')}
+                    @click=${() => navigate("home")}
                     sizing="cover"
                     preload
                     src="${this.logo}"
@@ -87,16 +87,14 @@ export default class Nav extends LitElement {
                 </div>
               `
             : html``}
-          <div class="links ${this.mobile ? 'mobile' : ''}">
+          <div class="links ${this.mobile ? "mobile" : ""}">
             ${this.items.length === 0
-              ? html`
-                  <mwc-circular-progress indeterminate></mwc-circular-progress>
-                `
+              ? html` <mdui-circular-progress></mdui-circular-progress> `
               : html``}
             <ul>
               ${this.mobile
                 ? html`<li>
-                    <mwc-icon-button
+                    <mdui-button-icon
                       id="handle"
                       tabindex="0"
                       class="menu mobile-handle"
@@ -105,7 +103,7 @@ export default class Nav extends LitElement {
                       @click=${() => {
                         this.shown = !this.shown;
                       }}
-                    ></mwc-icon-button>
+                    ></mdui-button-icon>
                   </li>`
                 : html`${repeat(this.items, this._item.bind(this))}`}
             </ul>
@@ -114,16 +112,16 @@ export default class Nav extends LitElement {
         ${this.mobile
           ? html`
               <div
-                class="menu ${this.shown === true ? 'shown' : ''}"
+                class="menu ${this.shown === true ? "shown" : ""}"
                 @click=${(e) => {
                   if (
-                    (e.currentTarget as HTMLElement).classList.contains('menu')
+                    (e.currentTarget as HTMLElement).classList.contains("menu")
                   ) {
                     this.shown = false;
                   }
                 }}
               >
-                <div class="menu-content ${this.shown === true ? 'shown' : ''}">
+                <div class="menu-content ${this.shown === true ? "shown" : ""}">
                   ${repeat(this.items, this._item.bind(this))}
                 </div>
               </div>
@@ -132,17 +130,17 @@ export default class Nav extends LitElement {
       </nav>
       ${this.filters && this.filters.length > 0
         ? html`
-            <div class="filters ${hasFilters ? '' : 'hidden'}">
+            <div class="filters ${hasFilters ? "" : "hidden"}">
               <ul>
                 <li>
-                  <mwc-icon-button
+                  <mdui-button-icon
                     aria-label="Réinitialiser"
-                    class=${this.route === 'home' ? 'hidden' : ''}
+                    class=${this.route === "home" ? "hidden" : ""}
                     icon="close"
                     @click=${() => {
                       navigate(Constants.defaults.route);
                     }}
-                  ></mwc-icon-button>
+                  ></mdui-button-icon>
                 </li>
                 ${repeat(this.filters, this._item.bind(this))}
               </ul>
@@ -162,10 +160,10 @@ export default class Nav extends LitElement {
         <a
           class="item ${item &&
           this._elara.router.history.currentRoute.substr(1) === item.route
-            ? 'active'
-            : ''}"
+            ? "active"
+            : ""}"
           role="link"
-          tabindex="${this.route === item.route ? '-1' : '0'}"
+          tabindex="${this.route === item.route ? "-1" : "0"}"
           @click=${() => {
             navigate(item.route);
             if (this.mobile) {

@@ -1,6 +1,6 @@
-import '@material/mwc-icon-button/mwc-icon-button';
-import '@material/mwc-textfield/mwc-textfield';
-import '@material/mwc-circular-progress/mwc-circular-progress';
-import '@material/mwc-list/mwc-list';
-import '@material/mwc-list/mwc-list-item';
-import '@appnest/masonry-layout';
+import "mdui/components/button-icon.js";
+import "mdui/components/circular-progress.js";
+import "mdui/components/text-field.js";
+import "mdui/components/list.js";
+import "mdui/components/list-item.js";
+import "@appnest/masonry-layout";

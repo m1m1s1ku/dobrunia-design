@@ -1,17 +1,17 @@
-import { html, TemplateResult } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { property, customElement } from 'lit/decorators.js';
+import { html, TemplateResult } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { property, customElement } from "lit/decorators.js";
 
-import Page from '../core/strategies/Page';
-import Constants from '../constants';
+import Page from "../core/strategies/Page";
+import Constants from "../constants";
 
-import { Utils } from '../core/ui/ui';
-import { fadeWith } from '../core/animations';
-import { ProjectMinimal } from './project';
-import { wrap } from '../core/errors/errors';
-import { navigate } from '../core/routing/routing';
+import { Utils } from "../core/ui/ui";
+import { fadeWith } from "../core/animations";
+import { ProjectMinimal } from "./project";
+import { wrap } from "../core/errors/errors";
+import { navigate } from "../core/routing/routing";
 
-@customElement('ui-page')
+@customElement("ui-page")
 export class PageController extends Page {
   public static readonly hasRouting: boolean = true;
 
@@ -48,9 +48,9 @@ export class PageController extends Page {
         `;
 
     const first = (await fetch(Constants.graphql, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: pageQuery,
@@ -67,7 +67,7 @@ export class PageController extends Page {
     }
 
     const page = first;
-    document.title = page.title + ' | ' + Constants.title;
+    document.title = page.title + " | " + Constants.title;
 
     this.page = page;
     const hasSource = page?.featuredImage?.node?.sourceUrl;
@@ -88,9 +88,8 @@ export class PageController extends Page {
     return html`
       <div id="page" class="page" role="main">
         ${!this.loaded
-          ? html`
-            <div class="loading">
-                <mwc-circular-progress indeterminate></mwc-circular-progressr>
+          ? html` <div class="loading">
+              <mdui-circular-progress></mdui-circular-progress>
             </div>`
           : html``}
         ${this.page
@@ -119,20 +118,22 @@ export class PageController extends Page {
                           Nous n'avons trouvé aucune page nommée ainsi, elle a
                           peut-être été déplacée.
                         </p>
-                        <a @click=${() => navigate(Constants.defaults.route)}
-                          ><mwc-icon-button icon="home"></mwc-icon-button>
+                        <a
+                          class="back-to-home"
+                          @click=${() => navigate(Constants.defaults.route)}
+                          ><mdui-button-icon icon="home"></mdui-button-icon>
                           Retourner à l'accueil</a
                         >
                       </div>
                     </div>
                   `
-                : ''}
+                : ""}
             `}
       </div>
     `;
   }
 
   private get _page() {
-    return this.querySelector('#page');
+    return this.querySelector("#page");
   }
 }

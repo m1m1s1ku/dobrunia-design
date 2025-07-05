@@ -26,6 +26,8 @@ export class NotFound extends LitElement {
         color: var(--elara-primary);
         text-decoration: none;
         cursor: pointer;
+        display: flex;
+        align-items: center;
       }
       .text {
         padding: 2em;
@@ -39,7 +41,7 @@ export class NotFound extends LitElement {
         <h1>You are lost !</h1>
         <p>You asked for : ${this.asked}.</p>
         <a @click=${() => navigate(Constants.defaults.route)}
-          ><mwc-icon-button icon="home"></mwc-icon-button> Homepage</a
+          ><mdui-button-icon icon="home"></mdui-button-icon> Homepage</a
         >
       </div>
     `;

@@ -55,7 +55,6 @@ const commonConfig = merge([
         {
           test: /\.css$/,
           use: ['css-loader'],
-          exclude: /node_modules/,
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,

@@ -1,15 +1,15 @@
-import { LitElement, html, TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
-import { property } from 'lit/decorators.js';
+import { LitElement, html, TemplateResult } from "lit";
+import { repeat } from "lit/directives/repeat.js";
+import { property } from "lit/decorators.js";
 
-import Page from '../core/strategies/Page';
-import { navigate } from '../core/routing/routing';
-import { Utils, chunk, decodeHTML } from '../core/ui/ui';
-import { pulseWith } from '../core/animations';
-import Constants from '../constants';
-import { wrap } from '../core/errors/errors';
+import Page from "../core/strategies/Page";
+import { navigate } from "../core/routing/routing";
+import { Utils, chunk, decodeHTML } from "../core/ui/ui";
+import { pulseWith } from "../core/animations";
+import Constants from "../constants";
+import { wrap } from "../core/errors/errors";
 
-import ProjectsQuery from '../queries/projects.graphql';
+import ProjectsQuery from "../queries/projects.graphql";
 
 export interface ProjectMinimal {
   categories: {
@@ -30,7 +30,7 @@ export function projectCard(project: ProjectMinimal): TemplateResult {
   return html`
     <article
       class="project card"
-      @click=${() => navigate('projet'.concat('/' + project.slug))}
+      @click=${() => navigate("projet".concat("/" + project.slug))}
     >
       <div class="card-inner">
         ${project.featuredImage?.node
@@ -43,7 +43,7 @@ export function projectCard(project: ProjectMinimal): TemplateResult {
                 alt="${title}"
               ></elara-image>
             `
-          : ''}
+          : ""}
         <div class="text">
           <h3 class="title">${title}</h3>
           <span>${project.categories.nodes[0].name}</span>
@@ -62,12 +62,12 @@ export async function projectLoad(
   host: ElementWithProjects,
   lastCardSelector: string,
   filterSlug?: number,
-  observer?: IntersectionObserver
+  observer?: IntersectionObserver,
 ): Promise<void> {
   const projR = await fetch(Constants.graphql, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: ProjectsQuery,
@@ -99,7 +99,7 @@ export async function projectLoad(
       const card = host.querySelector(lastCardSelector);
       if (Utils.isInViewport(card)) {
         appendTime = 0;
-        card.classList.add('revealed');
+        card.classList.add("revealed");
         if (Utils.animationsReduced()) {
           return;
         }
@@ -107,7 +107,7 @@ export async function projectLoad(
         card.animate(animationConfig.effect, animationConfig.options);
       } else {
         appendTime += 50;
-        card.classList.add('reveal');
+        card.classList.add("reveal");
         observer.observe(card);
       }
     }, appendTime);
@@ -121,22 +121,22 @@ export function iObserverForCard(ratio: number): IntersectionObserver {
     (entries, observer) => {
       for (const entry of entries) {
         if (entry.intersectionRatio > ratio) {
-          entry.target.classList.remove('reveal');
-          entry.target.classList.add('revealed');
+          entry.target.classList.remove("reveal");
+          entry.target.classList.add("revealed");
           observer.unobserve(entry.target);
         }
       }
     },
     {
       root: null,
-      rootMargin: '0px',
+      rootMargin: "0px",
       threshold: ratio,
-    }
+    },
   );
 }
 
 class Home extends Page implements ElementWithProjects {
-  public static readonly is: string = 'ui-home';
+  public static readonly is: string = "ui-home";
 
   private _observer = iObserverForCard(0.4);
 
@@ -151,15 +151,15 @@ class Home extends Page implements ElementWithProjects {
   }
 
   public async firstUpdated() {
-    await projectLoad(this, '#cards .card:last-child', null, this._observer);
-    document.title = 'Accueil' + ' | ' + Constants.title;
+    await projectLoad(this, "#cards .card:last-child", null, this._observer);
+    document.title = "Accueil" + " | " + Constants.title;
   }
 
   public render(): void | TemplateResult {
     return html`
       ${!this.loaded
         ? html`<div class="loading">
-            <mwc-circular-progress indeterminate></mwc-circular-progress>
+            <mdui-circular-progress></mdui-circular-progress>
           </div>`
         : html``}
       <div id="cards" class="animated cards">

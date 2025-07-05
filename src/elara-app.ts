@@ -9,14 +9,12 @@ import {
   Subscription,
   EMPTY,
   firstValueFrom,
-} from "rxjs";
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
   switchMap,
+  distinctUntilChanged,
+  debounceTime,
+  catchError,
   tap,
-} from "rxjs/operators";
+} from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 
 import Root from "./core/strategies/Root";

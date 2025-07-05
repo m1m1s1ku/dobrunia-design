@@ -1,19 +1,19 @@
-import { html, TemplateResult } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js';
+import { html, TemplateResult } from "lit";
+import { property, customElement } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 
-import Page from '../core/strategies/Page';
+import Page from "../core/strategies/Page";
 import {
   projectCard,
   projectLoad,
   ElementWithProjects,
   iObserverForCard,
   ProjectMinimal,
-} from './home';
-import Constants from '../constants';
-import { wrap } from '../core/errors/errors';
+} from "./home";
+import Constants from "../constants";
+import { wrap } from "../core/errors/errors";
 
-@customElement('ui-category')
+@customElement("ui-category")
 export class Category extends Page implements ElementWithProjects {
   public static readonly hasRouting: boolean = true;
 
@@ -55,9 +55,9 @@ export class Category extends Page implements ElementWithProjects {
         `;
 
     const projR = await fetch(Constants.graphql, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query,
@@ -74,21 +74,21 @@ export class Category extends Page implements ElementWithProjects {
     }
 
     if (!category || (category && category.length === 0) || !cat) {
-      document.title = 'Non trouvé' + ' | ' + Constants.title;
+      document.title = "Non trouvé" + " | " + Constants.title;
       this.empty = true;
       this.projects = [];
       this.loaded = true;
       return;
     }
 
-    document.title = cat.name + ' | ' + Constants.title;
+    document.title = cat.name + " | " + Constants.title;
 
     this.projects = [];
     await projectLoad(
       this,
-      '#cards .card:last-child',
+      "#cards .card:last-child",
       cat.slug,
-      this._observer
+      this._observer,
     );
     this._toLoad = null;
   }
@@ -98,7 +98,7 @@ export class Category extends Page implements ElementWithProjects {
       ${!this.loaded
         ? html`
             <div class="loading">
-              <mwc-circular-progress indeterminate></mwc-circular-progress>
+              <mdui-circular-progress></mdui-circular-progress>
             </div>
           `
         : html``}

@@ -1,19 +1,19 @@
-import { html, TemplateResult } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { html, TemplateResult } from "lit";
+import { property, customElement } from "lit/decorators.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
-import Page from '../core/strategies/Page';
-import Constants from '../constants';
+import Page from "../core/strategies/Page";
+import Constants from "../constants";
 
-import { Utils, decodeHTML, onImageContainerClicked } from '../core/ui/ui';
-import { fadeWith } from '../core/animations';
-import { ProjectMinimal } from './project';
-import { wrap } from '../core/errors/errors';
-import { navigate } from '../core/routing/routing';
+import { Utils, decodeHTML, onImageContainerClicked } from "../core/ui/ui";
+import { fadeWith } from "../core/animations";
+import { ProjectMinimal } from "./project";
+import { wrap } from "../core/errors/errors";
+import { navigate } from "../core/routing/routing";
 
-@customElement('ui-post')
+@customElement("ui-post")
 export class Single extends Page {
-  public static readonly is: string = 'ui-post';
+  public static readonly is: string = "ui-post";
 
   public static readonly hasRouting: boolean = true;
 
@@ -50,9 +50,9 @@ export class Single extends Page {
         `;
 
     const first = (await fetch(Constants.graphql, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: projectQuery,
@@ -68,11 +68,11 @@ export class Single extends Page {
     }
 
     const post = first;
-    document.title = post.title + ' | ' + Constants.title;
+    document.title = post.title + " | " + Constants.title;
     this.article = post;
     this.featured = post?.featuredImage?.node?.sourceUrl
       ? post.featuredImage.node.sourceUrl
-      : '/assets/logo.png';
+      : "/assets/logo.png";
 
     if (Utils.animationsReduced()) {
       return;
@@ -86,7 +86,7 @@ export class Single extends Page {
       <div id="blog" class="blog single" role="main">
         ${!this.loaded
           ? html` <div class="loading">
-              <mwc-circular-progress indeterminate></mwc-circular-progress>
+              <mdui-circular-progress></mdui-circular-progress>
             </div>`
           : html``}
         ${this.article
@@ -114,22 +114,22 @@ export class Single extends Page {
                 <div class="content page-not-found">
                   <h2>Article non trouvé</h2>
                   <p>
-                    Nous n'avons trouvé aucun article nommée ainsi, elle a
-                    peut-être été déplacée.
+                    Nous n'avons trouvé aucun article nommé ainsi, il a
+                    peut-être été déplacé.
                   </p>
                   <a @click=${() => navigate(Constants.defaults.route)}
-                    ><mwc-icon-button icon="home"></mwc-icon-button> Retourner à
-                    l'accueil</a
+                    ><mdui-button-icon icon="home"></mdui-button-icon> Retourner
+                    à l'accueil</a
                   >
                 </div>
               </div>
             `
-          : ''}
+          : ""}
       </div>
     `;
   }
 
   private get page() {
-    return this.querySelector('#blog');
+    return this.querySelector("#blog");
   }
 }

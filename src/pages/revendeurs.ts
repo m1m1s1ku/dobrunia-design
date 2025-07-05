@@ -1,18 +1,17 @@
-import { html, TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
-import { property, customElement } from 'lit/decorators.js';
+import { html, TemplateResult } from "lit";
+import { repeat } from "lit/directives/repeat.js";
+import { property, customElement } from "lit/decorators.js";
 
-import Page from '../core/strategies/Page';
-import Constants from '../constants';
+import Page from "../core/strategies/Page";
+import Constants from "../constants";
 
-import { Utils } from '../core/ui/ui';
-import { fadeWith } from '../core/animations';
-import { wrap } from '../core/errors/errors';
-import { from } from 'rxjs';
-import { map, reduce, tap } from 'rxjs/operators';
-import { ListItem } from '@material/mwc-list/mwc-list-item';
+import { Utils } from "../core/ui/ui";
+import { fadeWith } from "../core/animations";
+import { wrap } from "../core/errors/errors";
+import { from } from "rxjs";
+import { map, reduce, tap } from "rxjs/operators";
 
-import ResellersQuery from '../queries/resellers.graphql';
+import ResellersQuery from "../queries/resellers.graphql";
 
 interface ResellerMinimal {
   title: string;
@@ -33,7 +32,7 @@ interface ResellerMinimal {
   };
 }
 
-@customElement('ui-revendeurs')
+@customElement("ui-revendeurs")
 export class ResellersController extends Page {
   public static readonly hasRouting: boolean = true;
 
@@ -43,13 +42,13 @@ export class ResellersController extends Page {
   private tags: Set<string> = new Set();
   private _ghostResellers: ResellerMinimal[] = [];
   @property({ type: String, reflect: false })
-  public dataType = 'all';
+  public dataType = "all";
 
   private async _load() {
     const resellersR = (await fetch(Constants.graphql, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: ResellersQuery,
@@ -67,13 +66,13 @@ export class ResellersController extends Page {
         map((reseller) => reseller.tags.nodes.map((node) => node.name)),
         reduce((acc, val) => [...acc, ...val], []),
         map((tags) => new Set(tags)),
-        tap((tags) => (this.tags = tags))
+        tap((tags) => (this.tags = tags)),
       )
       .subscribe();
 
     this.loaded = true;
 
-    document.title = 'Revendeurs | ' + Constants.title;
+    document.title = "Revendeurs | " + Constants.title;
 
     if (Utils.animationsReduced()) {
       return;
@@ -91,49 +90,47 @@ export class ResellersController extends Page {
     return html`
       <div id="page" class="page" role="main">
         ${!this.loaded
-          ? html`
-            <div class="loading">
-                <mwc-circular-progress indeterminate></mwc-circular-progressr>
+          ? html` <div class="loading">
+              <mdui-circular-progress></mdui-circular-progress>
             </div>`
           : html`
               <div class="cols">
                 <div class="content">
                   <h2>Points de vente</h2>
                   <div class="resellers-types">
-                    <mwc-list
-                      activatable
+                    <mdui-list
                       @click=${(e: Event) => {
-                        const listItem = e.target;
-                        if (!(listItem instanceof ListItem)) {
+                        const listItem = e.target as HTMLElement;
+                        if (!listItem.dataset.type) {
                           return;
                         }
 
                         this.dataType = listItem.dataset.type;
-                        if (this.dataType === 'all') {
+                        if (this.dataType === "all") {
                           this.resellers = this._ghostResellers;
                         } else {
                           this.resellers = this._ghostResellers.filter(
                             (reseller) =>
                               reseller.tags.nodes
                                 .map((node) => node.name)
-                                .includes(this.dataType)
+                                .includes(this.dataType),
                           );
                         }
                       }}
                     >
-                      <mwc-list-item
-                        .activated=${'all' === this.dataType}
-                        data-type=${'all'}
-                        >Tous</mwc-list-item
+                      <mdui-list-item
+                        .active=${"all" === this.dataType}
+                        data-type=${"all"}
+                        >Tous</mdui-list-item
                       >
                       ${repeat(this.tags, (tag) => {
-                        return html`<mwc-list-item
-                          .activated=${tag === this.dataType}
+                        return html`<mdui-list-item
+                          .active=${tag === this.dataType}
                           data-type=${tag}
-                          >${tag}</mwc-list-item
+                          >${tag}</mdui-list-item
                         >`;
                       })}
-                    </mwc-list>
+                    </mdui-list>
                     <div class="current-type">
                       ${repeat(this.resellers, (reseller) => {
                         return html`
@@ -162,18 +159,18 @@ export class ResellersController extends Page {
                                     rel="nofollow"
                                     >${new URL(reseller.website).origin}</a
                                   >`
-                                : ''}
+                                : ""}
                               ${reseller.mail
                                 ? html`<a href="mailto:${reseller.mail}"
                                     >${reseller.mail}</a
                                   >`
-                                : ''}
+                                : ""}
                               ${reseller.address
                                 ? html`<a target="_blank" href="https://maps.google.com/?q=${reseller.address}">${reseller.address}</span>`
-                                : ''}
+                                : ""}
                               ${reseller.phone
                                 ? html`<a href="tel:${reseller.phone}">${reseller.phone}</span>`
-                                : ''}
+                                : ""}
                             </div>
                           </div>
                         `;
@@ -188,6 +185,6 @@ export class ResellersController extends Page {
   }
 
   private get _page() {
-    return this.querySelector('#page');
+    return this.querySelector("#page");
   }
 }

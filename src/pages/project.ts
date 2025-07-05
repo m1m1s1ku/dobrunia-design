@@ -1,15 +1,15 @@
-import { html, TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
+import { html, TemplateResult } from "lit";
+import { repeat } from "lit/directives/repeat.js";
 
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { property, customElement } from 'lit/decorators.js';
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { property, customElement } from "lit/decorators.js";
 
-import Page from '../core/strategies/Page';
-import Constants from '../constants';
+import Page from "../core/strategies/Page";
+import Constants from "../constants";
 
-import { Utils, onImageContainerClicked, decodeHTML } from '../core/ui/ui';
-import { fadeWith } from '../core/animations';
-import { wrap } from '../core/errors/errors';
+import { Utils, onImageContainerClicked, decodeHTML } from "../core/ui/ui";
+import { fadeWith } from "../core/animations";
+import { wrap } from "../core/errors/errors";
 
 export interface ProjectMinimal {
   title: string;
@@ -25,9 +25,9 @@ export interface ProjectMinimal {
   }[];
 }
 
-@customElement('ui-projet')
+@customElement("ui-projet")
 export class Project extends Page {
-  public static readonly is: string = 'ui-projet';
+  public static readonly is: string = "ui-projet";
 
   public static readonly hasRouting = true;
 
@@ -64,9 +64,9 @@ export class Project extends Page {
         `;
 
     const first = (await fetch(Constants.graphql, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: projectQuery,
@@ -84,16 +84,16 @@ export class Project extends Page {
     ) {
       this.featured = first.featuredImage.node.sourceUrl;
     } else {
-      this.featured = '/assets/logo.png';
+      this.featured = "/assets/logo.png";
     }
 
-    const testing = document.createElement('div');
+    const testing = document.createElement("div");
     testing.innerHTML = first.content;
 
     if (first.gallery && first.gallery.length > 0) {
       this.gallery = first.gallery.map((item) => item.sourceUrl);
     } else {
-      const postImages = testing.querySelectorAll('img');
+      const postImages = testing.querySelectorAll("img");
       const links = [];
 
       for (const image of Array.from(postImages)) {
@@ -110,7 +110,7 @@ export class Project extends Page {
 
     this.project = first;
     this.loaded = true;
-    document.title = this.project.title + ' | ' + Constants.title;
+    document.title = this.project.title + " | " + Constants.title;
     if (Utils.animationsReduced()) {
       return;
     }
@@ -122,7 +122,7 @@ export class Project extends Page {
     return html`
       <div id="project" class="project" role="main">
         ${!this.loaded
-          ? html`<mwc-circular-progress indeterminate></mwc-circular-progress>`
+          ? html`<mdui-circular-progress></mdui-circular-progress>`
           : html``}
         ${this.project
           ? html`
@@ -148,13 +148,13 @@ export class Project extends Page {
                     <masonry-layout
                       gap="20"
                       maxcolwidth="300"
-                      cols="${this.gallery.length <= 2 ? '2' : 'auto'}"
+                      cols="${this.gallery.length <= 2 ? "2" : "auto"}"
                     >
                       ${repeat(
                         this.gallery,
                         (link) => html`
                             <img alt="${link}" src=${link}></img>
-                        `
+                        `,
                       )}
                     </masonry-layout>
                   `
@@ -166,6 +166,6 @@ export class Project extends Page {
   }
 
   private get page() {
-    return this.querySelector('#project');
+    return this.querySelector("#project");
   }
 }
