@@ -745,6 +745,10 @@ mdui-button {
   background-color: var(--elara-primary);
 }
 
+mdui-list-item[active]:not([active="false" i]) {
+  background-color: #7c4c4170;
+}
+
 ui-nav {
   mdui-circular-progress {
     margin: 0 4em;
