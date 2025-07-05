@@ -1,19 +1,20 @@
 // @ts-check
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.polymerSkipLoadingFontRoboto = true;
-
 const neededElements = [];
 
 function dismiss() {
   const handler = document.querySelector('#handler');
-  handler.parentElement.removeChild(handler);
+  handler?.parentElement?.removeChild(handler);
 }
 
 function reload() {
   location.reload();
 }
 
+/**
+ * 
+ * @param {Error & {continue: boolean} | null} error 
+ * @returns 
+ */
 function makeGenericHandler(error = null) {
   const handler = document.createElement('div');
   handler.id = handler.className = 'handler';
@@ -82,8 +83,8 @@ function makeGenericHandler(error = null) {
   </div>
   `;
 
-  handler.querySelector('.dot').addEventListener('click', () => {
-    handler.parentElement.removeChild(handler);
+  handler?.querySelector('.dot')?.addEventListener('click', () => {
+    handler?.parentElement?.removeChild(handler);
   });
 
   return handler;
@@ -107,7 +108,7 @@ function _onDomLoaded() {
 
   if (willRemove && handler) {
     // Remove load handler immediatly on redirect
-    handler.parentElement.removeChild(handler);
+    handler.parentElement?.removeChild(handler);
   }
 
   const loadingPromises = [
@@ -138,7 +139,7 @@ function _onDomLoaded() {
       if (debug) return;
 
       if (spinner) {
-        spinner.parentElement.removeChild(spinner);
+        spinner.parentElement?.removeChild(spinner);
       }
       if (handler) {
         handler.classList.add('hidden');
