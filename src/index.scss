@@ -745,7 +745,7 @@ mdui-button {
   background-color: var(--elara-primary);
 }
 
-mdui-list-item[active]:not([active="false" i]) {
+mdui-list-item[active]:not([active='false' i]) {
   background-color: #7c4c4170;
 }
 
