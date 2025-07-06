@@ -114,7 +114,10 @@ export class ElaraApp extends Root {
     this.router = bindCrayon(this);
     this._subscriptions.add(
       this.router.events.subscribe((event) => {
-        if (event.type === crayon.RouterEventType.SameRouteAbort) {
+        if (
+          event.type === crayon.RouterEventType.SameRouteAbort &&
+          `/${this.route}` !== event.data
+        ) {
           this.load(event.data.replace('/', ''));
         }
       }),
