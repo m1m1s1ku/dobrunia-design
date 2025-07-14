@@ -71,10 +71,10 @@ try {
         
           $response = get();
 
-          $title = isset($response->title) ? $response->title : 'Dobrunia Design';
-          $description = isset($response->description) ? $response->description : "Décoration d'intérieur, création d'objet - les créations de Dobromila Golowacz";
-          $image = isset($response->image) ? $response->image : 'https://base.dobruniadesign.com/wp-content/uploads/2025/03/logo-orginalne-czekolada.jpg';
-          $url = isset($response->url) ? $response->url : 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
+          $title = (property_exists($response, 'title') && isset($response->title)) ? $response->title : 'Dobrunia Design';
+          $description = (property_exists($response, 'description') && isset($response->description)) ? $response->description : "Décoration d'intérieur, création d'objet - les créations de Dobromila Golowacz";
+          $image = (property_exists($response, 'image') && isset($response->image)) ? $response->image : 'https://base.dobruniadesign.com/wp-content/uploads/2025/03/logo-orginalne-czekolada.jpg';
+          $url = (property_exists($response, 'url') && isset($response->url)) ? $response->url : 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
 
           if(isset($response->title) && strpos($title, '404') !== false){
             header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
