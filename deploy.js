@@ -71,19 +71,19 @@ try {
         
           $response = get();
 
-          $title = $response->title;
-          $description = $response->description;
-          $image = $response->image;
-          $url = $response->url;
+          $title = isset($response->title) ? $response->title : 'Dobrunia Design';
+          $description = isset($response->description) ? $response->description : "Décoration d'intérieur, création d'objet - les créations de Dobromila Golowacz";
+          $image = isset($response->image) ? $response->image : 'https://base.dobruniadesign.com/wp-content/uploads/2025/03/logo-orginalne-czekolada.jpg';
+          $url = isset($response->url) ? $response->url : 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
 
-          if(strpos($title, '404') !== false){
+          if(isset($response->title) && strpos($title, '404') !== false){
             header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
           }    
 
-          if($response == null || $url == false){
+          if($response == null){
             $title = 'Dobrunia Design';
             $description = "Décoration d'intérieur, création d'objet - les créations de Dobromila Golowacz";
-            $image = 'https://base.dobruniadesign.com/wp-content/uploads/2019/10/cropped-logo-fasada-bis.jpg';
+            $image = 'https://base.dobruniadesign.com/wp-content/uploads/2025/03/logo-orginalne-czekolada.jpg';
             $url = 'https://www.dobruniadesign.com' . $_SERVER['REQUEST_URI'];
           }
           ?>
